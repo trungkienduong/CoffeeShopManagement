@@ -4,5 +4,6 @@ module com.example.coffeeshopmanagement {
 
 
     opens com.example.coffeeshopmanagement to javafx.fxml;
+
     exports com.example.coffeeshopmanagement;
 }

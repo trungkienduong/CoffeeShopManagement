@@ -10,8 +10,13 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        // Đảm bảo rằng bạn sử dụng đường dẫn chính xác để tải tệp FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/coffeeshopmanagement/hello-view.fxml"));
+
+
+        // Kích thước cửa sổ phù hợp với giao diện
+        Scene scene = new Scene(loader.load(), 800, 500); // Điều chỉnh kích thước nếu cần
+
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
