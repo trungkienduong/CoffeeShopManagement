@@ -1,20 +1,27 @@
 package MODEL;
 
+import java.math.BigDecimal;
+
 public class Product {
     private int ProductID;
     private String Name;
-    private String Category;
-    private double CostPrice;
-    private double SellPrice;
+    private int CategoryID;
+    private BigDecimal CostPrice;
+    private BigDecimal SellPrice;
 
-    public Product (int ProductID, String Name, String Category, double CostPrice, double SellPrice) {
+    // Constructor với tất cả các tham số
 
-            this.ProductID = ProductID;
-            this.Name = Name;
-            this. Category = Category;
-            this. CostPrice = CostPrice;
-            this.SellPrice = SellPrice;
+
+    public Product(int productID, String name, int categoryID, BigDecimal costPrice, BigDecimal sellPrice) {
+        ProductID = productID;
+        Name = name;
+        CategoryID = categoryID;
+        CostPrice = costPrice;
+        SellPrice = sellPrice;
     }
+
+    // Getter and Setter cho ProductID
+
 
     public int getProductID() {
         return ProductID;
@@ -32,27 +39,38 @@ public class Product {
         Name = name;
     }
 
-    public String getCategory() {
-        return Category;
+    public int getCategoryID() {
+        return CategoryID;
     }
 
-    public void setCategory(String category) {
-        Category = category;
+    public void setCategoryID(int categoryID) {
+        CategoryID = categoryID;
     }
 
-    public double getCostPrice() {
+    public BigDecimal getCostPrice() {
         return CostPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(BigDecimal costPrice) {
         CostPrice = costPrice;
     }
 
-    public double getSellPrice() {
+    public BigDecimal getSellPrice() {
         return SellPrice;
     }
 
-    public void setSellPrice(double sellPrice) {
+    public void setSellPrice(BigDecimal sellPrice) {
         SellPrice = sellPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "ProductID=" + ProductID +
+                ", Name='" + Name + '\'' +
+                ", CategoryID=" + CategoryID +
+                ", CostPrice=" + CostPrice +
+                ", SellPrice=" + SellPrice +
+                '}';
     }
 }

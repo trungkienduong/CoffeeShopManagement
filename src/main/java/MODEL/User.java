@@ -3,12 +3,16 @@ package MODEL;
 public class User {
     private String UserName;
     private String Password;
-    private String Role;
+    private int RoleID;
 
-    public User(String UserName, String Password, String Role) {
-        this.UserName = UserName;
-        this.Password = Password;
-        this.Role = Role;
+    // Constructor mặc định
+    public User() {
+    }
+
+    public User(String userName, String password, int roleID) {
+        UserName = userName;
+        Password = password;
+        RoleID = roleID;
     }
 
     public String getUserName() {
@@ -27,11 +31,20 @@ public class User {
         Password = password;
     }
 
-    public String getRole() {
-        return Role;
+    public int getRoleID() {
+        return RoleID;
     }
 
-    public void setRole(String role) {
-        Role = role;
+    public void setRoleID(int roleID) {
+        RoleID = roleID;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "UserName='" + UserName + '\'' +
+                ", Password='" + Password + '\'' +
+                ", RoleID=" + RoleID +
+                '}';
     }
 }

@@ -1,63 +1,60 @@
 package GUI.CONTROLLER.PANEL;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class SplashScreenController implements Initializable {
+public class SplashScreenController {
+    @FXML
+    private StackPane rootPane;
 
     @FXML
-    private MediaView media;
+    private MediaView mediaView;
 
     @FXML
-    private Button button;
+    private Button skipButton;
 
     private MediaPlayer mediaPlayer;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        URL videoURL = getClass().getResource("/ASSETS/VIDEOS/202910-919288798.mp4");
+    @FXML
+    public void initialize() {
+        String videoPath = getClass().getResource("/ASSETS/VIDEOS/202910-919288798.mp4").toExternalForm();
+        Media media = new Media(videoPath);
+        mediaPlayer = new MediaPlayer(media);
+        mediaView.setMediaPlayer(mediaPlayer);
 
-        if (videoURL != null) {
-            Media mediaFile = new Media(videoURL.toString());
-            mediaPlayer = new MediaPlayer(mediaFile);
-            media.setMediaPlayer(mediaPlayer);
-            mediaPlayer.play();
+        // Ensure video fills the window completely
+        mediaView.setPreserveRatio(false);
+        mediaView.fitWidthProperty().bind(rootPane.widthProperty());
+        mediaView.fitHeightProperty().bind(rootPane.heightProperty());
 
-            // Khi video kết thúc -> Chuyển sang login
-            mediaPlayer.setOnEndOfMedia(this::goToLogin);
-        } else {
-            System.out.println("❌ Không tìm thấy file video!");
-            goToLogin(); // Nếu lỗi, chuyển thẳng sang login
-        }
+        // Center the MediaView
+        mediaView.setX(0);
+        mediaView.setY(0);
 
-        // Nút "Bỏ qua"
-        button.setOnAction(event -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-            }
-            goToLogin();
-        });
+        mediaPlayer.play();
+        mediaPlayer.setOnEndOfMedia(this::closeSplashScreen);
     }
 
-    private void goToLogin() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/LoginDialog.fxml"));
-            Stage stage = (Stage) button.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("❌ Lỗi chuyển sang màn hình đăng nhập!");
+    @FXML
+    private void handleSkip() {
+        closeSplashScreen();
+    }
+
+    private void closeSplashScreen() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
         }
+
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.close();
+
+        // Launch your main application here
+        // launchMainApplication();
     }
 }

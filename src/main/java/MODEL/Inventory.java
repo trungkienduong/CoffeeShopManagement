@@ -5,18 +5,24 @@ import java.math.BigDecimal;
 public class Inventory {
     private int ItemID;
     private String ItemName;
-    private String Category;
+    private int CategoryID;
     private int Quantity;
-    private String Unit;
-    private double SellPrice;
+    private int UnitID;
+    private BigDecimal CostPrice;
+    private BigDecimal SellPrice;
 
-    public Inventory(int ItemID, String ItemName, String Category, int Quantity, String Unit, double SellPrice) {
-        this.ItemID = ItemID;
-        this.ItemName = ItemName;
-        this.Category = Category;
-        this.Quantity = Quantity;
-        this.Unit = Unit;
-        this.SellPrice = SellPrice;
+
+    // Constructor với tất cả các tham số
+
+
+    public Inventory(int itemID, String itemName, int categoryID, int quantity, int unitID, BigDecimal costPrice, BigDecimal sellPrice) {
+        ItemID = itemID;
+        ItemName = itemName;
+        CategoryID = categoryID;
+        Quantity = quantity;
+        UnitID = unitID;
+        CostPrice = costPrice;
+        SellPrice = sellPrice;
     }
 
     public int getItemID() {
@@ -35,12 +41,12 @@ public class Inventory {
         ItemName = itemName;
     }
 
-    public String getCategory() {
-        return Category;
+    public int getCategoryID() {
+        return CategoryID;
     }
 
-    public void setCategory(String category) {
-        Category = category;
+    public void setCategoryID(int categoryID) {
+        CategoryID = categoryID;
     }
 
     public int getQuantity() {
@@ -51,19 +57,40 @@ public class Inventory {
         Quantity = quantity;
     }
 
-    public String getUnit() {
-        return Unit;
+    public int getUnitID() {
+        return UnitID;
     }
 
-    public void setUnit(String unit) {
-        Unit = unit;
+    public void setUnitID(int unitID) {
+        UnitID = unitID;
     }
 
-    public double getSellPrice() {
+    public BigDecimal getCostPrice() {
+        return CostPrice;
+    }
+
+    public void setCostPrice(BigDecimal costPrice) {
+        CostPrice = costPrice;
+    }
+
+    public BigDecimal getSellPrice() {
         return SellPrice;
     }
 
-    public void setSellPrice(double sellPrice) {
+    public void setSellPrice(BigDecimal sellPrice) {
         SellPrice = sellPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "ItemID=" + ItemID +
+                ", ItemName='" + ItemName + '\'' +
+                ", CategoryID=" + CategoryID +
+                ", Quantity=" + Quantity +
+                ", UnitID=" + UnitID +
+                ", CostPrice=" + CostPrice +
+                ", SellPrice=" + SellPrice +
+                '}';
     }
 }

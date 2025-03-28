@@ -2,22 +2,26 @@ package MAIN;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 public class Main extends Application {
+    private static final double WINDOW_WIDTH = 800;
+    private static final double WINDOW_HEIGHT = 500;
+
     @Override
-    public void start(Stage primaryStage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/SplashScreen.fxml"));
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Test Splash Screen");
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/SplashScreen.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Splash Screen");
+        primaryStage.setResizable(true);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
