@@ -41,7 +41,7 @@ public class EmployeeDAO {
 
             pstmt.setString(1, emp.getFullName());
             pstmt.setString(2, emp.getPosition());
-            pstmt.setDouble(3, emp.getSalary());
+            pstmt.setBigDecimal(3, emp.getSalary());
             pstmt.setString(4, emp.getPhone());
             pstmt.setString(5, emp.getAddress());
 
@@ -60,10 +60,10 @@ public class EmployeeDAO {
 
             pstmt.setString(1, emp.getFullName());
             pstmt.setString(2, emp.getPosition());
-            pstmt.setDouble(3, emp.getSalary());
+            pstmt.setBigDecimal(3, emp.getSalary());
             pstmt.setString(4, emp.getPhone());
             pstmt.setString(5, emp.getAddress());
-            pstmt.setInt(6, emp.getEmployeeId());
+            pstmt.setInt(6, emp.getEmployeeID());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {

@@ -32,7 +32,7 @@ public class DatabaseConnection {
             }
         }
     }
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         Connection conn = getConnection();
         if (conn != null) {
             System.out.println("Test kết nối thành công!");
@@ -40,6 +40,6 @@ public class DatabaseConnection {
             System.out.println("Test kết nối thất bại!");
         }
         closeConnection(conn);
-    }*/
+    }
 
 }

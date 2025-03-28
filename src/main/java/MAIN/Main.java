@@ -4,24 +4,23 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        // Đảm bảo rằng bạn sử dụng đường dẫn chính xác để tải tệp FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/FXML/DIALOG/LoginDialog.fxml"));
-
-        // Kích thước cửa sổ phù hợp với giao diện
-        Scene scene = new Scene(loader.load(), 800, 500); // Điều chỉnh kích thước nếu cần
-
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/SplashScreen.fxml"));
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Test Splash Screen");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }

@@ -3,15 +3,15 @@ package MODEL;
 import java.math.BigDecimal;
 
 public class Employee {
-    private int EmployeeId;
+    private int EmployeeID;
     private String FullName;
     private String Position;
     private BigDecimal Salary;
     private String Phone;
     private String Address;
 
-    public Employee(int EmployeeId, String FullName, String Position, BigDecimal Salary, String Phone, String Address) {
-        this.EmployeeId = EmployeeId;
+    public Employee(int EmployeeID, String FullName, String Position, BigDecimal Salary, String Phone, String Address) {
+        this.EmployeeID = EmployeeID;
         this.FullName = FullName;
         this.Position = Position;
         this.Salary = Salary;
@@ -19,12 +19,12 @@ public class Employee {
         this.Address = Address;
     }
 
-    public int getEmployeeId() {
-        return EmployeeId;
+    public int getEmployeeID() {
+        return EmployeeID;
     }
 
-    public void setEmployeeId(int employeeId) {
-        EmployeeId = employeeId;
+    public void setEmployeeID(int employeeID) {
+        EmployeeID = employeeID;
     }
 
     public String getFullName() {
