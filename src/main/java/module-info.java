@@ -4,7 +4,20 @@ module com.example.coffeeshopmanagement {
     requires java.sql; // Nếu dùng database
     requires javafx.media; // 🔥 Thêm dòng này để dùng MediaView
 
-    // Mở package chứa FXML
+    exports BUS;
+    exports DAO;
+    exports MODEL;
+    exports GUI.CONTROLLER.PANEL;
+    exports GUI.CONTROLLER.DIALOG; // Cho phép Controller gọi từ GUI hoặc từ main
+
+    opens GUI.CONTROLLER.PANEL to javafx.fxml; // Để FXMLLoader có thể truy cập các Controller
+    opens GUI.CONTROLLER.DIALOG to javafx.fxml;
+    opens MODEL to javafx.base; // Nếu có sử dụng property bindings trong model
+    opens MAIN;
+
+
+
+    /*// Mở package chứa FXML
     opens FXML.DIALOG to javafx.fxml;
     opens FXML.PANEL to javafx.fxml;
 
@@ -18,5 +31,5 @@ module com.example.coffeeshopmanagement {
     // Xuất các package cần thiết
     exports MAIN;
     exports GUI.CONTROLLER.DIALOG;
-    exports GUI.CONTROLLER.PANEL;
+    exports GUI.CONTROLLER.PANEL;*/
 }
