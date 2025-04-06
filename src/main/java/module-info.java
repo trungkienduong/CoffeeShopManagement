@@ -3,6 +3,8 @@ module com.example.coffeeshopmanagement {
     requires javafx.fxml;
     requires java.sql; // Nếu dùng database
     requires javafx.media; // 🔥 Thêm dòng này để dùng MediaView
+    requires de.jensd.fx.glyphs.commons;
+    requires de.jensd.fx.glyphs.fontawesome;
 
     exports BUS;
     exports DAO;

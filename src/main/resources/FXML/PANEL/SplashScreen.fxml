@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.media.MediaView?>
-<?import javafx.scene.control.Button?>
 
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17"
-           fx:controller="GUI.CONTROLLER.PANEL.SplashScreenController" style="-fx-background-color: black;">
-    <MediaView fx:id="mediaView"/>
-    <Button fx:id="skipButton" text="Bỏ qua"
-            StackPane.alignment="BOTTOM_RIGHT"
-            style="-fx-background-color: #333333; -fx-text-fill: white; -fx-padding: 5 10; -fx-margin: 10;"
-            onAction="#handleSkip"/>
+<StackPane fx:id="rootPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.SplashScreenController">
+    <MediaView fx:id="mediaView" />
+    <Button fx:id="skipButton" styleClass="skipButton" onAction="#handleSkip" stylesheets="@../../ASSETS/STYLES/16.css" text="Skip" StackPane.alignment="TOP_RIGHT" />
 </StackPane>

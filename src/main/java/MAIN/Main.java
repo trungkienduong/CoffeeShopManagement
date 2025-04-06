@@ -12,13 +12,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/loginDialog.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/SplashScreen.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Splash Screen");
+        primaryStage.setTitle("CoffeeShopManagement");
         primaryStage.setResizable(true);
         primaryStage.centerOnScreen();
         primaryStage.show();

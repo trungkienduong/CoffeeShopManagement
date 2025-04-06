@@ -1,0 +1,73 @@
+.text-field, .password-field {
+    -fx-background-color: #3E2723; /* Nâu cà phê đậm */
+    -fx-text-fill: #FFFFFF; /* Chữ màu trắng */
+    -fx-font-size: 16px;
+    -fx-padding: 12px;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-effect: dropshadow(three-pass-box, rgba(215, 204, 200, 0.3), 10, 0, 0, 0);
+    -fx-transition: all 0.5s ease;
+    -fx-position: relative;
+}
+
+/* Hiệu ứng khi focus (viền sáng lên) */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #D7CCC8; /* Màu kem nhạt */
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(215, 204, 200, 0.7), 15, 0, 0, 0);
+}
+
+/* Viền động chạy quanh */
+.text-field::before, .password-field::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: #3E2723;
+    border: 2px solid #D7CCC8; /* Viền màu kem */
+    transition: all 0.5s ease;
+}
+
+/* Hiệu ứng hover */
+.text-field:hover, .password-field:hover {
+    -fx-background-color: #5D4037; /* Sáng hơn khi hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(215, 204, 200, 0.5), 15, 0, 0, 0);
+}
+
+/* Đường viền động chạy khi hover */
+.text-field::after, .password-field::after {
+    content: "";
+    position: absolute;
+    border: 2px solid #D7CCC8;
+    width: 7px;
+    height: 4px;
+    top: -3.5px;
+    left: 80%;
+    background: #3E2723;
+    transform: translateX(-50%);
+    transition: 0.5s;
+}
+
+.text-field:hover::after, .password-field:hover::after {
+    width: 20px;
+    left: 20%;
+}
+
+.text-field i::before, .password-field i::before {
+    content: "";
+    position: absolute;
+    border: 2px solid #D7CCC8;
+    width: 7px;
+    height: 4px;
+    bottom: -3.5px;
+    left: 20%;
+    background: #3E2723;
+    transform: translateX(-50%);
+    transition: 0.5s;
+}
+
+.text-field:hover i::before, .password-field:hover i::before {
+    width: 20px;
+    left: 80%;
+}
