@@ -7,84 +7,118 @@ import java.util.List;
 
 public class EmployeePositionDAO {
 
-    private Connection connection;
+    // Lấy tất cả chức vụ
+    public List<EmployeePosition> getAllPositions() {
+        List<EmployeePosition> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
-    public EmployeePositionDAO(Connection connection) {
-        this.connection = connection;
-    }
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM EMPLOYEE_POSITION";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
-    // Thêm một chức vụ mới vào bảng EmployeePosition
-    public boolean addEmployeePosition(EmployeePosition employeePosition) {
-        String sql = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, employeePosition.getPositionName());
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Lấy tất cả các chức vụ từ bảng EmployeePosition
-    public List<EmployeePosition> getAllEmployeePositions() {
-        List<EmployeePosition> positions = new ArrayList<>();
-        String sql = "SELECT * FROM EMPLOYEE_POSITION";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                int positionID = resultSet.getInt("POSITION_ID");
-                String positionName = resultSet.getString("POSITION_NAME");
-                EmployeePosition position = new EmployeePosition(positionID, positionName);
-                positions.add(position);
+            while (rs.next()) {
+                int id = rs.getInt("POSITION_ID");
+                String name = rs.getString("POSITION_NAME");
+                list.add(new EmployeePosition(id, name));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi lấy danh sách chức vụ: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            }
         }
-        return positions;
+
+        return list;
+    }
+
+    // Thêm chức vụ mới
+    public boolean insertPosition(EmployeePosition position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean success = false;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, position.getPosition_Name());
+
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi thêm chức vụ: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            }
+        }
+
+        return success;
     }
 
     // Cập nhật tên chức vụ
-    public boolean updateEmployeePosition(EmployeePosition employeePosition) {
-        String sql = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, employeePosition.getPositionName());
-            statement.setInt(2, employeePosition.getPositionID());
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    public boolean updatePosition(EmployeePosition position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean success = false;
 
-    // Xóa một chức vụ
-    public boolean deleteEmployeePosition(int positionID) {
-        String sql = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, positionID);
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, position.getPosition_Name());
+            stmt.setInt(2, position.getPosition_ID());
 
-    // Lấy thông tin chức vụ theo ID
-    public EmployeePosition getEmployeePositionByID(int positionID) {
-        String sql = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, positionID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String positionName = resultSet.getString("POSITION_NAME");
-                    return new EmployeePosition(positionID, positionName);
-                }
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi cập nhật chức vụ: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+
+        return success;
+    }
+
+    // Xóa chức vụ theo ID
+    public boolean deletePosition(int positionID) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean success = false;
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, positionID);
+
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi xóa chức vụ: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            }
+        }
+
+        return success;
     }
 }

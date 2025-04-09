@@ -1,133 +1,140 @@
 package DAO;
 
 import MODEL.Employee;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class EmployeeDAO {
 
-    private Connection connection;
-
-    // Constructor khởi tạo kết nối cơ sở dữ liệu
-    public EmployeeDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    // Phương thức thêm nhân viên mới
-    public boolean addEmployee(Employee employee) {
-        String sql = "INSERT INTO EMPLOYEE (FullName, Gender, CCCD, DateOfBirth, Phone, Email, Address, PositionId, Salary, JoinDate) " +
+    // Thêm nhân viên
+    public boolean addEmployee(Employee emp) {
+        String sql = "INSERT INTO EMPLOYEE (FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, EMAIL, ADDRESS, POSITION_ID, SALARY, JOIN_DATE) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, employee.getFullName());
-            stmt.setString(2, employee.getGender());
-            stmt.setString(3, employee.getCCCD());
-            stmt.setDate(4, new java.sql.Date(employee.getDateOfBirth().getTime()));
-            stmt.setString(5, employee.getPhone());
-            stmt.setString(6, employee.getEmail());
-            stmt.setString(7, employee.getAddress());
-            stmt.setInt(8, employee.getPositionID());
-            stmt.setBigDecimal(9, employee.getSalary());
-            stmt.setDate(10, new java.sql.Date(employee.getJoinDate().getTime()));
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, emp.getFullName());
+            stmt.setString(2, emp.getGender());
+            stmt.setString(3, emp.getCCCD());
+            stmt.setDate(4, new java.sql.Date(emp.getDate_Of_Birth().getTime()));
+            stmt.setString(5, emp.getPhone());
+            stmt.setString(6, emp.getEmail());
+            stmt.setString(7, emp.getAddress());
+            stmt.setInt(8, emp.getPosition_ID());
+            stmt.setBigDecimal(9, emp.getSalary());
+            stmt.setDate(10, new java.sql.Date(emp.getJoinDate().getTime()));
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi thêm nhân viên: " + e.getMessage());
             return false;
         }
     }
 
-    // Phương thức lấy danh sách tất cả nhân viên
+    // Lấy tất cả nhân viên
     public List<Employee> getAllEmployees() {
-        List<Employee> employeeList = new ArrayList<>();
+        List<Employee> list = new ArrayList<>();
         String sql = "SELECT * FROM EMPLOYEE";
-        try (Statement stmt = connection.createStatement();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+
             while (rs.next()) {
-                Employee employee = new Employee(
-                        rs.getInt("EmployeeID"),
-                        rs.getString("FullName"),
-                        rs.getString("Gender"),
-                        rs.getString("CCCD"),
-                        rs.getDate("DateOfBirth"),
-                        rs.getString("Phone"),
-                        rs.getString("Email"),
-                        rs.getString("Address"),
-                        rs.getInt("PositionId"),
-                        rs.getBigDecimal("Salary"),
-                        rs.getDate("JoinDate")
-                );
-                employeeList.add(employee);
+                list.add(extractEmployee(rs));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi lấy danh sách nhân viên: " + e.getMessage());
         }
-        return employeeList;
+
+        return list;
     }
 
-    // Phương thức lấy thông tin nhân viên theo EmployeeID
-    public Employee getEmployeeById(int employeeID) {
-        String sql = "SELECT * FROM EMPLOYEE WHERE EmployeeID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, employeeID);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Employee(
-                            rs.getInt("EmployeeID"),
-                            rs.getString("FullName"),
-                            rs.getString("Gender"),
-                            rs.getString("CCCD"),
-                            rs.getDate("DateOfBirth"),
-                            rs.getString("Phone"),
-                            rs.getString("Email"),
-                            rs.getString("Address"),
-                            rs.getInt("PositionId"),
-                            rs.getBigDecimal("Salary"),
-                            rs.getDate("JoinDate")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    // Cập nhật thông tin nhân viên
+    public boolean updateEmployee(Employee emp) {
+        String sql = "UPDATE EMPLOYEE SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, " +
+                "PHONE = ?, EMAIL = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ?, JOIN_DATE = ? WHERE EMPLOYEE_ID = ?";
 
-    // Phương thức cập nhật thông tin nhân viên
-    public boolean updateEmployee(Employee employee) {
-        String sql = "UPDATE EMPLOYEE SET FullName = ?, Gender = ?, CCCD = ?, DateOfBirth = ?, Phone = ?, Email = ?, " +
-                "Address = ?, PositionId = ?, Salary = ?, JoinDate = ? WHERE EmployeeID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, employee.getFullName());
-            stmt.setString(2, employee.getGender());
-            stmt.setString(3, employee.getCCCD());
-            stmt.setDate(4, new java.sql.Date(employee.getDateOfBirth().getTime()));
-            stmt.setString(5, employee.getPhone());
-            stmt.setString(6, employee.getEmail());
-            stmt.setString(7, employee.getAddress());
-            stmt.setInt(8, employee.getPositionID());
-            stmt.setBigDecimal(9, employee.getSalary());
-            stmt.setDate(10, new java.sql.Date(employee.getJoinDate().getTime()));
-            stmt.setInt(11, employee.getEmployeeID());
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, emp.getFullName());
+            stmt.setString(2, emp.getGender());
+            stmt.setString(3, emp.getCCCD());
+            stmt.setDate(4, new java.sql.Date(emp.getDate_Of_Birth().getTime()));
+            stmt.setString(5, emp.getPhone());
+            stmt.setString(6, emp.getEmail());
+            stmt.setString(7, emp.getAddress());
+            stmt.setInt(8, emp.getPosition_ID());
+            stmt.setBigDecimal(9, emp.getSalary());
+            stmt.setDate(10, new java.sql.Date(emp.getJoinDate().getTime()));
+            stmt.setInt(11, emp.getEmployee_ID());
+
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi cập nhật nhân viên: " + e.getMessage());
             return false;
         }
     }
 
-    // Phương thức xóa nhân viên theo EmployeeID
+    // Xóa nhân viên
     public boolean deleteEmployee(int employeeId) {
-        String sql = "DELETE FROM EMPLOYEE WHERE EmployeeID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        String sql = "DELETE FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, employeeId);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi xóa nhân viên: " + e.getMessage());
             return false;
         }
+    }
+
+    // Tìm kiếm nhân viên theo nhiều thuộc tính (một cách tương đối)
+    public List<Employee> searchEmployees(String keyword) {
+        List<Employee> result = new ArrayList<>();
+        String sql = "SELECT * FROM EMPLOYEE WHERE " +
+                "FULLNAME LIKE ? OR CCCD LIKE ? OR PHONE LIKE ? OR EMAIL LIKE ? OR ADDRESS LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String wildcard = "%" + keyword + "%";
+            for (int i = 1; i <= 5; i++) {
+                stmt.setString(i, wildcard);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                result.add(extractEmployee(rs));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi tìm kiếm nhân viên: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    // Hàm hỗ trợ để tách Employee từ ResultSet
+    private Employee extractEmployee(ResultSet rs) throws SQLException {
+        return new Employee(
+                rs.getInt("EMPLOYEE_ID"),
+                rs.getString("FULLNAME"),
+                rs.getString("GENDER"),
+                rs.getString("CCCD"),
+                rs.getDate("DATE_OF_BIRTH"),
+                rs.getString("PHONE"),
+                rs.getString("EMAIL"),
+                rs.getString("ADDRESS"),
+                rs.getInt("POSITION_ID"),
+                rs.getBigDecimal("SALARY"),
+                rs.getDate("JOIN_DATE")
+        );
     }
 }

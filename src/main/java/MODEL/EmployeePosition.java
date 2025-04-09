@@ -1,27 +1,35 @@
 package MODEL;
 
 public class EmployeePosition {
-    private int PositionID;
-    private String PositionName;
+    private int Position_ID;
+    private String Position_Name;
 
-    public EmployeePosition(int positionID, String positionName) {
-        PositionID = positionID;
-        PositionName = positionName;
+    public EmployeePosition(int position_ID, String position_Name) {
+        Position_ID = position_ID;
+        Position_Name = position_Name;
     }
 
-    public int getPositionID() {
-        return PositionID;
+    public int getPosition_ID() {
+        return Position_ID;
     }
 
-    public void setPositionID(int positionID) {
-        PositionID = positionID;
+    public void setPosition_ID(int position_ID) {
+        Position_ID = position_ID;
     }
 
-    public String getPositionName() {
-        return PositionName;
+    public String getPosition_Name() {
+        return Position_Name;
     }
 
-    public void setPositionName(String positionName) {
-        PositionName = positionName;
+    public void setPosition_Name(String position_Name) {
+        Position_Name = position_Name;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeePosition{" +
+                "Position_ID=" + Position_ID +
+                ", Position_Name='" + Position_Name + '\'' +
+                '}';
     }
 }

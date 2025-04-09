@@ -7,88 +7,112 @@ import java.util.List;
 
 public class ProductCategoryDAO {
 
-    private Connection connection;
-
-    public ProductCategoryDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    // Thêm một danh mục sản phẩm mới
-    public boolean addProductCategory(ProductCategory productCategory) {
-        String sql = "INSERT INTO PRODUCT_CATEGORY (CATEGORY_NAME, DESCRIPTION) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, productCategory.getCategoryName());
-            statement.setString(2, productCategory.getDescription());
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Lấy tất cả danh mục sản phẩm
-    public List<ProductCategory> getAllProductCategories() {
-        List<ProductCategory> categories = new ArrayList<>();
+    // Lấy tất cả loại sản phẩm
+    public List<ProductCategory> getAllCategories() {
+        List<ProductCategory> list = new ArrayList<>();
         String sql = "SELECT * FROM PRODUCT_CATEGORY";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                int categoryID = resultSet.getInt("CATEGORY_ID");
-                String categoryName = resultSet.getString("CATEGORY_NAME");
-                String description = resultSet.getString("DESCRIPTION");
-                ProductCategory category = new ProductCategory(categoryID, categoryName, description);
-                categories.add(category);
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                ProductCategory pc = new ProductCategory(
+                        rs.getInt("CATEGORY_ID"),
+                        rs.getString("CATEGORY_NAME"),
+                        rs.getString("DESCRIPTION")
+                );
+                list.add(pc);
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi lấy danh sách loại sản phẩm: " + e.getMessage());
         }
-        return categories;
+
+        return list;
     }
 
-    // Cập nhật thông tin danh mục sản phẩm
-    public boolean updateProductCategory(ProductCategory productCategory) {
+    // Thêm loại sản phẩm mới
+    public boolean addCategory(ProductCategory category) {
+        String sql = "INSERT INTO PRODUCT_CATEGORY (CATEGORY_NAME, DESCRIPTION) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, category.getCategory_Name());
+            stmt.setString(2, category.getDescription());
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi thêm loại sản phẩm: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Sửa loại sản phẩm
+    public boolean updateCategory(ProductCategory category) {
         String sql = "UPDATE PRODUCT_CATEGORY SET CATEGORY_NAME = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, productCategory.getCategoryName());
-            statement.setString(2, productCategory.getDescription());
-            statement.setInt(3, productCategory.getCategoryID());
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, category.getCategory_Name());
+            stmt.setString(2, category.getDescription());
+            stmt.setInt(3, category.getCategory_ID());
+
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi cập nhật loại sản phẩm: " + e.getMessage());
             return false;
         }
     }
 
-    // Xóa danh mục sản phẩm
-    public boolean deleteProductCategory(int categoryID) {
+    // Xóa loại sản phẩm
+    public boolean deleteCategory(int categoryId) {
         String sql = "DELETE FROM PRODUCT_CATEGORY WHERE CATEGORY_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, categoryID);
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, categoryId);
+
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi xóa loại sản phẩm: " + e.getMessage());
             return false;
         }
     }
 
-    // Lấy thông tin danh mục sản phẩm theo ID
-    public ProductCategory getProductCategoryByID(int categoryID) {
-        String sql = "SELECT * FROM PRODUCT_CATEGORY WHERE CATEGORY_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, categoryID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String categoryName = resultSet.getString("CATEGORY_NAME");
-                    String description = resultSet.getString("DESCRIPTION");
-                    return new ProductCategory(categoryID, categoryName, description);
-                }
+    // Tìm kiếm loại sản phẩm theo tên (hoặc mã)
+    public List<ProductCategory> searchCategories(String keyword) {
+        List<ProductCategory> list = new ArrayList<>();
+        String sql = "SELECT * FROM PRODUCT_CATEGORY WHERE CATEGORY_NAME LIKE ? OR CAST(CATEGORY_ID AS NVARCHAR) LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String kw = "%" + keyword + "%";
+            stmt.setString(1, kw);
+            stmt.setString(2, kw);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ProductCategory pc = new ProductCategory(
+                        rs.getInt("CATEGORY_ID"),
+                        rs.getString("CATEGORY_NAME"),
+                        rs.getString("DESCRIPTION")
+                );
+                list.add(pc);
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi tìm kiếm loại sản phẩm: " + e.getMessage());
         }
-        return null;
+
+        return list;
     }
 }

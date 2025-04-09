@@ -1,32 +1,30 @@
 package MODEL;
 
 public class InventoryCategory {
-    private int CategoryID;
-    private String CategoryName;
+    private int Category_ID;
+    private String Category_Name;
     private String Description;
 
-    public InventoryCategory(int categoryID, String categoryName, String description) {
-        CategoryID = categoryID;
-        CategoryName = categoryName;
+    public InventoryCategory(int category_ID, String category_Name, String description) {
+        Category_ID = category_ID;
+        Category_Name = category_Name;
         Description = description;
     }
 
-    // Getters and Setters
-
-    public int getCategoryID() {
-        return CategoryID;
+    public int getCategory_ID() {
+        return Category_ID;
     }
 
-    public void setCategoryID(int categoryID) {
-        CategoryID = categoryID;
+    public void setCategory_ID(int category_ID) {
+        Category_ID = category_ID;
     }
 
-    public String getCategoryName() {
-        return CategoryName;
+    public String getCategory_Name() {
+        return Category_Name;
     }
 
-    public void setCategoryName(String categoryName) {
-        CategoryName = categoryName;
+    public void setCategory_Name(String category_Name) {
+        Category_Name = category_Name;
     }
 
     public String getDescription() {
@@ -35,5 +33,14 @@ public class InventoryCategory {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "InventoryCategory{" +
+                "Category_ID=" + Category_ID +
+                ", Category_Name='" + Category_Name + '\'' +
+                ", Description='" + Description + '\'' +
+                '}';
     }
 }

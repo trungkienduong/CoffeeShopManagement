@@ -3,32 +3,30 @@ package MODEL;
 import java.math.BigDecimal;
 
 public class Product {
-    private int ProductID;
+    private int Product_ID;
     private String Name;
-    private int CategoryID;
+    private int Category_ID;
     private BigDecimal CostPrice;
     private BigDecimal SellPrice;
 
     // Constructor với tất cả các tham số
 
 
-    public Product(int productID, String name, int categoryID, BigDecimal costPrice, BigDecimal sellPrice) {
-        ProductID = productID;
+    public Product(int product_ID, String name, int category_ID,
+                   BigDecimal costPrice, BigDecimal sellPrice) {
+        Product_ID = product_ID;
         Name = name;
-        CategoryID = categoryID;
+        Category_ID = category_ID;
         CostPrice = costPrice;
         SellPrice = sellPrice;
     }
 
-    // Getter and Setter cho ProductID
-
-
-    public int getProductID() {
-        return ProductID;
+    public int getProduct_ID() {
+        return Product_ID;
     }
 
-    public void setProductID(int productID) {
-        ProductID = productID;
+    public void setProduct_ID(int product_ID) {
+        Product_ID = product_ID;
     }
 
     public String getName() {
@@ -39,12 +37,12 @@ public class Product {
         Name = name;
     }
 
-    public int getCategoryID() {
-        return CategoryID;
+    public int getCategory_ID() {
+        return Category_ID;
     }
 
-    public void setCategoryID(int categoryID) {
-        CategoryID = categoryID;
+    public void setCategory_ID(int category_ID) {
+        Category_ID = category_ID;
     }
 
     public BigDecimal getCostPrice() {
@@ -66,9 +64,9 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "ProductID=" + ProductID +
+                "Product_ID=" + Product_ID +
                 ", Name='" + Name + '\'' +
-                ", CategoryID=" + CategoryID +
+                ", Category_ID=" + Category_ID +
                 ", CostPrice=" + CostPrice +
                 ", SellPrice=" + SellPrice +
                 '}';

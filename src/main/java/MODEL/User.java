@@ -2,17 +2,14 @@ package MODEL;
 
 public class User {
     private String UserName;
-    private String Password;
-    private int RoleID;
+    private String PassWord;
+    private int Role_ID; // Thêm trường ROLE_ID để phân quyền
 
-    // Constructor mặc định
-    public User() {
-    }
 
-    public User(String userName, String password, int roleID) {
+    public User(String userName, String passWord, int role_ID) {
         UserName = userName;
-        Password = password;
-        RoleID = roleID;
+        PassWord = passWord;
+        Role_ID = role_ID;
     }
 
     public String getUserName() {
@@ -23,28 +20,28 @@ public class User {
         UserName = userName;
     }
 
-    public String getPassword() {
-        return Password;
+    public String getPassWord() {
+        return PassWord;
     }
 
-    public void setPassword(String password) {
-        Password = password;
+    public void setPassWord(String passWord) {
+        PassWord = passWord;
     }
 
-    public int getRoleID() {
-        return RoleID;
+    public int getRole_ID() {
+        return Role_ID;
     }
 
-    public void setRoleID(int roleID) {
-        RoleID = roleID;
+    public void setRole_ID(int role_ID) {
+        Role_ID = role_ID;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "UserName='" + UserName + '\'' +
-                ", Password='" + Password + '\'' +
-                ", RoleID=" + RoleID +
+                ", PassWord='" + PassWord + '\'' +
+                ", Role_ID=" + Role_ID +
                 '}';
     }
 }

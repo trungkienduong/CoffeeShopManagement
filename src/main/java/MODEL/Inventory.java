@@ -3,11 +3,11 @@ package MODEL;
 import java.math.BigDecimal;
 
 public class Inventory {
-    private int ItemID;
-    private String ItemName;
-    private int CategoryID;
+    private int Item_ID;
+    private String Item_Name;
+    private int Category_ID;
     private int Quantity;
-    private int UnitID;
+    private int Unit_ID;
     private BigDecimal CostPrice;
     private BigDecimal SellPrice;
 
@@ -15,38 +15,40 @@ public class Inventory {
     // Constructor với tất cả các tham số
 
 
-    public Inventory(int itemID, String itemName, int categoryID, int quantity, int unitID, BigDecimal costPrice, BigDecimal sellPrice) {
-        ItemID = itemID;
-        ItemName = itemName;
-        CategoryID = categoryID;
+    public Inventory(int item_ID, String item_Name, int category_ID,
+                     int quantity, int unit_ID, BigDecimal costPrice,
+                     BigDecimal sellPrice) {
+        Item_ID = item_ID;
+        Item_Name = item_Name;
+        Category_ID = category_ID;
         Quantity = quantity;
-        UnitID = unitID;
+        Unit_ID = unit_ID;
         CostPrice = costPrice;
         SellPrice = sellPrice;
     }
 
-    public int getItemID() {
-        return ItemID;
+    public int getItem_ID() {
+        return Item_ID;
     }
 
-    public void setItemID(int itemID) {
-        ItemID = itemID;
+    public void setItem_ID(int item_ID) {
+        Item_ID = item_ID;
     }
 
-    public String getItemName() {
-        return ItemName;
+    public String getItem_Name() {
+        return Item_Name;
     }
 
-    public void setItemName(String itemName) {
-        ItemName = itemName;
+    public void setItem_Name(String item_Name) {
+        Item_Name = item_Name;
     }
 
-    public int getCategoryID() {
-        return CategoryID;
+    public int getCategory_ID() {
+        return Category_ID;
     }
 
-    public void setCategoryID(int categoryID) {
-        CategoryID = categoryID;
+    public void setCategory_ID(int category_ID) {
+        Category_ID = category_ID;
     }
 
     public int getQuantity() {
@@ -57,12 +59,12 @@ public class Inventory {
         Quantity = quantity;
     }
 
-    public int getUnitID() {
-        return UnitID;
+    public int getUnit_ID() {
+        return Unit_ID;
     }
 
-    public void setUnitID(int unitID) {
-        UnitID = unitID;
+    public void setUnit_ID(int unit_ID) {
+        Unit_ID = unit_ID;
     }
 
     public BigDecimal getCostPrice() {
@@ -84,11 +86,11 @@ public class Inventory {
     @Override
     public String toString() {
         return "Inventory{" +
-                "ItemID=" + ItemID +
-                ", ItemName='" + ItemName + '\'' +
-                ", CategoryID=" + CategoryID +
+                "Item_ID=" + Item_ID +
+                ", Item_Name='" + Item_Name + '\'' +
+                ", Category_ID=" + Category_ID +
                 ", Quantity=" + Quantity +
-                ", UnitID=" + UnitID +
+                ", Unit_ID=" + Unit_ID +
                 ", CostPrice=" + CostPrice +
                 ", SellPrice=" + SellPrice +
                 '}';

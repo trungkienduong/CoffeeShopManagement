@@ -1,27 +1,35 @@
 package MODEL;
 
 public class RoleList {
-    private int RoleID;
-    private String RoleName;
+     private int Role_ID;
+     private String Role_Name;
 
-    public RoleList(int roleID, String roleName) {
-        RoleID = roleID;
-        RoleName = roleName;
+    public RoleList(int role_ID, String role_Name) {
+        Role_ID = role_ID;
+        Role_Name = role_Name;
     }
 
-    public int getRoleID() {
-        return RoleID;
+    public int getRole_ID() {
+        return Role_ID;
     }
 
-    public void setRoleID(int roleID) {
-        RoleID = roleID;
+    public void setRole_ID(int role_ID) {
+        Role_ID = role_ID;
     }
 
-    public String getRoleName() {
-        return RoleName;
+    public String getRole_Name() {
+        return Role_Name;
     }
 
-    public void setRoleName(String roleName) {
-        RoleName = roleName;
+    public void setRole_Name(String role_Name) {
+        Role_Name = role_Name;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleList{" +
+                "Role_ID=" + Role_ID +
+                ", Role_Name='" + Role_Name + '\'' +
+                '}';
     }
 }

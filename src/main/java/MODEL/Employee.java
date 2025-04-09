@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Employee {
-    private int EmployeeID;
+    private int Employee_ID;
     private String FullName;
     private String Gender;
     private String CCCD;
-    private Date DateOfBirth;
+    private Date Date_Of_Birth;
     private String Phone;
     private String Email;
     private String Address;
-    private int PositionID;
+    private int Position_ID;
     private BigDecimal Salary;
     private Date JoinDate;
 
@@ -20,26 +20,28 @@ public class Employee {
     // Constructor với tất cả các tham số
 
 
-    public Employee(int employeeID, String fullName, String gender, String CCCD, Date dateOfBirth, String phone, String email, String address, int positionID, BigDecimal salary, Date joinDate) {
-        EmployeeID = employeeID;
+    public Employee(int employee_ID, String fullName, String gender, String CCCD,
+                    Date date_Of_Birth, String phone, String email, String address,
+                    int position_ID, BigDecimal salary, Date joinDate) {
+        Employee_ID = employee_ID;
         FullName = fullName;
         Gender = gender;
         this.CCCD = CCCD;
-        DateOfBirth = dateOfBirth;
+        Date_Of_Birth = date_Of_Birth;
         Phone = phone;
         Email = email;
         Address = address;
-        PositionID = positionID;
+        Position_ID = position_ID;
         Salary = salary;
         JoinDate = joinDate;
     }
 
-    public int getEmployeeID() {
-        return EmployeeID;
+    public int getEmployee_ID() {
+        return Employee_ID;
     }
 
-    public void setEmployeeID(int employeeID) {
-        EmployeeID = employeeID;
+    public void setEmployee_ID(int employee_ID) {
+        Employee_ID = employee_ID;
     }
 
     public String getFullName() {
@@ -66,12 +68,12 @@ public class Employee {
         this.CCCD = CCCD;
     }
 
-    public Date getDateOfBirth() {
-        return DateOfBirth;
+    public Date getDate_Of_Birth() {
+        return Date_Of_Birth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        DateOfBirth = dateOfBirth;
+    public void setDate_Of_Birth(Date date_Of_Birth) {
+        Date_Of_Birth = date_Of_Birth;
     }
 
     public String getPhone() {
@@ -98,12 +100,12 @@ public class Employee {
         Address = address;
     }
 
-    public int getPositionID() {
-        return PositionID;
+    public int getPosition_ID() {
+        return Position_ID;
     }
 
-    public void setPositionID(int positionID) {
-        PositionID = positionID;
+    public void setPosition_ID(int position_ID) {
+        Position_ID = position_ID;
     }
 
     public BigDecimal getSalary() {
@@ -125,15 +127,15 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "EmployeeID=" + EmployeeID +
+                "Employee_ID=" + Employee_ID +
                 ", FullName='" + FullName + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", CCCD='" + CCCD + '\'' +
-                ", DateOfBirth=" + DateOfBirth +
+                ", Date_Of_Birth=" + Date_Of_Birth +
                 ", Phone='" + Phone + '\'' +
                 ", Email='" + Email + '\'' +
                 ", Address='" + Address + '\'' +
-                ", PositionID=" + PositionID +
+                ", Position_ID=" + Position_ID +
                 ", Salary=" + Salary +
                 ", JoinDate=" + JoinDate +
                 '}';

@@ -4,73 +4,72 @@ import MODEL.User;
 import java.sql.*;
 
 public class UserDAO {
-    private Connection connection;
 
-    // Constructor để khởi tạo kết nối với cơ sở dữ liệu
-    public UserDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    // Phương thức thêm người dùng mới
-    public boolean addUser(User user) {
-        String sql = "INSERT INTO USERS (USERNAME, PASSWORD, ROLE_ID) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getPassword()); // Mật khẩu có thể mã hóa nếu cần
-            ps.setInt(3, user.getRoleID());
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Phương thức lấy thông tin người dùng theo tên đăng nhập
-    public User getUserByUsername(String username) {
+    // Đăng nhập: lấy User theo tên đăng nhập và mật khẩu
+    public User getUserByLogin(String username, String password) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         User user = null;
-        String sql = "SELECT * FROM USERS WHERE USERNAME = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    user = new User(
-                            rs.getString("USERNAME"),
-                            rs.getString("PASSWORD"),
-                            rs.getInt("ROLE_ID")
-                    );
-                }
+
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String userName = rs.getString("USERNAME");
+                String passWord = rs.getString("PASSWORD");
+                int roleId = rs.getInt("ROLE_ID");
+
+                user = new User(userName, passWord, roleId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Lỗi khi truy vấn user: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            }
         }
+
         return user;
     }
 
-    // Phương thức cập nhật mật khẩu người dùng
-    public boolean updatePassword(String username, String newPassword) {
-        String sql = "UPDATE USERS SET PASSWORD = ? WHERE USERNAME = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newPassword); // Cập nhật mật khẩu mới
-            ps.setString(2, username);    // Tìm người dùng theo username
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    // Đăng ký: thêm user mới vào database
+    public boolean insertUser(User user) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        boolean success = false;
 
-    // Phương thức xóa người dùng theo tên đăng nhập
-    public boolean deleteUser(String username) {
-        String sql = "DELETE FROM USERS WHERE USERNAME = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+        try {
+            conn = DatabaseConnection.getConnection();
+            String sql = "INSERT INTO USERS (USERNAME, PASSWORD, ROLE_ID) VALUES (?, ?, ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getUserName());
+            stmt.setString(2, user.getPassWord());
+            stmt.setInt(3, user.getRole_ID());
+
+            int rows = stmt.executeUpdate();
+            success = rows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println("Lỗi khi thêm user mới: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            }
         }
+
+        return success;
     }
 }
