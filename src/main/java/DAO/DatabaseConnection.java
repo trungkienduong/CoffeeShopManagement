@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:sqlserver://DEATH-KNIGHT:1433;databaseName=CoffeeShopManagement;encrypt=true;trustServerCertificate=true";
-    private static final String USER = "sa"; // Thay bằng user của bạn
-    private static final String PASSWORD = "101001"; // Thay bằng password của bạn
+    private static final String USER = "sa";
+    private static final String PASSWORD = "101001";
 
     // Phương thức mở kết nối
     public static Connection getConnection() {
