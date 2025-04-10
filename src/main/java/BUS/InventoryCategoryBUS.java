@@ -2,57 +2,56 @@ package BUS;
 
 import DAO.InventoryCategoryDAO;
 import MODEL.InventoryCategory;
-import java.sql.Connection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class InventoryCategoryBUS {
+    private final InventoryCategoryDAO dao = new InventoryCategoryDAO();
 
-    private InventoryCategoryDAO inventoryCategoryDAO;
-
-    public InventoryCategoryBUS(Connection connection) {
-        this.inventoryCategoryDAO = new InventoryCategoryDAO(connection);
-    }
-
-    // Thêm một danh mục nguyên liệu mới
-    public boolean addInventoryCategory(InventoryCategory inventoryCategory) {
-        // Kiểm tra dữ liệu trước khi thêm vào
-        if (inventoryCategory.getCategoryName() == null || inventoryCategory.getCategoryName().isEmpty()) {
-            System.out.println("Tên danh mục không được để trống.");
-            return false;
-        }
-        if (inventoryCategory.getDescription() == null || inventoryCategory.getDescription().isEmpty()) {
-            System.out.println("Mô tả không được để trống.");
-            return false;
-        }
-        return inventoryCategoryDAO.addInventoryCategory(inventoryCategory);
-    }
-
-    // Lấy tất cả danh mục nguyên liệu
+    // Lấy danh sách tất cả danh mục
     public List<InventoryCategory> getAllInventoryCategories() {
-        return inventoryCategoryDAO.getAllInventoryCategories();
+        return dao.getAllInventoryCategories();
     }
 
-    // Cập nhật thông tin danh mục nguyên liệu
-    public boolean updateInventoryCategory(InventoryCategory inventoryCategory) {
-        // Kiểm tra dữ liệu trước khi cập nhật
-        if (inventoryCategory.getCategoryName() == null || inventoryCategory.getCategoryName().isEmpty()) {
-            System.out.println("Tên danh mục không được để trống.");
+    // ObservableList để dùng cho TableView hoặc ComboBox
+    public ObservableList<InventoryCategory> getObservableInventoryCategories() {
+        return FXCollections.observableArrayList(dao.getAllInventoryCategories());
+    }
+
+    // Thêm danh mục
+    public boolean addInventoryCategory(InventoryCategory category) {
+        if (isValidCategory(category)) {
+            return dao.addInventoryCategory(category);
+        }
+        return false;
+    }
+
+    // Cập nhật danh mục
+    public boolean updateInventoryCategory(InventoryCategory category) {
+        if (isValidCategory(category)) {
+            return dao.updateInventoryCategory(category);
+        }
+        return false;
+    }
+
+    // Xoá danh mục
+    public boolean deleteInventoryCategory(int categoryId) {
+        return dao.deleteInventoryCategory(categoryId);
+    }
+
+    // Tìm kiếm
+    public List<InventoryCategory> searchInventoryCategories(String keyword) {
+        return dao.searchInventoryCategories(keyword);
+    }
+
+    // Kiểm tra hợp lệ
+    private boolean isValidCategory(InventoryCategory category) {
+        if (category.getCategory_Name() == null || category.getCategory_Name().trim().isEmpty()) {
+            System.err.println("Tên danh mục không được để trống.");
             return false;
         }
-        if (inventoryCategory.getDescription() == null || inventoryCategory.getDescription().isEmpty()) {
-            System.out.println("Mô tả không được để trống.");
-            return false;
-        }
-        return inventoryCategoryDAO.updateInventoryCategory(inventoryCategory);
-    }
-
-    // Xóa danh mục nguyên liệu
-    public boolean deleteInventoryCategory(int categoryID) {
-        return inventoryCategoryDAO.deleteInventoryCategory(categoryID);
-    }
-
-    // Lấy thông tin danh mục nguyên liệu theo ID
-    public InventoryCategory getInventoryCategoryByID(int categoryID) {
-        return inventoryCategoryDAO.getInventoryCategoryByID(categoryID);
+        return true;
     }
 }

@@ -2,50 +2,56 @@ package BUS;
 
 import DAO.ProductCategoryDAO;
 import MODEL.ProductCategory;
-import java.sql.Connection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class ProductCategoryBUS {
-    private ProductCategoryDAO productCategoryDAO;
+    private final ProductCategoryDAO dao = new ProductCategoryDAO();
 
-    public ProductCategoryBUS(Connection connection) {
-        this.productCategoryDAO = new ProductCategoryDAO(connection);
+    // Lấy danh sách loại sản phẩm
+    public List<ProductCategory> getAllCategories() {
+        return dao.getAllCategories();
     }
 
-    // Lấy tất cả danh mục sản phẩm
-    public List<ProductCategory> getAllProductCategories() {
-        return productCategoryDAO.getAllProductCategories();
+    // Trả về danh sách Observable dùng cho ComboBox, TableView
+    public ObservableList<ProductCategory> getObservableCategories() {
+        return FXCollections.observableArrayList(dao.getAllCategories());
     }
 
-    // Lấy thông tin danh mục sản phẩm theo ID
-    public ProductCategory getProductCategoryByID(int categoryID) {
-        return productCategoryDAO.getProductCategoryByID(categoryID);
+    // Thêm mới
+    public boolean addCategory(ProductCategory category) {
+        if (isValidCategory(category)) {
+            return dao.addCategory(category);
+        }
+        return false;
     }
 
-    // Thêm danh mục sản phẩm mới
-    public boolean addProductCategory(ProductCategory productCategory) {
-        if (productCategory == null || productCategory.getCategoryName().isEmpty()) {
-            System.out.println("Thông tin danh mục không hợp lệ.");
+    // Cập nhật
+    public boolean updateCategory(ProductCategory category) {
+        if (isValidCategory(category)) {
+            return dao.updateCategory(category);
+        }
+        return false;
+    }
+
+    // Xóa
+    public boolean deleteCategory(int categoryId) {
+        return dao.deleteCategory(categoryId);
+    }
+
+    // Tìm kiếm
+    public List<ProductCategory> searchCategories(String keyword) {
+        return dao.searchCategories(keyword);
+    }
+
+    // Kiểm tra dữ liệu hợp lệ
+    private boolean isValidCategory(ProductCategory category) {
+        if (category.getCategory_Name() == null || category.getCategory_Name().trim().isEmpty()) {
+            System.err.println("Tên loại sản phẩm không được để trống.");
             return false;
         }
-        return productCategoryDAO.addProductCategory(productCategory);
-    }
-
-    // Cập nhật thông tin danh mục sản phẩm
-    public boolean updateProductCategory(ProductCategory productCategory) {
-        if (productCategory == null || productCategory.getCategoryID() <= 0 || productCategory.getCategoryName().isEmpty()) {
-            System.out.println("Dữ liệu danh mục không hợp lệ.");
-            return false;
-        }
-        return productCategoryDAO.updateProductCategory(productCategory);
-    }
-
-    // Xóa danh mục sản phẩm theo ID
-    public boolean deleteProductCategory(int categoryID) {
-        if (categoryID <= 0) {
-            System.out.println("ID danh mục không hợp lệ.");
-            return false;
-        }
-        return productCategoryDAO.deleteProductCategory(categoryID);
+        return true;
     }
 }

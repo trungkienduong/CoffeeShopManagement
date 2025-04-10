@@ -2,50 +2,48 @@ package BUS;
 
 import DAO.EmployeePositionDAO;
 import MODEL.EmployeePosition;
-import java.sql.Connection;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class EmployeePositionBUS {
-    private EmployeePositionDAO employeePositionDAO;
+    private final EmployeePositionDAO dao = new EmployeePositionDAO();
 
-    public EmployeePositionBUS(Connection connection) {
-        this.employeePositionDAO = new EmployeePositionDAO(connection);
+    // Lấy danh sách chức vụ
+    public List<EmployeePosition> getAllPositions() {
+        return dao.getAllPositions();
     }
 
-    // Lấy tất cả các chức vụ
-    public List<EmployeePosition> getAllEmployeePositions() {
-        return employeePositionDAO.getAllEmployeePositions();
+    // Lấy danh sách chức vụ cho ComboBox
+    public ObservableList<EmployeePosition> getObservablePositions() {
+        return dao.getObservablePositions();
     }
 
     // Tìm chức vụ theo ID
-    public EmployeePosition getEmployeePositionByID(int positionID) {
-        return employeePositionDAO.getEmployeePositionByID(positionID);
+    public EmployeePosition getPositionById(int id) {
+        return dao.findById(id);
     }
 
-    // Thêm một chức vụ mới
-    public boolean addEmployeePosition(EmployeePosition employeePosition) {
-        if (employeePosition == null || employeePosition.getPositionName().isEmpty()) {
-            System.out.println("Tên chức vụ không hợp lệ.");
+    // Thêm mới
+    public boolean addPosition(EmployeePosition position) {
+        if (position.getPosition_Name() == null || position.getPosition_Name().trim().isEmpty()) {
+            System.err.println("Tên chức vụ không được để trống.");
             return false;
         }
-        return employeePositionDAO.addEmployeePosition(employeePosition);
+        return dao.insertPosition(position);
     }
 
-    // Cập nhật chức vụ
-    public boolean updateEmployeePosition(EmployeePosition employeePosition) {
-        if (employeePosition == null || employeePosition.getPositionID() <= 0 || employeePosition.getPositionName().isEmpty()) {
-            System.out.println("Dữ liệu chức vụ không hợp lệ.");
+    // Cập nhật
+    public boolean updatePosition(EmployeePosition position) {
+        if (position.getPosition_Name() == null || position.getPosition_Name().trim().isEmpty()) {
+            System.err.println("Tên chức vụ không được để trống.");
             return false;
         }
-        return employeePositionDAO.updateEmployeePosition(employeePosition);
+        return dao.updatePosition(position);
     }
 
-    // Xóa một chức vụ
-    public boolean deleteEmployeePosition(int positionID) {
-        if (positionID <= 0) {
-            System.out.println("ID chức vụ không hợp lệ.");
-            return false;
-        }
-        return employeePositionDAO.deleteEmployeePosition(positionID);
+    // Xóa
+    public boolean deletePosition(int id) {
+        return dao.deletePosition(id);
     }
 }

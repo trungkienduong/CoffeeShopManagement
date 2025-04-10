@@ -2,74 +2,68 @@ package BUS;
 
 import DAO.InventoryDAO;
 import MODEL.Inventory;
-import java.sql.Connection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class InventoryBUS {
+    private final InventoryDAO dao = new InventoryDAO();
 
-    private InventoryDAO inventoryDAO;
-
-    public InventoryBUS(Connection connection) {
-        this.inventoryDAO = new InventoryDAO(connection);
+    // Lấy tất cả mặt hàng trong kho
+    public List<Inventory> getAllInventoryItems() {
+        return dao.getAllInventoryItems();
     }
 
-    // Thêm một sản phẩm mới vào kho
-    public boolean addInventory(Inventory inventory) {
-        // Kiểm tra dữ liệu trước khi thêm vào
-        if (inventory.getItemName() == null || inventory.getItemName().isEmpty()) {
-            System.out.println("Tên sản phẩm không được để trống.");
-            return false;
-        }
-        if (inventory.getQuantity() < 0) {
-            System.out.println("Số lượng phải lớn hơn hoặc bằng 0.");
-            return false;
-        }
-        if (inventory.getCostPrice().compareTo(inventory.getSellPrice()) > 0) {
-            System.out.println("Giá bán phải lớn hơn hoặc bằng giá vốn.");
-            return false;
-        }
-        return inventoryDAO.addInventory(inventory);
+    // ObservableList cho TableView hoặc ComboBox
+    public ObservableList<Inventory> getObservableInventoryItems() {
+        return FXCollections.observableArrayList(dao.getAllInventoryItems());
     }
 
-    // Cập nhật thông tin sản phẩm trong kho
-    public boolean updateInventory(Inventory inventory) {
-        // Kiểm tra dữ liệu trước khi cập nhật
-        if (inventory.getItemName() == null || inventory.getItemName().isEmpty()) {
-            System.out.println("Tên sản phẩm không được để trống.");
-            return false;
+    // Thêm mặt hàng
+    public boolean addInventoryItem(Inventory item) {
+        if (isValidInventory(item)) {
+            return dao.addInventoryItem(item);
         }
-        if (inventory.getQuantity() < 0) {
-            System.out.println("Số lượng phải lớn hơn hoặc bằng 0.");
-            return false;
-        }
-        if (inventory.getCostPrice().compareTo(inventory.getSellPrice()) > 0) {
-            System.out.println("Giá bán phải lớn hơn hoặc bằng giá vốn.");
-            return false;
-        }
-        return inventoryDAO.updateInventory(inventory);
+        return false;
     }
 
-    // Xóa một sản phẩm khỏi kho
-    public boolean deleteInventory(int itemID) {
-        return inventoryDAO.deleteInventory(itemID);
+    // Cập nhật mặt hàng
+    public boolean updateInventoryItem(Inventory item) {
+        if (isValidInventory(item)) {
+            return dao.updateInventoryItem(item);
+        }
+        return false;
     }
 
-    // Lấy tất cả sản phẩm trong kho
-    public List<Inventory> getAllInventory() {
-        return inventoryDAO.getAllInventory();
+    // Xoá mặt hàng
+    public boolean deleteInventoryItem(int itemId) {
+        return dao.deleteInventoryItem(itemId);
     }
 
-    // Lấy thông tin một sản phẩm theo ID
-    public Inventory getInventoryById(int itemID) {
-        return inventoryDAO.getInventoryById(itemID);
+    // Tìm kiếm
+    public List<Inventory> searchInventoryItems(String keyword) {
+        return dao.searchInventoryItems(keyword);
     }
 
-    // Cập nhật số lượng tồn kho khi bán ra
-    public boolean updateInventoryQuantity(int itemID, int quantity) {
-        if (quantity <= 0) {
-            System.out.println("Số lượng bán ra phải lớn hơn 0.");
+    // Kiểm tra hợp lệ đơn giản
+    private boolean isValidInventory(Inventory item) {
+        if (item.getItem_Name() == null || item.getItem_Name().trim().isEmpty()) {
+            System.err.println("Tên mặt hàng không được để trống.");
             return false;
         }
-        return inventoryDAO.updateInventoryQuantity(itemID, quantity);
+        if (item.getQuantity() < 0) {
+            System.err.println("Số lượng không hợp lệ.");
+            return false;
+        }
+        if (item.getCostPrice() == null || item.getSellPrice() == null) {
+            System.err.println("Giá không được null.");
+            return false;
+        }
+        if (item.getCostPrice().compareTo(item.getSellPrice()) > 0) {
+            System.err.println("Giá bán không được thấp hơn giá gốc.");
+            return false;
+        }
+        return true;
     }
 }

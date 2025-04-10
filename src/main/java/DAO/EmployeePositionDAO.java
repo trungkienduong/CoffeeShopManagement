@@ -1,6 +1,9 @@
 package DAO;
 
 import MODEL.EmployeePosition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +13,9 @@ public class EmployeePositionDAO {
     // Lấy tất cả chức vụ
     public List<EmployeePosition> getAllPositions() {
         List<EmployeePosition> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM EMPLOYEE_POSITION";
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM EMPLOYEE_POSITION");
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 int id = rs.getInt("POSITION_ID");
@@ -27,98 +24,74 @@ public class EmployeePositionDAO {
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách chức vụ: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
         }
-
         return list;
     }
 
-    // Thêm chức vụ mới
+    // Trả về ObservableList cho ComboBox
+    public ObservableList<EmployeePosition> getObservablePositions() {
+        ObservableList<EmployeePosition> list = FXCollections.observableArrayList();
+        list.addAll(getAllPositions());
+        return list;
+    }
+
+    // Tìm chức vụ theo ID
+    public EmployeePosition findById(int id) {
+        String sql = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new EmployeePosition(rs.getInt("POSITION_ID"), rs.getString("POSITION_NAME"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi tìm chức vụ theo ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // Thêm chức vụ
     public boolean insertPosition(EmployeePosition position) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        boolean success = false;
+        String sql = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
-            stmt = conn.prepareStatement(sql);
             stmt.setString(1, position.getPosition_Name());
-
-            success = stmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi thêm chức vụ: " + e.getMessage());
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
         }
-
-        return success;
+        return false;
     }
 
-    // Cập nhật tên chức vụ
+    // Cập nhật chức vụ
     public boolean updatePosition(EmployeePosition position) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        boolean success = false;
+        String sql = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
-            stmt = conn.prepareStatement(sql);
             stmt.setString(1, position.getPosition_Name());
             stmt.setInt(2, position.getPosition_ID());
-
-            success = stmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi cập nhật chức vụ: " + e.getMessage());
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
         }
-
-        return success;
+        return false;
     }
 
-    // Xóa chức vụ theo ID
+    // Xóa chức vụ
     public boolean deletePosition(int positionID) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        boolean success = false;
+        String sql = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
-            stmt = conn.prepareStatement(sql);
             stmt.setInt(1, positionID);
-
-            success = stmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi xóa chức vụ: " + e.getMessage());
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
         }
-
-        return success;
+        return false;
     }
 }

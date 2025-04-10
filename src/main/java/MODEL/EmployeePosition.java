@@ -27,9 +27,6 @@ public class EmployeePosition {
 
     @Override
     public String toString() {
-        return "EmployeePosition{" +
-                "Position_ID=" + Position_ID +
-                ", Position_Name='" + Position_Name + '\'' +
-                '}';
+        return Position_Name; // Chỉ hiển thị tên chức vụ, tiện cho ComboBox
     }
 }

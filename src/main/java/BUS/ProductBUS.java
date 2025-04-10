@@ -2,50 +2,64 @@ package BUS;
 
 import DAO.ProductDAO;
 import MODEL.Product;
-import java.sql.Connection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class ProductBUS {
-    private ProductDAO productDAO;
-
-    public ProductBUS(Connection connection) {
-        this.productDAO = new ProductDAO(connection);
-    }
+    private final ProductDAO dao = new ProductDAO();
 
     // Lấy tất cả sản phẩm
     public List<Product> getAllProducts() {
-        return productDAO.getAllProducts();
+        return dao.getAllProducts();
     }
 
-    // Lấy thông tin sản phẩm theo ID
-    public Product getProductById(int productId) {
-        return productDAO.getProductById(productId);
+    // ObservableList cho TableView hoặc ComboBox
+    public ObservableList<Product> getObservableProducts() {
+        return FXCollections.observableArrayList(dao.getAllProducts());
     }
 
-    // Thêm sản phẩm mới
+    // Thêm sản phẩm
     public boolean addProduct(Product product) {
-        if (product == null || product.getName().isEmpty() || product.getCategoryID() <= 0 || product.getCostPrice().compareTo(product.getSellPrice()) >= 0) {
-            System.out.println("Thông tin sản phẩm không hợp lệ.");
-            return false;
+        if (isValidProduct(product)) {
+            return dao.addProduct(product);
         }
-        return productDAO.addProduct(product);
+        return false;
     }
 
-    // Cập nhật thông tin sản phẩm
+    // Cập nhật sản phẩm
     public boolean updateProduct(Product product) {
-        if (product == null || product.getProductID() <= 0 || product.getName().isEmpty() || product.getCategoryID() <= 0 || product.getCostPrice().compareTo(product.getSellPrice()) >= 0) {
-            System.out.println("Dữ liệu sản phẩm không hợp lệ.");
-            return false;
+        if (isValidProduct(product)) {
+            return dao.updateProduct(product);
         }
-        return productDAO.updateProduct(product);
+        return false;
     }
 
-    // Xóa sản phẩm theo ID
+    // Xóa sản phẩm
     public boolean deleteProduct(int productId) {
-        if (productId <= 0) {
-            System.out.println("ID sản phẩm không hợp lệ.");
+        return dao.deleteProduct(productId);
+    }
+
+    // Tìm kiếm sản phẩm
+    public List<Product> searchProducts(String keyword) {
+        return dao.searchProducts(keyword);
+    }
+
+    // Kiểm tra sản phẩm hợp lệ
+    private boolean isValidProduct(Product product) {
+        if (product.getName() == null || product.getName().trim().isEmpty()) {
+            System.err.println("Tên sản phẩm không được để trống.");
             return false;
         }
-        return productDAO.deleteProduct(productId);
+        if (product.getCostPrice() == null || product.getSellPrice() == null) {
+            System.err.println("Giá không được null.");
+            return false;
+        }
+        if (product.getSellPrice().compareTo(product.getCostPrice()) < 0) {
+            System.err.println("Giá bán không thể thấp hơn giá gốc.");
+            return false;
+        }
+        return true;
     }
 }

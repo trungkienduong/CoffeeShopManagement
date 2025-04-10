@@ -2,50 +2,56 @@ package BUS;
 
 import DAO.UnitCategoryDAO;
 import MODEL.UnitCategory;
-import java.sql.Connection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class UnitCategoryBUS {
-    private UnitCategoryDAO unitCategoryDAO;
+    private final UnitCategoryDAO dao = new UnitCategoryDAO();
 
-    public UnitCategoryBUS(Connection connection) {
-        this.unitCategoryDAO = new UnitCategoryDAO(connection);
-    }
-
-    // Lấy tất cả các đơn vị tính
+    // Lấy tất cả đơn vị tính
     public List<UnitCategory> getAllUnits() {
-        return unitCategoryDAO.getAllUnits();
+        return dao.getAllUnitCategories();
     }
 
-    // Lấy thông tin đơn vị tính theo UNIT_ID
-    public UnitCategory getUnitByID(int unitID) {
-        return unitCategoryDAO.getUnitByID(unitID);
+    // Trả về danh sách Observable cho ComboBox, TableView
+    public ObservableList<UnitCategory> getObservableUnits() {
+        return FXCollections.observableArrayList(dao.getAllUnitCategories());
     }
 
-    // Thêm đơn vị tính mới
+    // Thêm đơn vị
     public boolean addUnit(UnitCategory unit) {
-        if (unit == null || unit.getUnitName().isEmpty()) {
-            System.out.println("Thông tin đơn vị tính không hợp lệ.");
-            return false;
+        if (isValidUnit(unit)) {
+            return dao.addUnitCategory(unit);
         }
-        return unitCategoryDAO.addUnit(unit);
+        return false;
     }
 
-    // Cập nhật thông tin đơn vị tính
+    // Cập nhật đơn vị
     public boolean updateUnit(UnitCategory unit) {
-        if (unit == null || unit.getUnitID() <= 0 || unit.getUnitName().isEmpty()) {
-            System.out.println("Dữ liệu đơn vị tính không hợp lệ.");
-            return false;
+        if (isValidUnit(unit)) {
+            return dao.updateUnitCategory(unit);
         }
-        return unitCategoryDAO.updateUnit(unit);
+        return false;
     }
 
-    // Xóa đơn vị tính theo UNIT_ID
+    // Xóa đơn vị
     public boolean deleteUnit(int unitID) {
-        if (unitID <= 0) {
-            System.out.println("ID đơn vị tính không hợp lệ.");
+        return dao.deleteUnitCategory(unitID);
+    }
+
+    // Tìm kiếm đơn vị
+    public List<UnitCategory> searchUnits(String keyword) {
+        return dao.searchUnitCategories(keyword);
+    }
+
+    // Kiểm tra đơn vị hợp lệ
+    private boolean isValidUnit(UnitCategory unit) {
+        if (unit.getUnit_Name() == null || unit.getUnit_Name().trim().isEmpty()) {
+            System.err.println("Tên đơn vị không được để trống.");
             return false;
         }
-        return unitCategoryDAO.deleteUnit(unitID);
+        return true;
     }
 }
