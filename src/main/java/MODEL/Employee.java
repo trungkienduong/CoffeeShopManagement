@@ -1,143 +1,186 @@
 package MODEL;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class Employee {
-    private int Employee_ID;
-    private String FullName;
-    private String Gender;
-    private String CCCD;
-    private Date Date_Of_Birth;
-    private String Phone;
-    private String Email;
-    private String Address;
-    private int Position_ID;
-    private BigDecimal Salary;
-    private Date JoinDate;
+    private int employeeId;
+    private String username;
+    private String fullname;
+    private char gender;
+    private String cccd;
+    private Date dateOfBirth;
+    private String phone;
+    private String address;
+    private int positionId;
+    private double salary;
+    private Date joinDate;
+    
+    // Đối tượng liên kết
+    private User user;
+    private EmployeePosition position;
 
-
-    // Constructor với tất cả các tham số
-
-
-    public Employee(int employee_ID, String fullName, String gender, String CCCD,
-                    Date date_Of_Birth, String phone, String email, String address,
-                    int position_ID, BigDecimal salary, Date joinDate) {
-        Employee_ID = employee_ID;
-        FullName = fullName;
-        Gender = gender;
-        this.CCCD = CCCD;
-        Date_Of_Birth = date_Of_Birth;
-        Phone = phone;
-        Email = email;
-        Address = address;
-        Position_ID = position_ID;
-        Salary = salary;
-        JoinDate = joinDate;
+    // Default constructor
+    public Employee() {
     }
 
-    public int getEmployee_ID() {
-        return Employee_ID;
+    // Parameterized constructor without linked objects
+    public Employee(int employeeId, String username, String fullname, char gender, 
+                   String cccd, Date dateOfBirth, String phone, String address, 
+                   int positionId, double salary, Date joinDate) {
+        this.employeeId = employeeId;
+        this.username = username;
+        this.fullname = fullname;
+        this.gender = gender;
+        this.cccd = cccd;
+        this.dateOfBirth = dateOfBirth;
+        this.phone = phone;
+        this.address = address;
+        this.positionId = positionId;
+        this.salary = salary;
+        this.joinDate = joinDate;
     }
 
-    public void setEmployee_ID(int employee_ID) {
-        Employee_ID = employee_ID;
+    // Constructor with linked objects
+    public Employee(int employeeId, User user, String fullname, char gender, 
+                   String cccd, Date dateOfBirth, String phone, String address, 
+                   EmployeePosition position, double salary, Date joinDate) {
+        this.employeeId = employeeId;
+        this.username = user.getUsername();
+        this.user = user;
+        this.fullname = fullname;
+        this.gender = gender;
+        this.cccd = cccd;
+        this.dateOfBirth = dateOfBirth;
+        this.phone = phone;
+        this.address = address;
+        this.positionId = position.getPositionId();
+        this.position = position;
+        this.salary = salary;
+        this.joinDate = joinDate;
     }
 
-    public String getFullName() {
-        return FullName;
+    // Getters and Setters
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setFullName(String fullName) {
-        FullName = fullName;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getGender() {
-        return Gender;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGender(String gender) {
-        Gender = gender;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getCCCD() {
-        return CCCD;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setCCCD(String CCCD) {
-        this.CCCD = CCCD;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public Date getDate_Of_Birth() {
-        return Date_Of_Birth;
+    public char getGender() {
+        return gender;
     }
 
-    public void setDate_Of_Birth(Date date_Of_Birth) {
-        Date_Of_Birth = date_Of_Birth;
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
+        this.phone = phone;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
-    public int getPosition_ID() {
-        return Position_ID;
+    public int getPositionId() {
+        return positionId;
     }
 
-    public void setPosition_ID(int position_ID) {
-        Position_ID = position_ID;
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
     }
 
-    public BigDecimal getSalary() {
-        return Salary;
+    public double getSalary() {
+        return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
-        Salary = salary;
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public Date getJoinDate() {
-        return JoinDate;
+        return joinDate;
     }
 
     public void setJoinDate(Date joinDate) {
-        JoinDate = joinDate;
+        this.joinDate = joinDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.username = user.getUsername();
+    }
+
+    public EmployeePosition getPosition() {
+        return position;
+    }
+
+    public void setPosition(EmployeePosition position) {
+        this.position = position;
+        this.positionId = position.getPositionId();
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-                "Employee_ID=" + Employee_ID +
-                ", FullName='" + FullName + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", CCCD='" + CCCD + '\'' +
-                ", Date_Of_Birth=" + Date_Of_Birth +
-                ", Phone='" + Phone + '\'' +
-                ", Email='" + Email + '\'' +
-                ", Address='" + Address + '\'' +
-                ", Position_ID=" + Position_ID +
-                ", Salary=" + Salary +
-                ", JoinDate=" + JoinDate +
+                "employeeId=" + employeeId +
+                ", username='" + username + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", gender=" + gender +
+                ", cccd='" + cccd + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", positionId=" + positionId +
+                ", salary=" + salary +
+                ", joinDate=" + joinDate +
+                ", position=" + (position != null ? position.getPositionName() : "null") +
                 '}';
     }
 }

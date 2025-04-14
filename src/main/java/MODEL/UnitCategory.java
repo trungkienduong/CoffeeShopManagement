@@ -1,46 +1,58 @@
 package MODEL;
 
 public class UnitCategory {
-    private int Unit_ID;
-    private String Unit_Name;
-    private String Description;
+    private int unitId;
+    private String unitName;
+    private String description;
 
-    public UnitCategory(int unit_ID, String unit_Name, String description) {
-        Unit_ID = unit_ID;
-        Unit_Name = unit_Name;
-        Description = description;
+    // Default constructor
+    public UnitCategory() {
     }
 
-    public int getUnit_ID() {
-        return Unit_ID;
+    // Parameterized constructor
+    public UnitCategory(int unitId, String unitName, String description) {
+        this.unitId = unitId;
+        this.unitName = unitName;
+        this.description = description;
     }
 
-    public void setUnit_ID(int unit_ID) {
-        Unit_ID = unit_ID;
+    // Constructor without ID (for creating new units)
+    public UnitCategory(String unitName, String description) {
+        this.unitName = unitName;
+        this.description = description;
     }
 
-    public String getUnit_Name() {
-        return Unit_Name;
+    // Getters and Setters
+    public int getUnitId() {
+        return unitId;
     }
 
-    public void setUnit_Name(String unit_Name) {
-        Unit_Name = unit_Name;
+    public void setUnitId(int unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "UnitCategory{" +
-                "Unit_ID=" + Unit_ID +
-                ", Unit_Name='" + Unit_Name + '\'' +
-                ", Description='" + Description + '\'' +
+                "unitId=" + unitId +
+                ", unitName='" + unitName + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

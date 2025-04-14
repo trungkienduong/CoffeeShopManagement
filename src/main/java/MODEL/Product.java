@@ -1,74 +1,99 @@
 package MODEL;
 
-import java.math.BigDecimal;
-
 public class Product {
-    private int Product_ID;
-    private String Name;
-    private int Category_ID;
-    private BigDecimal CostPrice;
-    private BigDecimal SellPrice;
+    private int productId;
+    private String productName;
+    private int categoryId;
+    private double sellPrice;
+    
+    // Đối tượng liên kết
+    private Category category;
 
-    // Constructor với tất cả các tham số
-
-
-    public Product(int product_ID, String name, int category_ID,
-                   BigDecimal costPrice, BigDecimal sellPrice) {
-        Product_ID = product_ID;
-        Name = name;
-        Category_ID = category_ID;
-        CostPrice = costPrice;
-        SellPrice = sellPrice;
+    // Default constructor
+    public Product() {
     }
 
-    public int getProduct_ID() {
-        return Product_ID;
+    // Parameterized constructor without category object
+    public Product(int productId, String productName, int categoryId, double sellPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.sellPrice = sellPrice;
     }
 
-    public void setProduct_ID(int product_ID) {
-        Product_ID = product_ID;
+    // Constructor with category object
+    public Product(int productId, String productName, Category category, double sellPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = category.getCategoryId();
+        this.category = category;
+        this.sellPrice = sellPrice;
     }
 
-    public String getName() {
-        return Name;
+    // Constructor without ID (for creating new products)
+    public Product(String productName, Category category, double sellPrice) {
+        this.productName = productName;
+        this.categoryId = category.getCategoryId();
+        this.category = category;
+        this.sellPrice = sellPrice;
     }
 
-    public void setName(String name) {
-        Name = name;
+    // Getters and Setters
+    public int getProductId() {
+        return productId;
     }
 
-    public int getCategory_ID() {
-        return Category_ID;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
-    public void setCategory_ID(int category_ID) {
-        Category_ID = category_ID;
+    public String getProductName() {
+        return productName;
     }
 
-    public BigDecimal getCostPrice() {
-        return CostPrice;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public void setCostPrice(BigDecimal costPrice) {
-        CostPrice = costPrice;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public BigDecimal getSellPrice() {
-        return SellPrice;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public void setSellPrice(BigDecimal sellPrice) {
-        SellPrice = sellPrice;
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(double sellPrice) {
+        if (sellPrice < 0) {
+            throw new IllegalArgumentException("Sell price cannot be negative");
+        }
+        this.sellPrice = sellPrice;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        if (!category.isProductCategory()) {
+            throw new IllegalArgumentException("Category must be a Product category (type 'P')");
+        }
+        this.category = category;
+        this.categoryId = category.getCategoryId();
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "Product_ID=" + Product_ID +
-                ", Name='" + Name + '\'' +
-                ", Category_ID=" + Category_ID +
-                ", CostPrice=" + CostPrice +
-                ", SellPrice=" + SellPrice +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", categoryId=" + categoryId +
+                ", sellPrice=" + sellPrice +
+                ", category=" + (category != null ? category.getCategoryName() : "null") +
                 '}';
     }
 }

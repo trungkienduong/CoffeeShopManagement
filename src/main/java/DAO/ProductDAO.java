@@ -1,126 +1,207 @@
 package DAO;
 
+import MODEL.Category;
 import MODEL.Product;
-import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-
-    // Lấy danh sách tất cả sản phẩm
-    public List<Product> getAllProducts() {
-        List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM PRODUCT";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Product product = extractProduct(rs);
-                list.add(product);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi lấy danh sách sản phẩm: " + e.getMessage());
-        }
-
-        return list;
+    private static ProductDAO instance;
+    private CategoryDAO categoryDAO;
+    
+    private ProductDAO() {
+        categoryDAO = CategoryDAO.getInstance();
     }
-
+    
+    public static ProductDAO getInstance() {
+        if (instance == null) {
+            instance = new ProductDAO();
+        }
+        return instance;
+    }
+    
     // Thêm sản phẩm mới
-    public boolean addProduct(Product product) {
-        String sql = "INSERT INTO PRODUCT (NAME, CATEGORY_ID, COST_PRICE, SELL_PRICE) VALUES (?, ?, ?, ?)";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, product.getName());
-            stmt.setInt(2, product.getCategory_ID());
-            stmt.setBigDecimal(3, product.getCostPrice());
-            stmt.setBigDecimal(4, product.getSellPrice());
-
-            return stmt.executeUpdate() > 0;
-
+    public boolean insert(Product product) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "INSERT INTO Product (ProductName, CategoryId, SellPrice) VALUES (?, ?, ?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+            
+            pst.setString(1, product.getProductName());
+            pst.setInt(2, product.getCategoryId());
+            pst.setDouble(3, product.getSellPrice());
+            
+            int result = pst.executeUpdate();
+            DatabaseConnection.closeConnection(con);
+            return result > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi thêm sản phẩm: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
-
-    // Sửa sản phẩm
-    public boolean updateProduct(Product product) {
-        String sql = "UPDATE PRODUCT SET NAME = ?, CATEGORY_ID = ?, COST_PRICE = ?, SELL_PRICE = ? WHERE PRODUCT_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, product.getName());
-            stmt.setInt(2, product.getCategory_ID());
-            stmt.setBigDecimal(3, product.getCostPrice());
-            stmt.setBigDecimal(4, product.getSellPrice());
-            stmt.setInt(5, product.getProduct_ID());
-
-            return stmt.executeUpdate() > 0;
-
+    
+    // Cập nhật thông tin sản phẩm
+    public boolean update(Product product) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "UPDATE Product SET ProductName = ?, CategoryId = ?, SellPrice = ? WHERE ProductId = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            
+            pst.setString(1, product.getProductName());
+            pst.setInt(2, product.getCategoryId());
+            pst.setDouble(3, product.getSellPrice());
+            pst.setInt(4, product.getProductId());
+            
+            int result = pst.executeUpdate();
+            DatabaseConnection.closeConnection(con);
+            return result > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi cập nhật sản phẩm: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
-
+    
     // Xóa sản phẩm
-    public boolean deleteProduct(int productId) {
-        String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, productId);
-            return stmt.executeUpdate() > 0;
-
+    public boolean delete(int productId) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "DELETE FROM Product WHERE ProductId = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            
+            pst.setInt(1, productId);
+            
+            int result = pst.executeUpdate();
+            DatabaseConnection.closeConnection(con);
+            return result > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi xóa sản phẩm: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
-
-    // Tìm kiếm sản phẩm theo từ khóa (tên, ID, hoặc mã loại)
-    public List<Product> searchProducts(String keyword) {
-        List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM PRODUCT WHERE NAME LIKE ? OR CAST(PRODUCT_ID AS NVARCHAR) LIKE ? OR CAST(CATEGORY_ID AS NVARCHAR) LIKE ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            String kw = "%" + keyword + "%";
-            stmt.setString(1, kw);
-            stmt.setString(2, kw);
-            stmt.setString(3, kw);
-
-            ResultSet rs = stmt.executeQuery();
-
+    
+    // Lấy danh sách tất cả sản phẩm
+    public List<Product> getAll() {
+        List<Product> productList = new ArrayList<>();
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Product";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
             while (rs.next()) {
-                Product product = extractProduct(rs);
-                list.add(product);
+                Product product = new Product();
+                product.setProductId(rs.getInt("ProductId"));
+                product.setProductName(rs.getString("ProductName"));
+                product.setCategoryId(rs.getInt("CategoryId"));
+                product.setSellPrice(rs.getDouble("SellPrice"));
+                
+                // Lấy thông tin category
+                Category category = categoryDAO.findById(product.getCategoryId());
+                product.setCategory(category);
+                
+                productList.add(product);
             }
-
+            
+            DatabaseConnection.closeConnection(con);
         } catch (SQLException e) {
-            System.err.println("Lỗi tìm kiếm sản phẩm: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        return list;
+        return productList;
     }
-
-    // Hàm hỗ trợ để tách Product từ ResultSet
-    private Product extractProduct(ResultSet rs) throws SQLException {
-        return new Product(
-                rs.getInt("PRODUCT_ID"),
-                rs.getString("NAME"),
-                rs.getInt("CATEGORY_ID"),
-                rs.getBigDecimal("COST_PRICE"),
-                rs.getBigDecimal("SELL_PRICE")
-        );
+    
+    // Tìm sản phẩm theo ID
+    public Product findById(int productId) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Product WHERE ProductId = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, productId);
+            
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("ProductId"));
+                product.setProductName(rs.getString("ProductName"));
+                product.setCategoryId(rs.getInt("CategoryId"));
+                product.setSellPrice(rs.getDouble("SellPrice"));
+                
+                // Lấy thông tin category
+                Category category = categoryDAO.findById(product.getCategoryId());
+                product.setCategory(category);
+                
+                DatabaseConnection.closeConnection(con);
+                return product;
+            }
+            DatabaseConnection.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    // Lấy danh sách sản phẩm theo danh mục
+    public List<Product> findByCategory(int categoryId) {
+        List<Product> productList = new ArrayList<>();
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Product WHERE CategoryId = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, categoryId);
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("ProductId"));
+                product.setProductName(rs.getString("ProductName"));
+                product.setCategoryId(rs.getInt("CategoryId"));
+                product.setSellPrice(rs.getDouble("SellPrice"));
+                
+                // Lấy thông tin category
+                Category category = categoryDAO.findById(product.getCategoryId());
+                product.setCategory(category);
+                
+                productList.add(product);
+            }
+            
+            DatabaseConnection.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
+    }
+    
+    // Tìm sản phẩm theo tên (tìm kiếm gần đúng)
+    public List<Product> searchByName(String keyword) {
+        List<Product> productList = new ArrayList<>();
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Product WHERE ProductName LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, "%" + keyword + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("ProductId"));
+                product.setProductName(rs.getString("ProductName"));
+                product.setCategoryId(rs.getInt("CategoryId"));
+                product.setSellPrice(rs.getDouble("SellPrice"));
+                
+                // Lấy thông tin category
+                Category category = categoryDAO.findById(product.getCategoryId());
+                product.setCategory(category);
+                
+                productList.add(product);
+            }
+            
+            DatabaseConnection.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
     }
 }

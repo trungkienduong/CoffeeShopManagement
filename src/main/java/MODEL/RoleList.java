@@ -1,35 +1,41 @@
 package MODEL;
 
 public class RoleList {
-     private int Role_ID;
-     private String Role_Name;
-
-    public RoleList(int role_ID, String role_Name) {
-        Role_ID = role_ID;
-        Role_Name = role_Name;
+    private int roleId;
+    private String roleName;
+    
+    // Default constructor
+    public RoleList() {
     }
-
-    public int getRole_ID() {
-        return Role_ID;
+    
+    // Parameterized constructor
+    public RoleList(int roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
     }
-
-    public void setRole_ID(int role_ID) {
-        Role_ID = role_ID;
+    
+    // Getters and Setters
+    public int getRoleId() {
+        return roleId;
     }
-
-    public String getRole_Name() {
-        return Role_Name;
+    
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
-
-    public void setRole_Name(String role_Name) {
-        Role_Name = role_Name;
+    
+    public String getRoleName() {
+        return roleName;
     }
-
+    
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+    
     @Override
     public String toString() {
         return "RoleList{" +
-                "Role_ID=" + Role_ID +
-                ", Role_Name='" + Role_Name + '\'' +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

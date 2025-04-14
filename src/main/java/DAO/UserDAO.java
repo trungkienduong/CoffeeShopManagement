@@ -1,75 +1,196 @@
 package DAO;
 
+import MODEL.RoleList;
 import MODEL.User;
-import java.sql.*;
+import java.sql.Connection; // Dùng để kết nối tới cơ sở dữ liệu
+import java.sql.PreparedStatement; // Dùng để tạo các câu lệnh SQL có tham số
+import java.sql.ResultSet; // Dùng để đọc dữ liệu trả về từ câu lệnh SELECT
+import java.sql.SQLException; // Xử lý các lỗi liên quan đến SQL
+import java.util.ArrayList; // Dùng để lưu danh sách các User
+import java.util.List; // Interface danh sách chung
 
 public class UserDAO {
+    private static UserDAO instance; // biến instance duy nhất của lớp
+    private RoleListDAO roleListDAO = RoleListDAO.getInstance(); // DAO dùng để lấy thông tin role
 
-    // Đăng nhập: lấy User theo tên đăng nhập và mật khẩu
-    public User getUserByLogin(String username, String password) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        User user = null;
+    private UserDAO() {
+        roleListDAO = RoleListDAO.getInstance(); // lấy intance của RoleListDAO
+    }
 
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+    public static UserDAO getInstance() { // trả về instance duy nhất của UserDAO
+        if (instance == null) {
+            instance = new UserDAO();
+        }
+        return instance;
+    }
 
-            rs = stmt.executeQuery();
+    // ---------------------- INSERT ----------------------
+    public boolean insert(User user) {
+        String sql = "INSERT INTO USER (USERNAME, PASSWORD, EMAIL, ROLE_ID) VALUES (?, ?, ?, ?)";
 
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, user.getUsername()); // gán giá trị cho ? thứ nhất
+            pst.setString(2, user.getPassword()); // gán giá trị cho ? thứ hai
+            pst.setString(3, user.getEmail()); // gán giá trị cho ? thứ ba
+            pst.setInt(4, user.getRoleId()); // gán giá trị cho ? thứ tư
+
+            // thực thi câu lệnh
+            int result = pst.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------- UPDATE ----------------------
+    public boolean update(User user) {
+        String sql = "UPDATE USER SET PASSWORD = ?, EMAIL = ?, ROLE_ID = ? WHERE USERNAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, user.getPassword()); // gán giá trị cho ? thứ hai
+            pst.setString(2, user.getEmail()); // gán giá trị cho ? thứ ba
+            pst.setInt(3, user.getRoleId()); // gán giá trị cho ? thứ tư
+            pst.setString(4, user.getUsername()); // gán giá trị cho ? thứ nhất
+
+            // thực thi câu lệnh
+            int result = pst.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------- DELETE ----------------------
+    public boolean delete(String username) {
+        String sql = "DELETE FROM USER WHERE USERNAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, username); // gán giá trị cho ? thứ nhất
+
+            // thực thi câu lệnh
+            int result = pst.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------- SELECT ALL ----------------------
+    public List<User> selectAll() {
+        String sql = "SELECT * FROM USER";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUsername(rs.getString("USERNAME"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setEmail(rs.getString("EMAIL"));
+                user.setRoleId(rs.getInt("ROLE_ID"));
+
+                user.setRole(roleListDAO.findById(user.getRoleId()));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // ---------------------- SELECT BY NAME ----------------------
+    public User findByName(String username) {
+        String sql = "SELECT * FROM USER WHERE USERNAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, username); // gán giá trị cho ? thứ nhất
+
+            // thực thi câu lệnh
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                String userName = rs.getString("USERNAME");
-                String passWord = rs.getString("PASSWORD");
-                int roleId = rs.getInt("ROLE_ID");
-
-                user = new User(userName, passWord, roleId);
+                User user = new User();
+                user.setUsername(rs.getString("USERNAME"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setEmail(rs.getString("EMAIL"));
+                user.setRoleId(rs.getInt("ROLE_ID"));
+                user.setRole(roleListDAO.findById(user.getRoleId()));
+                return user;
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi khi truy vấn user: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
+            e.printStackTrace();
         }
+        return null;
+    }
 
+    // ---------------------- SELECT BY EMAIL ----------------------
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM USER WHERE EMAIL = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, email); // gán giá trị cho ? thứ nhất
+
+            // thực thi câu lệnh
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setUsername(rs.getString("USERNAME"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setEmail(rs.getString("EMAIL"));
+                user.setRoleId(rs.getInt("ROLE_ID"));
+                user.setRole(roleListDAO.findById(user.getRoleId()));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ---------------------- CHECK LOGIN ----------------------
+    public boolean checkLogin(String username, String password) {
+        String sql = "SELECT * FROM USER WHERE USERNAME = ? AND PASSWORD = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, username); // gán giá trị cho ? thứ nhất
+            pst.setString(2, password); // gán giá trị cho ? thứ hai
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ---------------------- MAP RESULT TO USER ----------------------
+    private User mapResultToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUsername(rs.getString("USERNAME"));
+        user.setPassword(rs.getString("PASSWORD"));
+        user.setEmail(rs.getString("EMAIL"));
+        user.setRoleId(rs.getInt("ROLE_ID"));
+        user.setRole(roleListDAO.findById(user.getRoleId()));
         return user;
     }
 
-    // Đăng ký: thêm user mới vào database
-    public boolean insertUser(User user) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        boolean success = false;
 
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO USERS (USERNAME, PASSWORD, ROLE_ID) VALUES (?, ?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, user.getUserName());
-            stmt.setString(2, user.getPassWord());
-            stmt.setInt(3, user.getRole_ID());
-
-            int rows = stmt.executeUpdate();
-            success = rows > 0;
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm user mới: " + e.getMessage());
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
-            }
-        }
-
-        return success;
-    }
 }

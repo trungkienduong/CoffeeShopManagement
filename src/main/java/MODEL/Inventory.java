@@ -1,98 +1,162 @@
 package MODEL;
 
-import java.math.BigDecimal;
-
 public class Inventory {
-    private int Item_ID;
-    private String Item_Name;
-    private int Category_ID;
-    private int Quantity;
-    private int Unit_ID;
-    private BigDecimal CostPrice;
-    private BigDecimal SellPrice;
+    private int itemId;
+    private String itemName;
+    private int categoryId;
+    private double quantity;
+    private int unitId;
+    private double costPrice;
+    
+    // Đối tượng liên kết
+    private Category category;
+    private UnitCategory unit;
 
-
-    // Constructor với tất cả các tham số
-
-
-    public Inventory(int item_ID, String item_Name, int category_ID,
-                     int quantity, int unit_ID, BigDecimal costPrice,
-                     BigDecimal sellPrice) {
-        Item_ID = item_ID;
-        Item_Name = item_Name;
-        Category_ID = category_ID;
-        Quantity = quantity;
-        Unit_ID = unit_ID;
-        CostPrice = costPrice;
-        SellPrice = sellPrice;
+    // Default constructor
+    public Inventory() {
     }
 
-    public int getItem_ID() {
-        return Item_ID;
+    // Parameterized constructor without linked objects
+    public Inventory(int itemId, String itemName, int categoryId, double quantity, 
+                    int unitId, double costPrice) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.categoryId = categoryId;
+        this.quantity = quantity;
+        this.unitId = unitId;
+        this.costPrice = costPrice;
     }
 
-    public void setItem_ID(int item_ID) {
-        Item_ID = item_ID;
+    // Constructor with linked objects
+    public Inventory(int itemId, String itemName, Category category, double quantity, 
+                    UnitCategory unit, double costPrice) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.categoryId = category.getCategoryId();
+        this.category = category;
+        this.quantity = quantity;
+        this.unitId = unit.getUnitId();
+        this.unit = unit;
+        this.costPrice = costPrice;
     }
 
-    public String getItem_Name() {
-        return Item_Name;
+    // Constructor without ID (for creating new items)
+    public Inventory(String itemName, Category category, double quantity, 
+                    UnitCategory unit, double costPrice) {
+        this.itemName = itemName;
+        this.categoryId = category.getCategoryId();
+        this.category = category;
+        this.quantity = quantity;
+        this.unitId = unit.getUnitId();
+        this.unit = unit;
+        this.costPrice = costPrice;
     }
 
-    public void setItem_Name(String item_Name) {
-        Item_Name = item_Name;
+    // Getters and Setters
+    public int getItemId() {
+        return itemId;
     }
 
-    public int getCategory_ID() {
-        return Category_ID;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public void setCategory_ID(int category_ID) {
-        Category_ID = category_ID;
+    public String getItemName() {
+        return itemName;
     }
 
-    public int getQuantity() {
-        return Quantity;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public void setQuantity(int quantity) {
-        Quantity = quantity;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public int getUnit_ID() {
-        return Unit_ID;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public void setUnit_ID(int unit_ID) {
-        Unit_ID = unit_ID;
+    public double getQuantity() {
+        return quantity;
     }
 
-    public BigDecimal getCostPrice() {
-        return CostPrice;
+    public void setQuantity(double quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+        this.quantity = quantity;
     }
 
-    public void setCostPrice(BigDecimal costPrice) {
-        CostPrice = costPrice;
+    public int getUnitId() {
+        return unitId;
     }
 
-    public BigDecimal getSellPrice() {
-        return SellPrice;
+    public void setUnitId(int unitId) {
+        this.unitId = unitId;
     }
 
-    public void setSellPrice(BigDecimal sellPrice) {
-        SellPrice = sellPrice;
+    public double getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(double costPrice) {
+        if (costPrice < 0) {
+            throw new IllegalArgumentException("Cost price cannot be negative");
+        }
+        this.costPrice = costPrice;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        if (!category.isInventoryCategory()) {
+            throw new IllegalArgumentException("Category must be an Inventory category (type 'I')");
+        }
+        this.category = category;
+        this.categoryId = category.getCategoryId();
+    }
+
+    public UnitCategory getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitCategory unit) {
+        this.unit = unit;
+        this.unitId = unit.getUnitId();
+    }
+
+    // Helper methods
+    public void addQuantity(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount to add must be positive");
+        }
+        this.quantity += amount;
+    }
+
+    public void subtractQuantity(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount to subtract must be positive");
+        }
+        if (amount > this.quantity) {
+            throw new IllegalArgumentException("Not enough quantity in inventory");
+        }
+        this.quantity -= amount;
     }
 
     @Override
     public String toString() {
         return "Inventory{" +
-                "Item_ID=" + Item_ID +
-                ", Item_Name='" + Item_Name + '\'' +
-                ", Category_ID=" + Category_ID +
-                ", Quantity=" + Quantity +
-                ", Unit_ID=" + Unit_ID +
-                ", CostPrice=" + CostPrice +
-                ", SellPrice=" + SellPrice +
+                "itemId=" + itemId +
+                ", itemName='" + itemName + '\'' +
+                ", categoryId=" + categoryId +
+                ", quantity=" + quantity +
+                ", unitId=" + unitId +
+                ", costPrice=" + costPrice +
+                ", category=" + (category != null ? category.getCategoryName() : "null") +
+                ", unit=" + (unit != null ? unit.getUnitName() : "null") +
                 '}';
     }
 }

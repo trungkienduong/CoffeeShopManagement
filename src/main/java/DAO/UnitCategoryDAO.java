@@ -1,118 +1,134 @@
 package DAO;
 
 import MODEL.UnitCategory;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UnitCategoryDAO {
+    private static UnitCategoryDAO instance;
 
-    // Lấy toàn bộ danh sách đơn vị tính
-    public List<UnitCategory> getAllUnitCategories() {
-        List<UnitCategory> list = new ArrayList<>();
-        String sql = "SELECT * FROM UNIT_CATEGORY";
+    private UnitCategoryDAO() {
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                UnitCategory unit = extractUnitCategory(rs);
-                list.add(unit);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi lấy danh sách UNIT_CATEGORY: " + e.getMessage());
-        }
-
-        return list;
     }
 
-    // Thêm đơn vị tính mới
-    public boolean addUnitCategory(UnitCategory unit) {
+    public static UnitCategoryDAO getInstance() {
+        if (instance == null) {
+            instance = new UnitCategoryDAO();
+        }
+        return instance;
+    }
+
+    // ---------------------- INSERT ----------------------
+    public boolean insert(UnitCategory unitCategory) {
         String sql = "INSERT INTO UNIT_CATEGORY (UNIT_NAME, DESCRIPTION) VALUES (?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-            stmt.setString(1, unit.getUnit_Name());
-            stmt.setString(2, unit.getDescription());
+            pst.setString(1, unitCategory.getUnitName()); // gán giá trị cho ? thứ nhất
+            pst.setString(2, unitCategory.getDescription()); // gán giá trị cho ? thứ hai
 
-            return stmt.executeUpdate() > 0;
-
+            // thực thi câu lệnh
+            int result = pst.executeUpdate();
+            return result > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm UNIT_CATEGORY: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    // Cập nhật đơn vị tính
-    public boolean updateUnitCategory(UnitCategory unit) {
+    // ---------------------- UPDATE ----------------------
+    public boolean update(UnitCategory unitCategory) {
         String sql = "UPDATE UNIT_CATEGORY SET UNIT_NAME = ?, DESCRIPTION = ? WHERE UNIT_ID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-            stmt.setString(1, unit.getUnit_Name());
-            stmt.setString(2, unit.getDescription());
-            stmt.setInt(3, unit.getUnit_ID());
+            pst.setString(1, unitCategory.getUnitName()); // gán giá trị cho ? thứ hai
+            pst.setString(2, unitCategory.getDescription()); // gán giá trị cho ? thứ hai
+            pst.setInt(3, unitCategory.getUnitId()); // gán giá trị cho ? thứ hai
 
-            return stmt.executeUpdate() > 0;
-
+            // thực thi câu lệnh
+            int result = pst.executeUpdate();
+            return result > 0;
         } catch (SQLException e) {
-            System.err.println("Lỗi khi cập nhật UNIT_CATEGORY: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    // Xoá đơn vị tính
-    public boolean deleteUnitCategory(int unitId) {
+    // ---------------------- DELETE ----------------------
+    public boolean delete(int unitId) {
         String sql = "DELETE FROM UNIT_CATEGORY WHERE UNIT_ID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, unitId);
-            return stmt.executeUpdate() > 0;
+            pst.setInt(1, unitId);
+            int result = pst.executeUpdate();
+            return result > 0;
 
         } catch (SQLException e) {
-            System.err.println("Lỗi khi xoá UNIT_CATEGORY: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    // Tìm kiếm theo tên hoặc mã đơn vị
-    public List<UnitCategory> searchUnitCategories(String keyword) {
-        List<UnitCategory> list = new ArrayList<>();
-        String sql = "SELECT * FROM UNIT_CATEGORY WHERE UNIT_NAME LIKE ? OR CAST(UNIT_ID AS NVARCHAR) LIKE ?";
+    // ---------------------- GET ALL ----------------------
+    public List<UnitCategory> getAll() {
+        String sql = "SELECT * FROM UNIT_CATEGORY";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
 
-            String kw = "%" + keyword + "%";
-            stmt.setString(1, kw);
-            stmt.setString(2, kw);
-
-            ResultSet rs = stmt.executeQuery();
-
+            List<UnitCategory> unitCategories = new ArrayList<>();
             while (rs.next()) {
-                UnitCategory unit = extractUnitCategory(rs);
-                list.add(unit);
+                UnitCategory unitCategory = new UnitCategory();
+                unitCategory.setUnitId(rs.getInt("UNIT_ID"));
+                unitCategory.setUnitName(rs.getString("UNIT_NAME"));
+                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+                unitCategories.add(unitCategory);
             }
-
+            return unitCategories;
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm kiếm UNIT_CATEGORY: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
-
-        return list;
     }
 
-    // Hàm hỗ trợ lấy đối tượng từ ResultSet
-    private UnitCategory extractUnitCategory(ResultSet rs) throws SQLException {
-        return new UnitCategory(
-                rs.getInt("UNIT_ID"),
-                rs.getString("UNIT_NAME"),
-                rs.getString("DESCRIPTION")
-        );
+    // ---------------------- GET BY NAME ----------------------
+    public UnitCategory findByName(String unitName) {
+        String sql = "SELECT * FROM UNIT_CATEGORY WHERE UNIT_NAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, unitName); // gán giá trị cho ? thứ nhất
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                UnitCategory unitCategory = new UnitCategory();
+                unitCategory.setUnitId(rs.getInt("UNIT_ID"));
+                unitCategory.setUnitName(rs.getString("UNIT_NAME"));
+                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+                return unitCategory;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //---------------------- MAP RESULT UNIT_CATEGORY ----------------------
+    private UnitCategory mapResultToUnitCategory(ResultSet rs) throws SQLException {
+        UnitCategory unitCategory = new UnitCategory();
+        unitCategory.setUnitId(rs.getInt("UNIT_ID"));
+        unitCategory.setUnitName(rs.getString("UNIT_NAME"));
+        unitCategory.setDescription(rs.getString("DESCRIPTION"));
+        return unitCategory;
     }
 }

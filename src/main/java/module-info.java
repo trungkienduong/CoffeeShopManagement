@@ -5,6 +5,7 @@ module com.example.coffeeshopmanagement {
     requires javafx.media; // 🔥 Thêm dòng này để dùng MediaView
     requires de.jensd.fx.glyphs.commons;
     requires de.jensd.fx.glyphs.fontawesome;
+    requires java.desktop;
 
     exports BUS;
     exports DAO;

@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class   Main extends Application {
     private static final double WINDOW_WIDTH = 800;
     private static final double WINDOW_HEIGHT = 500;
 

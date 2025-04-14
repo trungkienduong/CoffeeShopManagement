@@ -1,32 +1,46 @@
 package MODEL;
 
 public class EmployeePosition {
-    private int Position_ID;
-    private String Position_Name;
+    private int positionId;
+    private String positionName;
 
-    public EmployeePosition(int position_ID, String position_Name) {
-        Position_ID = position_ID;
-        Position_Name = position_Name;
+    // Default constructor
+    public EmployeePosition() {
     }
 
-    public int getPosition_ID() {
-        return Position_ID;
+    // Parameterized constructor
+    public EmployeePosition(int positionId, String positionName) {
+        this.positionId = positionId;
+        this.positionName = positionName;
     }
 
-    public void setPosition_ID(int position_ID) {
-        Position_ID = position_ID;
+    // Constructor with only name (for creating new positions)
+    public EmployeePosition(String positionName) {
+        this.positionName = positionName;
     }
 
-    public String getPosition_Name() {
-        return Position_Name;
+    // Getters and Setters
+    public int getPositionId() {
+        return positionId;
     }
 
-    public void setPosition_Name(String position_Name) {
-        Position_Name = position_Name;
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     @Override
     public String toString() {
-        return Position_Name; // Chỉ hiển thị tên chức vụ, tiện cho ComboBox
+        return "EmployeePosition{" +
+                "positionId=" + positionId +
+                ", positionName='" + positionName + '\'' +
+                '}';
     }
 }

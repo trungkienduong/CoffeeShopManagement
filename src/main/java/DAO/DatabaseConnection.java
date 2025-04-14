@@ -5,41 +5,42 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://DEATH-KNIGHT:1433;databaseName=CoffeeShopManagement;encrypt=true;trustServerCertificate=true";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "101001";
+    private static final String DB_URL = "jdbc:sqlserver://DEATH-KNIGHT:1433;databaseName=CoffeeShopManagement;encrypt=true;trustServerCertificate=true";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASSWORD = "101001";
 
-    // Phương thức mở kết nối
+    // phương thức mở kết nối
     public static Connection getConnection() {
-        Connection conn = null;
+        Connection connection = null;
         try {
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Kết nối database thành công!");
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            System.out.println("Kết nối với CSDL thanh công!");
         } catch (SQLException e) {
-            System.err.println("Lỗi kết nối database: " + e.getMessage());
+            System.out.println("Lỗi kết nối với CSDL: " + e.getMessage());
         }
-        return conn;
+        return connection;
     }
 
-    // Phương thức đóng kết nối
-    public static void closeConnection(Connection conn) {
-        if (conn != null) {
+    // phương thức đóng kết nối
+    public static void closeConnection(Connection connection) {
+        if (connection != null) {
             try {
-                conn.close();
-                System.out.println("Đã đóng kết nối database.");
+                connection.close();
+                System.out.println("Đã đóng kết nối!");
             } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng kết nối: " + e.getMessage());
+                System.out.println("Lỗi khi đóng kết nối: " + e.getMessage());
             }
         }
     }
-    public static void main(String[] args) {
-        Connection conn = getConnection();
-        if (conn != null) {
-            System.out.println("Test kết nối thành công!");
-        } else {
-            System.out.println("Test kết nối thất bại!");
-        }
-        closeConnection(conn);
-    }
 
+    public static void main(String[] args) {
+        Connection connection = getConnection();
+        if (connection != null) {
+            System.out.println("Kết nối với CSDL thanh công!");
+        }
+        else {
+            System.out.println("Lỗi kết nối với CSDL!");
+        }
+        closeConnection(connection);
+    }
 }
