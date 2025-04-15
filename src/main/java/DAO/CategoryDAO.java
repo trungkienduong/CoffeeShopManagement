@@ -128,6 +128,30 @@ public class CategoryDAO {
         }
     }
 
+    // ---------------------- GET BY ID ----------------------
+    public Category findById(int categoryId) {
+        String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, categoryId); // gán giá trị cho ? thứ nhất
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Category category = new Category();
+                category.setCategoryId(rs.getInt("CATEGORY_ID"));
+                category.setCategoryName(rs.getString("CATEGORY_NAME"));
+                pst.setString(2, String.valueOf(category.getCategoryType()));
+                category.setDescription(rs.getString("DESCRIPTION"));
+                return category;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // ---------------------- GET BY TYPE (I: Inventory, P: Product)----------------------
     public List<Category> findByType(char categoryType) {
         String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_TYPE = ?";
@@ -178,17 +202,4 @@ public class CategoryDAO {
             return null;
         }
     }
-
-    // ---------------------- MAP RESULT TO CATEGORY ----------------------
-    private Category mapResultToCategory(ResultSet rs) throws SQLException {
-        Category category = new Category();
-        category.setCategoryId(rs.getInt("CATEGORY_ID"));
-        category.setCategoryName(rs.getString("CATEGORY_NAME"));
-        category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0));
-        category.setDescription(rs.getString("DESCRIPTION"));
-        return category;
-    }
-
-
-
 }

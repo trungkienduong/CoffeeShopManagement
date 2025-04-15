@@ -122,13 +122,4 @@ public class UnitCategoryDAO {
         }
         return null;
     }
-
-    //---------------------- MAP RESULT UNIT_CATEGORY ----------------------
-    private UnitCategory mapResultToUnitCategory(ResultSet rs) throws SQLException {
-        UnitCategory unitCategory = new UnitCategory();
-        unitCategory.setUnitId(rs.getInt("UNIT_ID"));
-        unitCategory.setUnitName(rs.getString("UNIT_NAME"));
-        unitCategory.setDescription(rs.getString("DESCRIPTION"));
-        return unitCategory;
-    }
 }

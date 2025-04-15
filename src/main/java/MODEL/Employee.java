@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Employee {
     private int employeeId;
-    private String username;
-    private String fullname;
+    private String username; // tên đăng nhập
+    private String fullname; // tên nhân viên
     private char gender;
     private String cccd;
     private Date dateOfBirth;

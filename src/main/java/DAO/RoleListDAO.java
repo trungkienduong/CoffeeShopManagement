@@ -2,7 +2,6 @@ package DAO;
 
 import MODEL.RoleList;
 
-import MODEL.RoleList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -126,13 +125,5 @@ public class RoleListDAO {
             e.printStackTrace();
             return false;
         }
-    }
-
-    // ---------------------- MAPPING ----------------------
-    private RoleList mapResultToRole(ResultSet rs) throws SQLException {
-        RoleList role = new RoleList();
-        role.setRoleId(rs.getInt("ROLE_ID"));
-        role.setRoleName(rs.getString("ROLE_NAME"));
-        return role;
     }
 }

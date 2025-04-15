@@ -1,6 +1,5 @@
 package DAO;
 
-import MODEL.RoleList;
 import MODEL.User;
 import java.sql.Connection; // Dùng để kết nối tới cơ sở dữ liệu
 import java.sql.PreparedStatement; // Dùng để tạo các câu lệnh SQL có tham số
@@ -11,7 +10,7 @@ import java.util.List; // Interface danh sách chung
 
 public class UserDAO {
     private static UserDAO instance; // biến instance duy nhất của lớp
-    private RoleListDAO roleListDAO = RoleListDAO.getInstance(); // DAO dùng để lấy thông tin role
+    private RoleListDAO roleListDAO; // DAO dùng để lấy thông tin role
 
     private UserDAO() {
         roleListDAO = RoleListDAO.getInstance(); // lấy intance của RoleListDAO
@@ -180,17 +179,5 @@ public class UserDAO {
         }
         return false;
     }
-
-    // ---------------------- MAP RESULT TO USER ----------------------
-    private User mapResultToUser(ResultSet rs) throws SQLException {
-        User user = new User();
-        user.setUsername(rs.getString("USERNAME"));
-        user.setPassword(rs.getString("PASSWORD"));
-        user.setEmail(rs.getString("EMAIL"));
-        user.setRoleId(rs.getInt("ROLE_ID"));
-        user.setRole(roleListDAO.findById(user.getRoleId()));
-        return user;
-    }
-
 
 }

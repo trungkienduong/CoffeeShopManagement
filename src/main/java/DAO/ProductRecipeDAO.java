@@ -11,207 +11,182 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRecipeDAO {
-    private static ProductRecipeDAO instance;
-    private ProductDAO productDAO;
-    private InventoryDAO inventoryDAO;
-    
-    private ProductRecipeDAO() {
-        productDAO = ProductDAO.getInstance();
-        inventoryDAO = InventoryDAO.getInstance();
-    }
-    
-    public static ProductRecipeDAO getInstance() {
-        if (instance == null) {
-            instance = new ProductRecipeDAO();
-        }
-        return instance;
-    }
-    
-    // Thêm công thức mới
-    public boolean insert(ProductRecipe recipe) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO ProductRecipe (ProductId, ItemId, QuantityUsed) VALUES (?, ?, ?)";
+   private static ProductRecipeDAO instance;
+   private  ProductDAO productDAO;
+   private  InventoryDAO inventoryDAO;
+
+   private ProductRecipeDAO() {
+       productDAO = ProductDAO.getInstance();
+       inventoryDAO = InventoryDAO.getInstance();
+   }
+   public static ProductRecipeDAO getInstance() {
+       if (instance == null) {
+           instance = new ProductRecipeDAO();
+       }
+       return instance;
+   }
+
+   //---------------------- INSERT ----------------------
+   public boolean insert(ProductRecipe productRecipe) {
+       String sql = "INSERT INTO PRODUCT_RECIPE (PRODUCT_ID, ITEM_ID, QUANTITY_USED) VALUES (?, ?, ?)";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, productRecipe.getProductId());
+           pst.setInt(2, productRecipe.getItemId());
+           pst.setDouble(3, productRecipe.getQuantityUsed());
+
+           int result = pst.executeUpdate();
+           return result > 0;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return false;
+       }
+   }
+
+   //---------------------- UPDATE ----------------------
+   public boolean update(ProductRecipe productRecipe) {
+       String sql = "UPDATE PRODUCT_RECIPE SET QUANTITY_USED = ? WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setDouble(1, productRecipe.getQuantityUsed());
+           pst.setInt(2, productRecipe.getProductId());
+           pst.setInt(3, productRecipe.getItemId());
+
+           int result = pst.executeUpdate();
+           return result > 0;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return false;
+       }
+   }
+
+   //---------------------- DELETE ----------------------
+   public boolean delete(int productId, int itemId) {
+       String sql = "DELETE FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, productId);
+           pst.setInt(2, itemId);
+
+           int result = pst.executeUpdate();
+           return result > 0;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return false;
+       }
+   }
+
+   //---------------------- DELETE BY PRODUCT ----------------------
+   public boolean deleteByProduct(int productId) {
+       String sql = "DELETE FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, productId);
+
+           int result = pst.executeUpdate();
+           return result > 0;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return false;
+       }
+   }
+
+   //---------------------- GET ALL ----------------------
+   public List<ProductRecipe> getAll() {
+       String sql = "SELECT * FROM PRODUCT_RECIPE";
+
+       try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setInt(1, recipe.getProductId());
-            pst.setInt(2, recipe.getItemId());
-            pst.setDouble(3, recipe.getQuantityUsed());
-            
-            int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    // Cập nhật công thức
-    public boolean update(ProductRecipe recipe) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "UPDATE ProductRecipe SET QuantityUsed = ? WHERE ProductId = ? AND ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setDouble(1, recipe.getQuantityUsed());
-            pst.setInt(2, recipe.getProductId());
-            pst.setInt(3, recipe.getItemId());
-            
-            int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    // Xóa công thức
-    public boolean delete(int productId, int itemId) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM ProductRecipe WHERE ProductId = ? AND ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setInt(1, productId);
-            pst.setInt(2, itemId);
-            
-            int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    // Xóa tất cả công thức của một sản phẩm
-    public boolean deleteByProduct(int productId) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM ProductRecipe WHERE ProductId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setInt(1, productId);
-            
-            int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    // Lấy danh sách tất cả công thức
-    public List<ProductRecipe> getAll() {
-        List<ProductRecipe> recipeList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM ProductRecipe";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            
-            while (rs.next()) {
-                ProductRecipe recipe = new ProductRecipe();
-                recipe.setProductId(rs.getInt("ProductId"));
-                recipe.setItemId(rs.getInt("ItemId"));
-                recipe.setQuantityUsed(rs.getDouble("QuantityUsed"));
-                
-                // Lấy thông tin product và item
-                Product product = productDAO.findById(recipe.getProductId());
-                Inventory item = inventoryDAO.findById(recipe.getItemId());
-                recipe.setProduct(product);
-                recipe.setItem(item);
-                
-                recipeList.add(recipe);
-            }
-            
-            DatabaseConnection.closeConnection(con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return recipeList;
-    }
-    
-    // Lấy công thức của một sản phẩm
-    public List<ProductRecipe> findByProduct(int productId) {
-        List<ProductRecipe> recipeList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM ProductRecipe WHERE ProductId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, productId);
-            
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                ProductRecipe recipe = new ProductRecipe();
-                recipe.setProductId(productId);
-                recipe.setItemId(rs.getInt("ItemId"));
-                recipe.setQuantityUsed(rs.getDouble("QuantityUsed"));
-                
-                // Lấy thông tin product và item
-                Product product = productDAO.findById(productId);
-                Inventory item = inventoryDAO.findById(recipe.getItemId());
-                recipe.setProduct(product);
-                recipe.setItem(item);
-                
-                recipeList.add(recipe);
-            }
-            
-            DatabaseConnection.closeConnection(con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return recipeList;
-    }
-    
-    // Lấy danh sách sản phẩm sử dụng một nguyên liệu
-    public List<ProductRecipe> findByItem(int itemId) {
-        List<ProductRecipe> recipeList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM ProductRecipe WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, itemId);
-            
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                ProductRecipe recipe = new ProductRecipe();
-                recipe.setProductId(rs.getInt("ProductId"));
-                recipe.setItemId(itemId);
-                recipe.setQuantityUsed(rs.getDouble("QuantityUsed"));
-                
-                // Lấy thông tin product và item
-                Product product = productDAO.findById(recipe.getProductId());
-                Inventory item = inventoryDAO.findById(itemId);
-                recipe.setProduct(product);
-                recipe.setItem(item);
-                
-                recipeList.add(recipe);
-            }
-            
-            DatabaseConnection.closeConnection(con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return recipeList;
-    }
-    
-    // Kiểm tra xem có đủ nguyên liệu để làm một sản phẩm không
-    public boolean checkIngredients(int productId) {
-        try {
-            List<ProductRecipe> recipeList = findByProduct(productId);
-            for (ProductRecipe recipe : recipeList) {
-                if (!inventoryDAO.checkQuantity(recipe.getItemId(), recipe.getQuantityUsed())) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+            ResultSet rs = pst.executeQuery()) {
+
+           List<ProductRecipe> list = new ArrayList<>();
+           while (rs.next()) {
+               ProductRecipe productRecipe = new ProductRecipe();
+               productRecipe.setProductId(rs.getInt("PRODUCT_ID"));
+               productRecipe.setItemId(rs.getInt("ITEM_ID"));
+               productRecipe.setQuantityUsed(rs.getDouble("QUANTITY_USED"));
+               list.add(productRecipe);
+           }
+           return list;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
+
+   //---------------------- GET BY PRODUCT ----------------------
+   public List<ProductRecipe> findByProduct(int productId) {
+       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, productId);
+
+           ResultSet rs = pst.executeQuery();
+           List<ProductRecipe> list = new ArrayList<>();
+           while (rs.next()) {
+               ProductRecipe productRecipe = new ProductRecipe();
+               productRecipe.setProductId(rs.getInt("PRODUCT_ID"));
+               productRecipe.setItemId(rs.getInt("ITEM_ID"));
+               productRecipe.setQuantityUsed(rs.getDouble("QUANTITY_USED"));
+               list.add(productRecipe);
+           }
+           return list;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
+
+   //---------------------- GET BY ITEM ----------------------
+   public List<ProductRecipe> findByItem(int itemId) {
+       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE ITEM_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, itemId);
+
+           ResultSet rs = pst.executeQuery();
+           List<ProductRecipe> list = new ArrayList<>();
+           while (rs.next()) {
+               ProductRecipe productRecipe = new ProductRecipe();
+               productRecipe.setProductId(rs.getInt("PRODUCT_ID"));
+               productRecipe.setItemId(rs.getInt("ITEM_ID"));
+               productRecipe.setQuantityUsed(rs.getDouble("QUANTITY_USED"));
+               list.add(productRecipe);
+           }
+           return list;
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return null;
+       }
+   }
+
+   //---------------------- CHECK ----------------------
+   public boolean checkIngredient(int productId) {       //check if the product has any ingredients
+       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+
+       try (Connection con = DatabaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql)) {
+
+           pst.setInt(1, productId);
+
+           ResultSet rs = pst.executeQuery();
+           return rs.next();
+       } catch (SQLException e) {
+           e.printStackTrace();
+           return false;
+       }
+
+   }
 }

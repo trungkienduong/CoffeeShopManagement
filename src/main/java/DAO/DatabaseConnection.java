@@ -33,7 +33,7 @@ public class DatabaseConnection {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Connection connection = getConnection();
         if (connection != null) {
             System.out.println("Kết nối với CSDL thanh công!");
@@ -42,5 +42,5 @@ public class DatabaseConnection {
             System.out.println("Lỗi kết nối với CSDL!");
         }
         closeConnection(connection);
-    }
+    }*/
 }

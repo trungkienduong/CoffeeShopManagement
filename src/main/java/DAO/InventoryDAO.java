@@ -3,6 +3,8 @@ package DAO;
 import MODEL.Inventory;
 import MODEL.Category;
 import MODEL.UnitCategory;
+import MODEL.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,257 +15,221 @@ import java.util.List;
 public class InventoryDAO {
     private static InventoryDAO instance;
     private CategoryDAO categoryDAO;
-    private UnitCategoryDAO unitDAO;
-    
+    private UnitCategoryDAO unitCategoryDAO;
+
     private InventoryDAO() {
         categoryDAO = CategoryDAO.getInstance();
-        unitDAO = UnitCategoryDAO.getInstance();
+        unitCategoryDAO = UnitCategoryDAO.getInstance();
     }
-    
+
     public static InventoryDAO getInstance() {
         if (instance == null) {
             instance = new InventoryDAO();
         }
         return instance;
     }
-    
-    // Thêm nguyên liệu mới
+
+    // ---------------------- INSERT ----------------------
     public boolean insert(Inventory item) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "INSERT INTO Inventory (ItemName, CategoryId, Quantity, UnitId, CostPrice) " +
-                        "VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
-            pst.setString(1, item.getItemName());
-            pst.setInt(2, item.getCategoryId());
+        String sql = "INSERT INTO INVENTORY (ITEM_ID, ITEM_NAME, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, item.getItemId());
+            pst.setString(2, item.getItemName());
             pst.setDouble(3, item.getQuantity());
-            pst.setInt(4, item.getUnitId());
-            pst.setDouble(5, item.getCostPrice());
-            
+            pst.setInt(4, item.getCategory().getCategoryId());
+            pst.setInt(5, item.getUnitId());
+            pst.setDouble(6, item.getCostPrice());
+
             int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
             return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-    // Cập nhật thông tin nguyên liệu
+
+    // ---------------------- UPDATE ----------------------
     public boolean update(Inventory item) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "UPDATE Inventory SET ItemName = ?, CategoryId = ?, Quantity = ?, " +
-                        "UnitId = ?, CostPrice = ? WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
+        String sql = "UPDATE INVENTORY SET ITEM_NAME = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setString(1, item.getItemName());
-            pst.setInt(2, item.getCategoryId());
-            pst.setDouble(3, item.getQuantity());
+            pst.setDouble(2, item.getQuantity());
+            pst.setInt(3, item.getCategory().getCategoryId());
             pst.setInt(4, item.getUnitId());
             pst.setDouble(5, item.getCostPrice());
             pst.setInt(6, item.getItemId());
-            
+
             int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
             return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-    // Cập nhật số lượng nguyên liệu
+
+    // ---------------------- UPDATE ----------------------
     public boolean updateQuantity(int itemId, double newQuantity) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "UPDATE Inventory SET Quantity = ? WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
+        String sql = "UPDATE INVENTORY SET QUANTITY = ? WHERE ITEM_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setDouble(1, newQuantity);
             pst.setInt(2, itemId);
-            
+
             int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
             return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-    // Xóa nguyên liệu
+
+    // ---------------------- DELETE ----------------------
     public boolean delete(int itemId) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM Inventory WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            
+        String sql = "DELETE FROM INVENTORY WHERE ITEM_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, itemId);
-            
             int result = pst.executeUpdate();
-            DatabaseConnection.closeConnection(con);
             return result > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-    // Lấy danh sách tất cả nguyên liệu
+
+    // ---------------------- GET ALL ----------------------
     public List<Inventory> getAll() {
-        List<Inventory> inventoryList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Inventory";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            
+        String sql = "SELECT * FROM INVENTORY";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            List<Inventory> list = new ArrayList<>();
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ItemId"));
-                item.setItemName(rs.getString("ItemName"));
-                item.setCategoryId(rs.getInt("CategoryId"));
-                item.setQuantity(rs.getDouble("Quantity"));
-                item.setUnitId(rs.getInt("UnitId"));
-                item.setCostPrice(rs.getDouble("CostPrice"));
-                
-                // Lấy thông tin category và unit
-                Category category = categoryDAO.findById(item.getCategoryId());
-                UnitCategory unit = unitDAO.findById(item.getUnitId());
-                item.setCategory(category);
-                item.setUnit(unit);
-                
-                inventoryList.add(item);
+                item.setItemId(rs.getInt("ITEM_ID"));
+                item.setItemName(rs.getString("ITEM_NAME"));
+                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+                item.setUnitId(rs.getInt("UNIT_ID"));
+                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                list.add(item);
             }
-            
-            DatabaseConnection.closeConnection(con);
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return inventoryList;
     }
-    
-    // Tìm nguyên liệu theo ID
+
+    // ---------------------- GET BY ID ----------------------
     public Inventory findById(int itemId) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Inventory WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        String sql = "SELECT * FROM INVENTORY WHERE ITEM_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, itemId);
-            
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ItemId"));
-                item.setItemName(rs.getString("ItemName"));
-                item.setCategoryId(rs.getInt("CategoryId"));
-                item.setQuantity(rs.getDouble("Quantity"));
-                item.setUnitId(rs.getInt("UnitId"));
-                item.setCostPrice(rs.getDouble("CostPrice"));
-                
-                // Lấy thông tin category và unit
-                Category category = categoryDAO.findById(item.getCategoryId());
-                UnitCategory unit = unitDAO.findById(item.getUnitId());
-                item.setCategory(category);
-                item.setUnit(unit);
-                
-                DatabaseConnection.closeConnection(con);
+                item.setItemId(rs.getInt("ITEM_ID"));
+                item.setItemName(rs.getString("ITEM_NAME"));
+                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+                item.setUnitId(rs.getInt("UNIT_ID"));
+                item.setCostPrice(rs.getDouble("COST_PRICE"));
                 return item;
             }
-            DatabaseConnection.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-    // Tìm nguyên liệu theo danh mục
+
+    // ---------------------- GET BY CATEGORY ----------------------
     public List<Inventory> findByCategory(int categoryId) {
-        List<Inventory> inventoryList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Inventory WHERE CategoryId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        String sql = "SELECT * FROM INVENTORY WHERE CATEGORY_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, categoryId);
-            
+
             ResultSet rs = pst.executeQuery();
+            List<Inventory> list = new ArrayList<>();
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ItemId"));
-                item.setItemName(rs.getString("ItemName"));
-                item.setCategoryId(categoryId);
-                item.setQuantity(rs.getDouble("Quantity"));
-                item.setUnitId(rs.getInt("UnitId"));
-                item.setCostPrice(rs.getDouble("CostPrice"));
-                
-                // Lấy thông tin category và unit
-                Category category = categoryDAO.findById(categoryId);
-                UnitCategory unit = unitDAO.findById(item.getUnitId());
-                item.setCategory(category);
-                item.setUnit(unit);
-                
-                inventoryList.add(item);
+                item.setItemId(rs.getInt("ITEM_ID"));
+                item.setItemName(rs.getString("ITEM_NAME"));
+                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+                item.setUnitId(rs.getInt("UNIT_ID"));
+                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                list.add(item);
             }
-            
-            DatabaseConnection.closeConnection(con);
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return inventoryList;
     }
-    
-    // Tìm kiếm nguyên liệu theo tên (tìm kiếm gần đúng)
+
+    // ---------------------- SEARCH BY NAME ----------------------
     public List<Inventory> searchByName(String keyword) {
-        List<Inventory> inventoryList = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Inventory WHERE ItemName LIKE ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME LIKE ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setString(1, "%" + keyword + "%");
-            
+
             ResultSet rs = pst.executeQuery();
+            List<Inventory> list = new ArrayList<>();
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ItemId"));
-                item.setItemName(rs.getString("ItemName"));
-                item.setCategoryId(rs.getInt("CategoryId"));
-                item.setQuantity(rs.getDouble("Quantity"));
-                item.setUnitId(rs.getInt("UnitId"));
-                item.setCostPrice(rs.getDouble("CostPrice"));
-                
-                // Lấy thông tin category và unit
-                Category category = categoryDAO.findById(item.getCategoryId());
-                UnitCategory unit = unitDAO.findById(item.getUnitId());
-                item.setCategory(category);
-                item.setUnit(unit);
-                
-                inventoryList.add(item);
+                item.setItemId(rs.getInt("ITEM_ID"));
+                item.setItemName(rs.getString("ITEM_NAME"));
+                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+                item.setUnitId(rs.getInt("UNIT_ID"));
+                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                list.add(item);
             }
-            
-            DatabaseConnection.closeConnection(con);
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return inventoryList;
     }
-    
-    // Kiểm tra số lượng tồn kho
-    public boolean checkQuantity(int itemId, double requiredQuantity) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            String sql = "SELECT Quantity FROM Inventory WHERE ItemId = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+
+    // ---------------------- CHECK QUANTITY ----------------------
+    public boolean checkQuantity(int itemId, double quantity) {
+        String sql = "SELECT QUANTITY FROM INVENTORY WHERE ITEM_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, itemId);
-            
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                double currentQuantity = rs.getDouble("Quantity");
-                DatabaseConnection.closeConnection(con);
-                return currentQuantity >= requiredQuantity;
+                double currentQuantity = rs.getDouble("QUANTITY");
+                return currentQuantity >= quantity;
             }
-            DatabaseConnection.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
