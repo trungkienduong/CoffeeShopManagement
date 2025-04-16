@@ -31,7 +31,7 @@ public class CategoryDAO {
 
             pst.setString(1, category.getCategoryName()); // gán giá trị cho ? thứ nhất
             pst.setString(2, String.valueOf(category.getCategoryType())); // gán giá trị cho ? thứ hai
-            pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ hai
+            pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ ba
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -44,15 +44,15 @@ public class CategoryDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(Category category) {
-        String sql = "UPDATE CATEGORY SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ hai
+        String sql = "UPDATE CATEGORY SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ tư
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, category.getCategoryName()); // gán giá trị cho ? thứ hai
+            pst.setString(1, category.getCategoryName()); // gán giá trị cho ? thứ nhất
             pst.setString(2, String.valueOf(category.getCategoryType())); // gán giá trị cho ? thứ hai
-            pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ hai
-            pst.setInt(4, category.getCategoryId()); // gán giá trị cho ? thứ hai
+            pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ ba
+            pst.setInt(4, category.getCategoryId()); // gán giá trị cho ? thứ tư
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -93,7 +93,7 @@ public class CategoryDAO {
                 Category category = new Category();
                 category.setCategoryId(rs.getInt("CATEGORY_ID"));
                 category.setCategoryName(rs.getString("CATEGORY_NAME"));
-                pst.setString(2, String.valueOf(category.getCategoryType()));
+                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0)); // Chuyển từ String sang char nếu cần
                 category.setDescription(rs.getString("DESCRIPTION"));
                 categories.add(category);
             }
@@ -117,7 +117,7 @@ public class CategoryDAO {
                 Category category = new Category();
                 category.setCategoryId(rs.getInt("CATEGORY_ID"));
                 category.setCategoryName(rs.getString("CATEGORY_NAME"));
-                pst.setString(2, String.valueOf(category.getCategoryType()));
+                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0)); // Chuyển từ String sang char nếu cần
                 category.setDescription(rs.getString("DESCRIPTION"));
                 return category;
             }
@@ -141,7 +141,7 @@ public class CategoryDAO {
                 Category category = new Category();
                 category.setCategoryId(rs.getInt("CATEGORY_ID"));
                 category.setCategoryName(rs.getString("CATEGORY_NAME"));
-                pst.setString(2, String.valueOf(category.getCategoryType()));
+                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0)); // Chuyển từ String sang char nếu cần
                 category.setDescription(rs.getString("DESCRIPTION"));
                 return category;
             }
@@ -166,7 +166,7 @@ public class CategoryDAO {
                 Category category = new Category();
                 category.setCategoryId(rs.getInt("CATEGORY_ID"));
                 category.setCategoryName(rs.getString("CATEGORY_NAME"));
-                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0));
+                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0)); // Chuyển từ String sang char nếu cần
                 category.setDescription(rs.getString("DESCRIPTION"));
                 categories.add(category);
             }
@@ -177,7 +177,7 @@ public class CategoryDAO {
         }
     }
 
-    // ---------------------- GET BY NAME ----------------------
+    // ---------------------- SEARCH BY NAME ----------------------
     public List<Category> searchByName(String keyword) {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_NAME LIKE ?";
@@ -192,7 +192,7 @@ public class CategoryDAO {
                 Category category = new Category();
                 category.setCategoryId(rs.getInt("CATEGORY_ID"));
                 category.setCategoryName(rs.getString("CATEGORY_NAME"));
-                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0));
+                category.setCategoryType(rs.getString("CATEGORY_TYPE").charAt(0)); // Chuyển từ String sang char nếu cần
                 category.setDescription(rs.getString("DESCRIPTION"));
                 categories.add(category);
             }

@@ -1,12 +1,20 @@
 package GUI.CONTROLLER.DIALOG;
 
+import BUS.RoleListBUS;
+import BUS.UserBUS;
+import MODEL.User;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
+
 
 public class LoginDialogController {
 
@@ -31,6 +39,8 @@ public class LoginDialogController {
     @FXML private Label sliderLabel;
     @FXML private Label sliderText;
     @FXML private Button sliderButton;
+
+    private UserBUS userBUS = UserBUS.getInstance();
 
     private boolean isLoginForm = true;
 
@@ -79,18 +89,12 @@ public class LoginDialogController {
     // Setup email validation on the register form
     private void setupEmailValidation() {
         emailRegister.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!isValidEmail(newValue)) {
-                emailRegister.setStyle("-fx-border-color: red;");
+            if (!UserBUS.isValidEmail(newValue)) {  // Sử dụng isValidEmail từ UserBUS
+                emailRegister.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             } else {
-                emailRegister.setStyle("");
+                emailRegister.setStyle("");  // Nếu email hợp lệ, xóa viền đỏ
             }
         });
-    }
-
-    // Validate email format
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        return email.isEmpty() || email.matches(emailRegex);
     }
 
     // Toggle login password visibility
@@ -118,6 +122,71 @@ public class LoginDialogController {
 
     // Set up role ComboBox for selecting user role
     private void setupRoleComboBox() {
-        roleComboBox.getItems().addAll("Manager", "Employee");
+        roleComboBox.getItems().addAll(RoleListBUS.getInstance().getRoleNamesForComboBox());
     }
+
+    // -------------------- Handle Login --------------------
+    @FXML
+    private void handleLogin() {
+        String username = usernameLogin.getText();
+        String password = passwordLogin.getText();
+
+        if (userBUS.checkLogin(username, password)) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
+                AnchorPane mainPane = loader.load();
+
+                // Nếu bạn cần truyền dữ liệu user sau khi đăng nhập thì dùng đoạn này:
+                // CoffeeShopController controller = loader.getController();
+                // controller.setUser(userBUS.getUserByUsername(username));
+
+                Stage currentStage = (Stage) loginButton.getScene().getWindow();
+                Scene scene = new Scene(mainPane);
+                currentStage.setScene(scene);
+                currentStage.setTitle("Coffee Manager");
+//                currentStage.setMaximized(true); // Hoặc setFullScreen(true) nếu muốn full luôn
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
+        }
+
+    }
+
+    // -------------------- Handle Register --------------------
+    @FXML
+    private void handleRegister() {
+        String username = usernameRegister.getText();
+        String email = emailRegister.getText();
+        String password = passwordRegister.getText();
+        String role = roleComboBox.getValue();
+
+        if (UserBUS.isValidEmail(email)) {
+            // Giả sử roleComboBox trả về ID số (int) thay vì chuỗi
+            int roleId = RoleListBUS.getInstance().getRoleIdByName(role); // Dùng phương thức này để lấy ID từ tên role
+
+            User newUser = new User(username, password, email, roleId); // Truyền ID role vào constructor
+
+            if (userBUS.insertUser(newUser)) {
+                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "Account successfully created for " + username);
+                sliding(); // Trượt về màn hình đăng nhập
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
+        }
+    }
+
+    // -------------------- Show Alert --------------------
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }

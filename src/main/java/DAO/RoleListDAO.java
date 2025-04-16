@@ -25,7 +25,7 @@ public class RoleListDAO {
     // ---------------------- CREATE ----------------------
     public boolean insert(RoleList role) {
         // chèn dữ liệu ( thêm quyền mới)
-        String sql = "INSERT INTO RoleList (ROLE_ID, ROLE_NAME) VALUES (?, ?)";
+        String sql = "INSERT INTO [ROLE_LIST] (ROLE_ID, ROLE_NAME) VALUES (?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection(); // mở kết nối
              PreparedStatement pst = con.prepareStatement(sql)) { // tạo lệnh sql chuẩn bị
@@ -47,7 +47,7 @@ public class RoleListDAO {
     // ---------------------- READ ALL ----------------------
     public List<RoleList> getAll() {
         List<RoleList> roles = new ArrayList<>();
-        String sql = "SELECT * FROM ROLE_LIST";
+        String sql = "SELECT * FROM [ROLE_LIST]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -69,7 +69,7 @@ public class RoleListDAO {
 
     // ---------------------- READ BY ID ----------------------
     public RoleList findById(int roleId) {
-        String sql = "SELECT * FROM ROLE_LIST WHERE ROLE_ID = ?";
+        String sql = "SELECT * FROM [ROLE_LIST] WHERE ROLE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -91,9 +91,33 @@ public class RoleListDAO {
         return null; // không tìm thấy
     }
 
-    // ---------------------- READ BY ID ----------------------
+    // ---------------------- READ BY NAME ----------------------
+    public RoleList findByName(String roleName) {
+        String sql = "SELECT * FROM [ROLE_LIST] WHERE ROLE_NAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, roleName);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                RoleList role = new RoleList();
+                role.setRoleId(rs.getInt("ROLE_ID"));
+                role.setRoleName(rs.getString("ROLE_NAME"));
+                return role;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // không tìm thấy
+    }
+
+    // ---------------------- UPDATE ----------------------
     public boolean update(RoleList role) {
-        String sql = "UPDATE ROLE_LIST SET ROLE_NAME = ? WHERE ROLE_ID = ?";
+        String sql = "UPDATE [ROLE_LIST] SET ROLE_NAME = ? WHERE ROLE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -112,7 +136,7 @@ public class RoleListDAO {
 
     // ---------------------- DELETE ----------------------
     public boolean delete(int roleId) {
-        String sql = "DELETE FROM ROLE_LIST WHERE ROLE_ID = ?";
+        String sql = "DELETE FROM [ROLE_LIST] WHERE ROLE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

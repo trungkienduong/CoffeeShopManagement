@@ -155,6 +155,37 @@ public class EmployeeDAO {
         return null;
     }
 
+    //---------------------- GET BY ID ----------------------
+    public Employee findById(int employeeId) {
+        String sql = "SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, employeeId); // gán giá trị cho ? thứ nhất
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Employee employee = new Employee();
+                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
+                employee.setUsername(rs.getString("USERNAME"));
+                employee.setFullname(rs.getString("FULLNAME"));
+                employee.setGender(rs.getString("GENDER").charAt(0));
+                employee.setCccd(rs.getString("CCCD"));
+                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
+                employee.setPhone(rs.getString("PHONE"));
+                employee.setAddress(rs.getString("ADDRESS"));
+                employee.setPositionId(rs.getInt("POSITION_ID"));
+                employee.setSalary(rs.getDouble("SALARY"));
+                employee.setJoinDate(rs.getDate("JOIN_DATE"));
+                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                return employee;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     //---------------------- GET BY POSITION ----------------------
     public List<Employee> findByPosition(int positionId) {
         List<Employee> employees = new ArrayList<>();

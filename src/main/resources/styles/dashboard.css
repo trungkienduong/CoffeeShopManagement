@@ -1,0 +1,81 @@
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+.search-bar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.side-menu {
+    -fx-background-color: #2D3447;
+    -fx-min-width: 200;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 0 0 20;
+    -fx-min-width: 200;
+    -fx-min-height: 50;
+    -fx-font-size: 14px;
+}
+
+.menu-button:hover {
+    -fx-background-color: #3F4760;
+    -fx-cursor: hand;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #1E2332;
+}
+
+.stats-container {
+    -fx-padding: 20;
+}
+
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-min-width: 180;
+    -fx-min-height: 100;
+    -fx-alignment: CENTER;
+    -fx-spacing: 10;
+}
+
+.card-number {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.charts-container {
+    -fx-padding: 20;
+}
+
+.chart {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-padding: 10;
+    -fx-min-width: 280;
+    -fx-min-height: 300;
+}
+
+.chart-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #e0e0e0;
+    -fx-background-color: white;
+}
+
+.text-field:focused {
+    -fx-border-color: #2D3447;
+}

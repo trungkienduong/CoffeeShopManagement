@@ -122,4 +122,26 @@ public class UnitCategoryDAO {
         }
         return null;
     }
+
+    // ---------------------- GET BY ID ----------------------
+    public UnitCategory findById(int unitId) {
+        String sql = "SELECT * FROM UNIT_CATEGORY WHERE UNIT_ID = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, unitId); // gán giá trị cho ? thứ nhất
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                UnitCategory unitCategory = new UnitCategory();
+                unitCategory.setUnitId(rs.getInt("UNIT_ID"));
+                unitCategory.setUnitName(rs.getString("UNIT_NAME"));
+                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+                return unitCategory;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

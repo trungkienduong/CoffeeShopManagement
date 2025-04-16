@@ -25,7 +25,7 @@ public class UserDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(User user) {
-        String sql = "INSERT INTO USER (USERNAME, PASSWORD, EMAIL, ROLE_ID) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [USERS] (USERNAME, PASSWORD, EMAIL, ROLE_ID) VALUES (?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -46,7 +46,7 @@ public class UserDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(User user) {
-        String sql = "UPDATE USER SET PASSWORD = ?, EMAIL = ?, ROLE_ID = ? WHERE USERNAME = ?";
+        String sql = "UPDATE [USERS] SET PASSWORD = ?, EMAIL = ?, ROLE_ID = ? WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -67,7 +67,7 @@ public class UserDAO {
 
     // ---------------------- DELETE ----------------------
     public boolean delete(String username) {
-        String sql = "DELETE FROM USER WHERE USERNAME = ?";
+        String sql = "DELETE FROM [USERS] WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -85,7 +85,7 @@ public class UserDAO {
 
     // ---------------------- SELECT ALL ----------------------
     public List<User> selectAll() {
-        String sql = "SELECT * FROM USER";
+        String sql = "SELECT * FROM [USERS]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -111,7 +111,7 @@ public class UserDAO {
 
     // ---------------------- SELECT BY NAME ----------------------
     public User findByName(String username) {
-        String sql = "SELECT * FROM USER WHERE USERNAME = ?";
+        String sql = "SELECT * FROM [USERS] WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -137,7 +137,7 @@ public class UserDAO {
 
     // ---------------------- SELECT BY EMAIL ----------------------
     public User findByEmail(String email) {
-        String sql = "SELECT * FROM USER WHERE EMAIL = ?";
+        String sql = "SELECT * FROM [USERS] WHERE EMAIL = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -163,7 +163,7 @@ public class UserDAO {
 
     // ---------------------- CHECK LOGIN ----------------------
     public boolean checkLogin(String username, String password) {
-        String sql = "SELECT * FROM USER WHERE USERNAME = ? AND PASSWORD = ?";
+        String sql = "SELECT * FROM [USERS] WHERE USERNAME = ? AND PASSWORD = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
