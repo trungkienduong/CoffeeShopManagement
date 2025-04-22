@@ -14,6 +14,7 @@ public class Employee {
     private int positionId;
     private double salary;
     private Date joinDate;
+    private String image; // đường dẫn ảnh
     
     // Đối tượng liên kết
     private User user;
@@ -26,7 +27,7 @@ public class Employee {
     // Parameterized constructor without linked objects
     public Employee(int employeeId, String username, String fullname, char gender, 
                    String cccd, Date dateOfBirth, String phone, String address, 
-                   int positionId, double salary, Date joinDate) {
+                   int positionId, double salary, Date joinDate, String image) {
         this.employeeId = employeeId;
         this.username = username;
         this.fullname = fullname;
@@ -38,26 +39,9 @@ public class Employee {
         this.positionId = positionId;
         this.salary = salary;
         this.joinDate = joinDate;
+        this.image = image;
     }
 
-    // Constructor with linked objects
-    public Employee(int employeeId, User user, String fullname, char gender, 
-                   String cccd, Date dateOfBirth, String phone, String address, 
-                   EmployeePosition position, double salary, Date joinDate) {
-        this.employeeId = employeeId;
-        this.username = user.getUsername();
-        this.user = user;
-        this.fullname = fullname;
-        this.gender = gender;
-        this.cccd = cccd;
-        this.dateOfBirth = dateOfBirth;
-        this.phone = phone;
-        this.address = address;
-        this.positionId = position.getPositionId();
-        this.position = position;
-        this.salary = salary;
-        this.joinDate = joinDate;
-    }
 
     // Getters and Setters
     public int getEmployeeId() {
@@ -166,6 +150,14 @@ public class Employee {
         this.positionId = position.getPositionId();
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -180,7 +172,9 @@ public class Employee {
                 ", positionId=" + positionId +
                 ", salary=" + salary +
                 ", joinDate=" + joinDate +
-                ", position=" + (position != null ? position.getPositionName() : "null") +
+                ", image='" + image + '\'' +
+                ", user=" + user +
+                ", position=" + position +
                 '}';
     }
 }

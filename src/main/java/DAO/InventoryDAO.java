@@ -31,7 +31,7 @@ public class InventoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Inventory item) {
-        String sql = "INSERT INTO INVENTORY (ITEM_ID, ITEM_NAME, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [INVENTORY] (ITEM_ID, ITEM_NAME, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -53,7 +53,7 @@ public class InventoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(Inventory item) {
-        String sql = "UPDATE INVENTORY SET ITEM_NAME = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
+        String sql = "UPDATE [INVENTORY] SET ITEM_NAME = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -75,7 +75,7 @@ public class InventoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean updateQuantity(int itemId, double newQuantity) {
-        String sql = "UPDATE INVENTORY SET QUANTITY = ? WHERE ITEM_ID = ?";
+        String sql = "UPDATE [INVENTORY] SET QUANTITY = ? WHERE ITEM_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -110,7 +110,7 @@ public class InventoryDAO {
 
     // ---------------------- GET ALL ----------------------
     public List<Inventory> getAll() {
-        String sql = "SELECT * FROM INVENTORY";
+        String sql = "SELECT * FROM [INVENTORY]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -136,7 +136,7 @@ public class InventoryDAO {
 
     // ---------------------- GET BY ID ----------------------
     public Inventory findById(int itemId) {
-        String sql = "SELECT * FROM INVENTORY WHERE ITEM_ID = ?";
+        String sql = "SELECT * FROM [INVENTORY] WHERE ITEM_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -162,7 +162,7 @@ public class InventoryDAO {
 
     // ---------------------- GET BY CATEGORY ----------------------
     public List<Inventory> findByCategory(int categoryId) {
-        String sql = "SELECT * FROM INVENTORY WHERE CATEGORY_ID = ?";
+        String sql = "SELECT * FROM [INVENTORY] WHERE CATEGORY_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -190,7 +190,7 @@ public class InventoryDAO {
 
     // ---------------------- SEARCH BY NAME ----------------------
     public List<Inventory> searchByName(String keyword) {
-        String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME LIKE ?";
+        String sql = "SELECT * FROM [INVENTORY] WHERE ITEM_NAME LIKE ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -218,7 +218,7 @@ public class InventoryDAO {
 
     // ---------------------- CHECK QUANTITY ----------------------
     public boolean checkQuantity(int itemId, double quantity) {
-        String sql = "SELECT QUANTITY FROM INVENTORY WHERE ITEM_ID = ?";
+        String sql = "SELECT QUANTITY FROM [INVENTORY] WHERE ITEM_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

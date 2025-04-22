@@ -24,7 +24,7 @@ public class CategoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Category category) {
-        String sql = "INSERT INTO CATEGORY (CATEGORY_NAME, CATEGORY_TYPE, DESCRIPTION) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO [CATEGORY] (CATEGORY_NAME, CATEGORY_TYPE, DESCRIPTION) VALUES (?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -44,7 +44,7 @@ public class CategoryDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(Category category) {
-        String sql = "UPDATE CATEGORY SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ tư
+        String sql = "UPDATE [CATEGORY] SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ tư
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -65,7 +65,7 @@ public class CategoryDAO {
 
     //---------------------- DELETE ----------------------
     public boolean delete(int categoryId) {
-        String sql = "DELETE FROM CATEGORY WHERE CATEGORY_ID = ?";
+        String sql = "DELETE FROM [CATEGORY] WHERE CATEGORY_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -82,7 +82,7 @@ public class CategoryDAO {
 
     // ---------------------- GET ALL ----------------------
     public List<Category> getAll() {
-        String sql = "SELECT * FROM CATEGORY";
+        String sql = "SELECT * FROM [CATEGORY]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -106,7 +106,7 @@ public class CategoryDAO {
 
     // ---------------------- GET BY NAME ----------------------
     public Category findByName(String categoryName) {
-        String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_NAME = ?";
+        String sql = "SELECT * FROM [CATEGORY] WHERE CATEGORY_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -130,7 +130,7 @@ public class CategoryDAO {
 
     // ---------------------- GET BY ID ----------------------
     public Category findById(int categoryId) {
-        String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_ID = ?";
+        String sql = "SELECT * FROM [CATEGORY] WHERE CATEGORY_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -154,7 +154,7 @@ public class CategoryDAO {
 
     // ---------------------- GET BY TYPE (I: Inventory, P: Product)----------------------
     public List<Category> findByType(char categoryType) {
-        String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_TYPE = ?";
+        String sql = "SELECT * FROM [CATEGORY] WHERE CATEGORY_TYPE = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -180,7 +180,7 @@ public class CategoryDAO {
     // ---------------------- SEARCH BY NAME ----------------------
     public List<Category> searchByName(String keyword) {
         List<Category> categories = new ArrayList<>();
-        String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_NAME LIKE ?";
+        String sql = "SELECT * FROM [CATEGORY] WHERE CATEGORY_NAME LIKE ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

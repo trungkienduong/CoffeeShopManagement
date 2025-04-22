@@ -5,63 +5,25 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane
-        prefHeight="500.0" prefWidth="800.0"
-        style="-fx-background-color: #FFF8F3;"
-        xmlns="http://javafx.com/javafx/17.0.12"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="GUI.CONTROLLER.DIALOG.LoginDialogController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #FFF8F3;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.LoginDialogController">
     <children>
-        <AnchorPane
-                fx:id="layer1"
-                maxWidth="400.0" minWidth="400.0"
-                prefHeight="500.0" prefWidth="400.0"
-                style="-fx-background-color: #FFF8F3;"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="layer1" maxWidth="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFF8F3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox
-                        alignment="CENTER" spacing="30"
-                        AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0"
-                        AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
-                    <Label
-                            style="-fx-text-fill: #4A3427;" text="Sign In">
+                <VBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Label style="-fx-text-fill: #4A3427;" text="Sign In">
                         <font>
                             <Font name="System Bold" size="36.0" />
                         </font>
                     </Label>
-                    <TextField
-                            fx:id="usernameLogin"
-                            maxWidth="250.0" prefHeight="40.0"
-                            promptText="User Name" />
+                    <TextField fx:id="usernameLogin" maxWidth="250.0" prefHeight="40.0" promptText="User Name" />
                     <AnchorPane maxWidth="250.0">
                         <children>
-                            <PasswordField
-                                    fx:id="passwordLogin"
-                                    maxWidth="250.0" prefHeight="40.0"
-                                    prefWidth="250.0" promptText="Password"
-                                    AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" />
-                            <TextField
-                                    fx:id="passwordLoginText"
-                                    maxWidth="250.0" prefHeight="40.0"
-                                    prefWidth="250.0" promptText="Password"
-                                    visible="false" AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" />
-                            <FontAwesomeIconView
-                                    fx:id="eyeIconLogin" fill="#6B4423"
-                                    glyphName="EYE" layoutX="229.0"
-                                    layoutY="26.0" size="15" />
+                            <PasswordField fx:id="passwordLogin" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                            <TextField fx:id="passwordLoginText" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                            <FontAwesomeIconView fx:id="eyeIconLogin" fill="#6B4423" glyphName="EYE" layoutX="229.0" layoutY="26.0" size="15" />
                         </children>
                     </AnchorPane>
-                    <Button
-                            fx:id="loginButton"
-                            onAction="#handleLogin"
-                            maxWidth="250.0" prefHeight="40.0"
-                            style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="LOGIN" textFill="WHITE">
+                    <Button fx:id="loginButton" maxWidth="250.0" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="LOGIN" textFill="WHITE">
                         <font>
                             <Font size="18.0" />
                         </font>
@@ -70,69 +32,25 @@
             </children>
         </AnchorPane>
 
-        <AnchorPane
-                fx:id="layer2" layoutX="400.0"
-                maxWidth="400.0" minWidth="400.0"
-                prefHeight="500.0" prefWidth="400.0"
-                style="-fx-background-color: #FFF8F3;"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="layer2" layoutX="400.0" maxWidth="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFF8F3;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox
-                        alignment="CENTER" layoutX="94.0"
-                        prefHeight="392.0" prefWidth="306.0" spacing="30"
-                        AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0"
-                        AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
-                    <Label
-                            style="-fx-text-fill: #4A3427;" text="Sign Up">
+                <VBox alignment="CENTER" layoutX="94.0" prefHeight="392.0" prefWidth="306.0" spacing="30" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Label style="-fx-text-fill: #4A3427;" text="Sign Up">
                         <font>
                             <Font name="System Bold" size="36.0" />
                         </font>
                     </Label>
-                    <TextField
-                            fx:id="usernameRegister"
-                            maxWidth="250.0" prefHeight="40.0"
-                            promptText="User Name" />
-                    <TextField
-                            fx:id="emailRegister"
-                            maxWidth="250.0" prefHeight="40.0"
-                            promptText="Email" />
-                    <AnchorPane
-                            maxWidth="349.0" prefHeight="40.0" prefWidth="349.0">
+                    <TextField fx:id="usernameRegister" maxWidth="250.0" prefHeight="40.0" promptText="User Name" />
+                    <TextField fx:id="emailRegister" maxWidth="250.0" prefHeight="40.0" promptText="Email" />
+                    <AnchorPane maxWidth="349.0" prefHeight="40.0" prefWidth="349.0">
                         <children>
-                            <PasswordField
-                                    fx:id="passwordRegister"
-                                    layoutY="9.0" maxWidth="250.0"
-                                    prefHeight="20.0" prefWidth="64.0"
-                                    promptText="Password"
-                                    AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="186.0" />
-                            <TextField
-                                    fx:id="passwordRegisterText"
-                                    layoutY="9.0" maxWidth="250.0"
-                                    prefHeight="20.0" prefWidth="64.0"
-                                    promptText="Password" visible="false"
-                                    AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="186.0" />
-                            <FontAwesomeIconView
-                                    fx:id="eyeIconRegister"
-                                    fill="#6B4423" glyphName="EYE"
-                                    layoutX="142.0" layoutY="25.0" size="15" />
-                            <ComboBox
-                                    fx:id="roleComboBox"
-                                    layoutX="194.0" layoutY="8.0"
-                                    prefWidth="150.0" promptText="Select Role"
-                                    stylesheets="@../../ASSETS/STYLES/16.css" />
+                            <PasswordField fx:id="passwordRegister" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
+                            <TextField fx:id="passwordRegisterText" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
+                            <FontAwesomeIconView fx:id="eyeIconRegister" fill="#6B4423" glyphName="EYE" layoutX="142.0" layoutY="25.0" size="15" />
+                            <ComboBox fx:id="roleComboBox" layoutX="194.0" layoutY="8.0" prefWidth="150.0" promptText="Select Role" stylesheets="@../../ASSETS/STYLES/16.css" />
                         </children>
                     </AnchorPane>
-                    <Button
-                            fx:id="registerButton"
-                            onAction="#handleRegister"
-                            maxWidth="250.0" prefHeight="40.0"
-                            style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="REGISTER" textFill="WHITE">
+                    <Button fx:id="registerButton" maxWidth="250.0" onAction="#handleRegister" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="REGISTER" textFill="WHITE">
                         <font>
                             <Font size="18.0" />
                         </font>
@@ -141,41 +59,20 @@
             </children>
         </AnchorPane>
 
-        <AnchorPane
-                fx:id="slider"
-                layoutX="400.0"
-                maxWidth="400.0" minWidth="400.0"
-                prefHeight="500.0" prefWidth="400.0"
-                style="-fx-background-color: #6B4423;"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="slider" layoutX="400.0" maxWidth="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #6B4423;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox
-                        alignment="CENTER" spacing="20"
-                        AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0"
-                        AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
-                    <Label
-                            fx:id="sliderLabel"
-                            text="Welcome to Coffee Manager" textFill="WHITE">
+                <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Label fx:id="sliderLabel" text="Welcome to Coffee Manager" textFill="WHITE">
                         <font>
                             <Font name="System Bold" size="24.0" />
                         </font>
                     </Label>
-                    <Label
-                            fx:id="sliderText"
-                            text="Manage your coffee shop with ease" textFill="#E6D5B8">
+                    <Label fx:id="sliderText" text="Manage your coffee shop with ease" textFill="#E6D5B8">
                         <font>
                             <Font size="14.0" />
                         </font>
                     </Label>
-                    <Button
-                            fx:id="sliderButton"
-                            mnemonicParsing="false"
-                            onAction="#sliding"
-                            prefHeight="40.0" prefWidth="120.0"
-                            style="-fx-background-color: transparent;                             -fx-border-color: white;                             -fx-border-radius: 20px;" text="REGISTER" textFill="WHITE">
+                    <Button fx:id="sliderButton" mnemonicParsing="false" onAction="#sliding" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: transparent;                             -fx-border-color: white;                             -fx-border-radius: 20px;" text="REGISTER" textFill="WHITE">
                         <font>
                             <Font size="14.0" />
                         </font>

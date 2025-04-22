@@ -1,110 +1,98 @@
 package GUI.CONTROLLER.PANEL;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.chart.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CoffeeShopGUIController implements Initializable {
+    @FXML private Button homeBtn;
+    @FXML private Button productBtn;
+    @FXML private Button employeeBtn;
+    @FXML private Button inventoryBtn;
+    @FXML private Button logoutBtn;
 
     @FXML private TextField searchField;
-    @FXML private Button homeBtn;
-    @FXML private Button productsBtn;
-    @FXML private Button employeesBtn;
-    @FXML private Button inventoryBtn;
 
-    @FXML private StackPane contentArea;
-    @FXML private VBox dashboardView;
-    @FXML private VBox productsView;
-    @FXML private VBox employeesView;
-    @FXML private VBox inventoryView;
+    @FXML private Label employeeCount;
+    @FXML private Label productCount;
+    @FXML private Label inventoryCount;
 
-    @FXML private Label totalProductsLabel;
-    @FXML private Label totalEmployeesLabel;
-    @FXML private Label totalInventoryLabel;
-
-    @FXML private BarChart<String, Number> salesChart;
-    @FXML private PieChart categoryChart;
+    @FXML private AreaChart<String, Number> salesChart;
+    @FXML private PieChart productChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setupSearch();
-        loadDashboardData();
-        initializeCharts();
+        loadStatistics();
+        setupCharts();
+        setupButtonStyles();
     }
 
-    private void setupSearch() {
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Implement search functionality
-            performSearch(newValue);
-        });
+    private void loadStatistics() {
+        // TODO: Load actual data from your database
+        employeeCount.setText("25");
+        productCount.setText("150");
+        inventoryCount.setText("300");
     }
 
-    private void performSearch(String query) {
-        // Implement search logic
-        System.out.println("Searching for: " + query);
+    private void setupCharts() {
+        // Setup Sales Chart
+        salesChart.getData().clear();
+        // TODO: Add your sales data series here
+
+        // Setup Product Distribution Chart
+        productChart.getData().clear();
+        // TODO: Add your product distribution data here
     }
 
-    private void loadDashboardData() {
-        // Load actual data from your database/service
-        totalProductsLabel.setText("150");
-        totalEmployeesLabel.setText("25");
-        totalInventoryLabel.setText("300");
-    }
-
-    private void initializeCharts() {
-        // Initialize Sales Chart
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Sales 2024");
-        series.getData().add(new XYChart.Data<>("Jan", 2500));
-        series.getData().add(new XYChart.Data<>("Feb", 3000));
-        series.getData().add(new XYChart.Data<>("Mar", 2800));
-        salesChart.getData().add(series);
-
-        // Initialize Category Chart
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Coffee", 40),
-                new PieChart.Data("Tea", 30),
-                new PieChart.Data("Pastries", 20),
-                new PieChart.Data("Others", 10)
-        );
-        categoryChart.setData(pieChartData);
+    private void setupButtonStyles() {
+        // Add hover effect and click listeners to navigation buttons
+        Button[] navButtons = {homeBtn, productBtn, employeeBtn, inventoryBtn};
+        for (Button btn : navButtons) {
+            btn.getStyleClass().add("nav-button");
+        }
     }
 
     @FXML
-    private void handleHome() {
-        dashboardView.setVisible(true);
-        productsView.setVisible(false);
-        employeesView.setVisible(false);
-        inventoryView.setVisible(false);
+    private void handleNavigation(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+
+        // Remove selected style from all buttons
+        homeBtn.getStyleClass().remove("selected");
+        productBtn.getStyleClass().remove("selected");
+        employeeBtn.getStyleClass().remove("selected");
+        inventoryBtn.getStyleClass().remove("selected");
+
+        // Add selected style to clicked button
+        clickedButton.getStyleClass().add("selected");
+
+        // TODO: Handle navigation logic based on clicked button
+        if (clickedButton == homeBtn) {
+            // Navigate to home
+        } else if (clickedButton == productBtn) {
+            // Navigate to products
+        } else if (clickedButton == employeeBtn) {
+            // Navigate to employees
+        } else if (clickedButton == inventoryBtn) {
+            // Navigate to inventory
+        }
     }
 
     @FXML
-    private void handleProducts() {
-        dashboardView.setVisible(false);
-        productsView.setVisible(true);
-        employeesView.setVisible(false);
-        inventoryView.setVisible(false);
+    private void handleSearch(KeyEvent event) {
+        String searchText = searchField.getText();
+        // TODO: Implement search functionality
     }
 
     @FXML
-    private void handleEmployees() {
-        dashboardView.setVisible(false);
-        productsView.setVisible(false);
-        employeesView.setVisible(true);
-        inventoryView.setVisible(false);
-    }
-
-    @FXML
-    private void handleInventory() {
-        dashboardView.setVisible(false);
-        productsView.setVisible(false);
-        employeesView.setVisible(false);
-        inventoryView.setVisible(true);
+    private void handleLogout(ActionEvent event) {
+        // TODO: Implement logout functionality
     }
 }

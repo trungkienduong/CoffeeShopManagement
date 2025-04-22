@@ -23,7 +23,7 @@ public class EmployeePositionDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(EmployeePosition employeePosition) {
-        String sql = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
+        String sql = "INSERT INTO [EMPLOYEE_POSITION] (POSITION_NAME) VALUES (?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -41,7 +41,7 @@ public class EmployeePositionDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(EmployeePosition employeePosition) {
-        String sql = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
+        String sql = "UPDATE [EMPLOYEE_POSITION] SET POSITION_NAME = ? WHERE POSITION_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -60,7 +60,7 @@ public class EmployeePositionDAO {
 
     // ---------------------- DELETE ----------------------
     public boolean delete(int positionId) {
-        String sql = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
+        String sql = "DELETE FROM [EMPLOYEE_POSITION] WHERE POSITION_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -79,7 +79,7 @@ public class EmployeePositionDAO {
     // ---------------------- GET ALL ----------------------
 
     public List<EmployeePosition> getAll() {
-        String sql = "SELECT * FROM EMPLOYEE_POSITION";
+        String sql = "SELECT * FROM [EMPLOYEE_POSITION]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -101,7 +101,7 @@ public class EmployeePositionDAO {
 
     // ---------------------- GET BY NAME ----------------------
     public EmployeePosition findByName(String positionName) {
-        String sql = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_NAME = ?";
+        String sql = "SELECT * FROM [EMPLOYEE_POSITION] WHERE POSITION_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -123,7 +123,7 @@ public class EmployeePositionDAO {
 
     //---------------------- GET BY ID ----------------------
     public EmployeePosition findById(int positionId) {
-        String sql = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
+        String sql = "SELECT * FROM [EMPLOYEE_POSITION] WHERE POSITION_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

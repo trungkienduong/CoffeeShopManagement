@@ -26,7 +26,7 @@ public class ProductDAO {
 
   // ---------------------- INSERT ----------------------
     public boolean insert(Product product) {
-        String sql = "INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, CATEGORY_ID, SELL_PRICE) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [PRODUCT] (PRODUCT_ID, PRODUCT_NAME, CATEGORY_ID, SELL_PRICE) VALUES (?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -46,7 +46,7 @@ public class ProductDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(Product product) {
-        String sql = "UPDATE PRODUCT SET PRODUCT_NAME = ?, CATEGORY_ID = ?, SELL_PRICE = ? WHERE PRODUCT_ID = ?";
+        String sql = "UPDATE [PRODUCT] SET PRODUCT_NAME = ?, CATEGORY_ID = ?, SELL_PRICE = ? WHERE PRODUCT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class ProductDAO {
 
     // ---------------------- DELETE ----------------------
     public boolean delete(int productId) {
-        String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
+        String sql = "DELETE FROM [PRODUCT] WHERE PRODUCT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -83,7 +83,7 @@ public class ProductDAO {
 
     // ---------------------- GET ALL ----------------------
     public List<Product> getAll() {
-        String sql = "SELECT * FROM PRODUCT";
+        String sql = "SELECT * FROM [PRODUCT]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -107,7 +107,7 @@ public class ProductDAO {
 
     // ---------------------- GET BY ID ----------------------
     public Product findById(int productId) {
-        String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
+        String sql = "SELECT * FROM [PRODUCT] WHERE PRODUCT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -132,7 +132,7 @@ public class ProductDAO {
 
     // ---------------------- GET BY CATEGORY ----------------------
     public List<Product> findByCategory(Category category) {
-        String sql = "SELECT * FROM PRODUCT WHERE CATEGORY_ID = ?";
+        String sql = "SELECT * FROM [PRODUCT] WHERE CATEGORY_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -158,7 +158,7 @@ public class ProductDAO {
 
     // ---------------------- SEARCH BY NAME ----------------------
     public List<Product> searchByName(String keyword) {
-        String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE ?";
+        String sql = "SELECT * FROM [PRODUCT] WHERE PRODUCT_NAME LIKE ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

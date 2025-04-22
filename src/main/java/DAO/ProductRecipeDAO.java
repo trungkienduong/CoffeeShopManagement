@@ -28,7 +28,7 @@ public class ProductRecipeDAO {
 
    //---------------------- INSERT ----------------------
    public boolean insert(ProductRecipe productRecipe) {
-       String sql = "INSERT INTO PRODUCT_RECIPE (PRODUCT_ID, ITEM_ID, QUANTITY_USED) VALUES (?, ?, ?)";
+       String sql = "INSERT INTO [PRODUCT_RECIPE] (PRODUCT_ID, ITEM_ID, QUANTITY_USED) VALUES (?, ?, ?)";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -47,7 +47,7 @@ public class ProductRecipeDAO {
 
    //---------------------- UPDATE ----------------------
    public boolean update(ProductRecipe productRecipe) {
-       String sql = "UPDATE PRODUCT_RECIPE SET QUANTITY_USED = ? WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+       String sql = "UPDATE [PRODUCT_RECIPE] SET QUANTITY_USED = ? WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class ProductRecipeDAO {
 
    //---------------------- DELETE ----------------------
    public boolean delete(int productId, int itemId) {
-       String sql = "DELETE FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+       String sql = "DELETE FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -84,7 +84,7 @@ public class ProductRecipeDAO {
 
    //---------------------- DELETE BY PRODUCT ----------------------
    public boolean deleteByProduct(int productId) {
-       String sql = "DELETE FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+       String sql = "DELETE FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -101,7 +101,7 @@ public class ProductRecipeDAO {
 
    //---------------------- GET ALL ----------------------
    public List<ProductRecipe> getAll() {
-       String sql = "SELECT * FROM PRODUCT_RECIPE";
+       String sql = "SELECT * FROM [PRODUCT_RECIPE]";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql);
@@ -124,7 +124,7 @@ public class ProductRecipeDAO {
 
    //---------------------- GET BY PRODUCT ----------------------
    public List<ProductRecipe> findByProduct(int productId) {
-       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+       String sql = "SELECT * FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -149,7 +149,7 @@ public class ProductRecipeDAO {
 
    //---------------------- GET BY ITEM ----------------------
    public List<ProductRecipe> findByItem(int itemId) {
-       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE ITEM_ID = ?";
+       String sql = "SELECT * FROM [PRODUCT_RECIPE] WHERE ITEM_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {
@@ -174,7 +174,7 @@ public class ProductRecipeDAO {
 
    //---------------------- CHECK ----------------------
    public boolean checkIngredient(int productId) {       //check if the product has any ingredients
-       String sql = "SELECT * FROM PRODUCT_RECIPE WHERE PRODUCT_ID = ?";
+       String sql = "SELECT * FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ?";
 
        try (Connection con = DatabaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql)) {

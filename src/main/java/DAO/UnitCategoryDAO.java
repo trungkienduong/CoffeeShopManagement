@@ -24,7 +24,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(UnitCategory unitCategory) {
-        String sql = "INSERT INTO UNIT_CATEGORY (UNIT_NAME, DESCRIPTION) VALUES (?, ?)";
+        String sql = "INSERT INTO [UNIT_CATEGORY] (UNIT_NAME, DESCRIPTION) VALUES (?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(UnitCategory unitCategory) {
-        String sql = "UPDATE UNIT_CATEGORY SET UNIT_NAME = ?, DESCRIPTION = ? WHERE UNIT_ID = ?";
+        String sql = "UPDATE [UNIT_CATEGORY] SET UNIT_NAME = ?, DESCRIPTION = ? WHERE UNIT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -63,7 +63,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- DELETE ----------------------
     public boolean delete(int unitId) {
-        String sql = "DELETE FROM UNIT_CATEGORY WHERE UNIT_ID = ?";
+        String sql = "DELETE FROM [UNIT_CATEGORY] WHERE UNIT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -80,7 +80,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- GET ALL ----------------------
     public List<UnitCategory> getAll() {
-        String sql = "SELECT * FROM UNIT_CATEGORY";
+        String sql = "SELECT * FROM [UNIT_CATEGORY]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -103,7 +103,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- GET BY NAME ----------------------
     public UnitCategory findByName(String unitName) {
-        String sql = "SELECT * FROM UNIT_CATEGORY WHERE UNIT_NAME = ?";
+        String sql = "SELECT * FROM [UNIT_CATEGORY] WHERE UNIT_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -125,7 +125,7 @@ public class UnitCategoryDAO {
 
     // ---------------------- GET BY ID ----------------------
     public UnitCategory findById(int unitId) {
-        String sql = "SELECT * FROM UNIT_CATEGORY WHERE UNIT_ID = ?";
+        String sql = "SELECT * FROM [UNIT_CATEGORY] WHERE UNIT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

@@ -1,0 +1,88 @@
+.root {
+    -fx-background-color: white;
+    -fx-font-family: "Segoe UI";
+}
+
+.title-label {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666666;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20;
+    -fx-graphic-text-gap: 10;
+}
+
+.nav-button:hover {
+    -fx-background-color: #5C4033;
+    -fx-text-fill: white;
+}
+
+.nav-button:selected {
+    -fx-background-color: #5C4033;
+    -fx-text-fill: white;
+}
+
+.nav-button .ikonli-font-icon {
+    -fx-fill: #666666;
+}
+
+.nav-button:hover .ikonli-font-icon {
+    -fx-fill: white;
+}
+
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.logout-button:hover {
+    -fx-background-color: #ffeeee;
+}
+
+.logout-button .ikonli-font-icon {
+    -fx-fill: #5C4033;
+}
+
+.search-label {
+    -fx-text-fill: #5C4033;
+}
+
+.search-field {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+    -fx-prompt-text-fill: #999999;
+}
+
+.search-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #5C4033;
+    -fx-border-radius: 20;
+}
+
+.stat-pane {
+    -fx-background-color: #5C4033;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.stat-label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.stat-value {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.chart {
+    -fx-background-color: transparent;
+}

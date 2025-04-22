@@ -27,7 +27,7 @@ public class EmployeeDAO {
 
     //---------------------- INSERT ----------------------
     public boolean insert(Employee employee) {
-        String sql = "INSERT INTO EMPLOYEE (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [EMPLOYEE] (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY, IMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class EmployeeDAO {
             pst.setString(7, employee.getAddress());
             pst.setInt(8, employee.getPositionId());
             pst.setDouble(9, employee.getSalary());
-
+            pst.setString(10, employee.getImage());
             // thuc thi cau lenh
             int result = pst.executeUpdate();
             return result > 0;
@@ -52,7 +52,7 @@ public class EmployeeDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(Employee employee) {
-        String sql = "UPDATE EMPLOYEE SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ? WHERE EMPLOYEE_ID = ?";
+        String sql = "UPDATE [EMPLOYEE] SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ? WHERE EMPLOYEE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -77,7 +77,7 @@ public class EmployeeDAO {
 
     //---------------------- DELETE ----------------------
     public boolean delete(int employeeId) {
-        String sql = "DELETE FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        String sql = "DELETE FROM [EMPLOYEE] WHERE EMPLOYEE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -96,7 +96,7 @@ public class EmployeeDAO {
     //---------------------- GET ALL ----------------------
     public List<Employee> getAll() {
         List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM EMPLOYEE";
+        String sql = "SELECT * FROM [EMPLOYEE]";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
@@ -126,7 +126,7 @@ public class EmployeeDAO {
 
     //---------------------- GET BY NAME ----------------------
     public Employee findByName(String username) {
-        String sql = "SELECT * FROM EMPLOYEE WHERE USERNAME = ?";
+        String sql = "SELECT * FROM [EMPLOYEE] WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -157,7 +157,7 @@ public class EmployeeDAO {
 
     //---------------------- GET BY ID ----------------------
     public Employee findById(int employeeId) {
-        String sql = "SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        String sql = "SELECT * FROM [EMPLOYEE] WHERE EMPLOYEE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -189,7 +189,7 @@ public class EmployeeDAO {
     //---------------------- GET BY POSITION ----------------------
     public List<Employee> findByPosition(int positionId) {
         List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM EMPLOYEE WHERE POSITION_ID = ?";
+        String sql = "SELECT * FROM [EMPLOYEE] WHERE POSITION_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -221,7 +221,7 @@ public class EmployeeDAO {
     //---------------------- SEARCH BY NAME ----------------------
     public List<Employee> searchByName(String keyword) {
         List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM EMPLOYEE WHERE FULLNAME LIKE ?";
+        String sql = "SELECT * FROM [EMPLOYEE] WHERE FULLNAME LIKE ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {

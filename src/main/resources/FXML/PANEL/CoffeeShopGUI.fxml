@@ -1,91 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<AnchorPane prefHeight="500" prefWidth="800" stylesheets="@../../styles/dashboard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.CoffeeShopGUIController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../../ASSETS/STYLES/PANEL/CoffeShopGUI.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.CoffeeShopGUIController">
+    <children>
+        <VBox layoutX="14.0" layoutY="14.0" prefHeight="500.0" prefWidth="181.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane prefHeight="517.0" prefWidth="181.0">
+                    <children>
+                        <Label layoutX="16.0" layoutY="37.0" styleClass="shop-title" text="COFFEE SHOP">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                        </Label>
 
+                        <Button fx:id="homeBtn" layoutX="0.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="HOME">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="HOME" size="20" />
+                            </graphic>
+                        </Button>
 
-    <!-- Search Bar -->
-    <HBox styleClass="search-bar" stylesheets="@../../styles/dashboard.css" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-        <TextField fx:id="searchField" prefHeight="40" promptText="Search..." stylesheets="@../../styles/dashboard.css" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-                <Insets bottom="10" left="20" right="20" top="10" />
-            </HBox.margin>
-        </TextField>
-    </HBox>
+                        <Button fx:id="productBtn" layoutX="0.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="PRODUCT">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="COFFEE" size="20" />
+                            </graphic>
+                        </Button>
 
-    <!-- Left Menu -->
-    <VBox styleClass="side-menu" stylesheets="@../../styles/dashboard.css" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="60">
+                        <Button fx:id="employeeBtn" layoutX="0.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="EMPLOYEE">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="USERS" size="20" />
+                            </graphic>
+                        </Button>
 
-        <Button fx:id="homeBtn" onAction="#handleHome" styleClass="menu-button" stylesheets="@../../styles/dashboard.css" text="Home">
-            <graphic>
-                <FontAwesomeIconView glyphName="HOME" size="20" />
-            </graphic>
-        </Button>
+                        <Button fx:id="inventoryBtn" layoutX="0.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="INVENTORY">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="WAREHOUSE" size="20" />
+                            </graphic>
+                        </Button>
 
-        <Button fx:id="productsBtn" onAction="#handleProducts" styleClass="menu-button" stylesheets="@../../styles/dashboard.css" text="Products">
-            <graphic>
-                <FontAwesomeIconView glyphName="COFFEE" size="20" />
-            </graphic>
-        </Button>
+                        <Button fx:id="logoutBtn" layoutX="14.0" layoutY="456.0" mnemonicParsing="false" onAction="#handleLogout" styleClass="logout-button">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="SIGN_OUT" size="24" />
+                            </graphic>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
 
-        <Button fx:id="employeesBtn" onAction="#handleEmployees" styleClass="menu-button" stylesheets="@../../styles/dashboard.css" text="Employees">
-            <graphic>
-                <FontAwesomeIconView glyphName="USERS" size="20" />
-            </graphic>
-        </Button>
+        <HBox layoutX="181.0" layoutY="6.0" prefHeight="79.0" prefWidth="620.0" styleClass="search-bar" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane prefHeight="79.0" prefWidth="620.0">
+                    <children>
+                        <Label layoutX="43.0" layoutY="31.0" styleClass="search-label" text="Search" />
+                        <TextField fx:id="searchField" layoutX="126.0" layoutY="27.0" onKeyTyped="#handleSearch" prefHeight="26.0" prefWidth="192.0" promptText="Enter keyword" styleClass="search-input" />
+                        <FontAwesomeIconView glyphName="SEARCH" layoutX="100.0" layoutY="45.0" size="16" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
 
-        <Button fx:id="inventoryBtn" onAction="#handleInventory" styleClass="menu-button" stylesheets="@../../styles/dashboard.css" text="Inventory">
-            <graphic>
-                <FontAwesomeIconView glyphName="ARCHIVE" size="20" />
-            </graphic>
-        </Button>
-    </VBox>
+        <AnchorPane layoutX="181.0" layoutY="79.0" prefHeight="421.0" prefWidth="620.0" styleClass="main-content">
+            <children>
+                <Pane layoutX="51.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
+                    <children>
+                        <Label styleClass="stat-title" layoutX="40.0" layoutY="14.0" text="Employees" />
+                        <Label fx:id="employeeCount" styleClass="stat-value" layoutX="34.0" layoutY="47.0" text="0" />
+                        <FontAwesomeIconView glyphName="USER" layoutX="14.0" layoutY="35.0" size="24" />
+                    </children>
+                </Pane>
 
-    <!-- Main Content -->
-    <StackPane fx:id="contentArea" stylesheets="@../../styles/dashboard.css" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="60">
+                <Pane layoutX="277.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
+                    <children>
+                        <Label styleClass="stat-title" layoutX="25.0" layoutY="15.0" text="Products" />
+                        <Label fx:id="productCount" styleClass="stat-value" layoutX="39.0" layoutY="48.0" text="0" />
+                        <FontAwesomeIconView glyphName="COFFEE" layoutX="14.0" layoutY="35.0" size="24" />
+                    </children>
+                </Pane>
 
-        <!-- Dashboard View -->
-        <VBox fx:id="dashboardView">
-            <!-- Stats Cards -->
-            <HBox spacing="20" styleClass="stats-container">
-                <VBox fx:id="productsCard" styleClass="dashboard-card">
-                    <FontAwesomeIconView glyphName="COFFEE" size="30" />
-                    <Label text="Total Products" />
-                    <Label fx:id="totalProductsLabel" styleClass="card-number" text="0" />
-                </VBox>
+                <Pane layoutX="478.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
+                    <children>
+                        <Label styleClass="stat-title" layoutX="38.0" layoutY="14.0" text="Inventory" />
+                        <Label fx:id="inventoryCount" styleClass="stat-value" layoutX="37.0" layoutY="44.0" text="0" />
+                        <FontAwesomeIconView glyphName="CUBES" layoutX="14.0" layoutY="35.0" size="24" />
+                    </children>
+                </Pane>
 
-                <VBox fx:id="employeesCard" styleClass="dashboard-card">
-                    <FontAwesomeIconView glyphName="USERS" size="30" />
-                    <Label text="Total Employees" />
-                    <Label fx:id="totalEmployeesLabel" styleClass="card-number" text="0" />
-                </VBox>
-
-                <VBox fx:id="inventoryCard" styleClass="dashboard-card">
-                    <FontAwesomeIconView glyphName="ARCHIVE" size="30" />
-                    <Label text="Inventory Items" />
-                    <Label fx:id="totalInventoryLabel" styleClass="card-number" text="0" />
-                </VBox>
-            </HBox>
-
-            <!-- Charts -->
-            <HBox spacing="20" styleClass="charts-container">
-                <BarChart fx:id="salesChart" legendVisible="true" title="Monthly Sales">
+                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="251.0" prefWidth="319.0" title="Sales Overview">
                     <xAxis>
-                        <CategoryAxis label="Month" />
+                        <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                        <NumberAxis label="Sales" />
+                        <NumberAxis side="LEFT" />
                     </yAxis>
-                </BarChart>
+                </AreaChart>
 
-                <PieChart fx:id="categoryChart" title="Product Categories" />
-            </HBox>
-        </VBox>
-    </StackPane>
-
+                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="244.0" prefWidth="298.0" title="Product Distribution" />
+            </children>
+        </AnchorPane>
+    </children>
 </AnchorPane>
