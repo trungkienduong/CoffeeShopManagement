@@ -12,7 +12,7 @@ public class   Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/SplashScreen.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);

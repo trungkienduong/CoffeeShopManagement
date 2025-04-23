@@ -51,6 +51,10 @@ public class LoginDialogController {
         syncPasswordFields();
         setupEmailValidation();
         setupRoleComboBox();
+
+        // Thêm sự kiện cho các trường usernameLogin và passwordLogin để gọi handleLogin khi nhấn Enter
+        usernameLogin.setOnAction(event -> handleLogin());  // Nhấn Enter trong usernameLogin
+        passwordLogin.setOnAction(event -> handleLogin());  // Nhấn Enter trong passwordLogin
     }
 
     // Toggle between Login and Register form on slider
@@ -135,24 +139,20 @@ public class LoginDialogController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
                 AnchorPane mainPane = loader.load();
-
-                // Nếu bạn cần truyền dữ liệu user sau khi đăng nhập thì dùng đoạn này:
-                // CoffeeShopController controller = loader.getController();
-                // controller.setUser(userBUS.getUserByUsername(username));
-
                 Stage currentStage = (Stage) loginButton.getScene().getWindow();
                 Scene scene = new Scene(mainPane);
                 currentStage.setScene(scene);
                 currentStage.setTitle("Coffee Manager");
-//                currentStage.setMaximized(true); // Hoặc setFullScreen(true) nếu muốn full luôn
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
+//                showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
+            // Chỉ khi đăng nhập sai mới đổi màu viền của ô nhập
+            usernameLogin.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            passwordLogin.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+//            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
-
     }
 
     // -------------------- Handle Register --------------------
@@ -170,23 +170,23 @@ public class LoginDialogController {
             User newUser = new User(username, password, email, roleId); // Truyền ID role vào constructor
 
             if (userBUS.insertUser(newUser)) {
-                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "Account successfully created for " + username);
+//                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "Account successfully created for " + username);
                 sliding(); // Trượt về màn hình đăng nhập
             } else {
-                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
+//                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
+//            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
         }
     }
 
-    // -------------------- Show Alert --------------------
+  /*  // -------------------- Show Alert --------------------
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
+    }*/
 
 }

@@ -6,5 +6,5 @@
 
 <StackPane fx:id="rootPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.SplashScreenController">
     <MediaView fx:id="mediaView" />
-    <Button fx:id="skipButton" styleClass="skipButton" onAction="#handleSkip" stylesheets="@../../ASSETS/STYLES/16.css" text="Skip" StackPane.alignment="TOP_RIGHT" />
+    <Button fx:id="skipButton" styleClass="skipButton" onAction="#handleSkip" stylesheets="@../../ASSETS/STYLES/PANEL/SplashScreen.css" text="Skip" StackPane.alignment="TOP_RIGHT" />
 </StackPane>

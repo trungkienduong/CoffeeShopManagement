@@ -15,15 +15,15 @@
                             <Font name="System Bold" size="36.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="usernameLogin" maxWidth="250.0" prefHeight="40.0" promptText="User Name" />
+                    <TextField fx:id="usernameLogin" maxWidth="250.0" prefHeight="40.0" promptText="User Name" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" />
                     <AnchorPane maxWidth="250.0">
                         <children>
-                            <PasswordField fx:id="passwordLogin" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                            <PasswordField fx:id="passwordLogin" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                             <TextField fx:id="passwordLoginText" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                             <FontAwesomeIconView fx:id="eyeIconLogin" fill="#6B4423" glyphName="EYE" layoutX="229.0" layoutY="26.0" size="15" />
                         </children>
                     </AnchorPane>
-                    <Button fx:id="loginButton" maxWidth="250.0" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="LOGIN" textFill="WHITE">
+                    <Button fx:id="loginButton" maxWidth="250.0" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" text="LOGIN" textFill="WHITE">
                         <font>
                             <Font size="18.0" />
                         </font>
@@ -40,17 +40,17 @@
                             <Font name="System Bold" size="36.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="usernameRegister" maxWidth="250.0" prefHeight="40.0" promptText="User Name" />
-                    <TextField fx:id="emailRegister" maxWidth="250.0" prefHeight="40.0" promptText="Email" />
+                    <TextField fx:id="usernameRegister" maxWidth="250.0" prefHeight="40.0" promptText="User Name" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" />
+                    <TextField fx:id="emailRegister" maxWidth="250.0" prefHeight="40.0" promptText="Email" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" />
                     <AnchorPane maxWidth="349.0" prefHeight="40.0" prefWidth="349.0">
                         <children>
-                            <PasswordField fx:id="passwordRegister" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
-                            <TextField fx:id="passwordRegisterText" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
-                            <FontAwesomeIconView fx:id="eyeIconRegister" fill="#6B4423" glyphName="EYE" layoutX="142.0" layoutY="25.0" size="15" />
-                            <ComboBox fx:id="roleComboBox" layoutX="194.0" layoutY="8.0" prefWidth="150.0" promptText="Select Role" stylesheets="@../../ASSETS/STYLES/16.css" />
+                            <PasswordField fx:id="passwordRegister" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
+                            <TextField fx:id="passwordRegisterText" layoutY="9.0" maxWidth="250.0" prefHeight="20.0" prefWidth="64.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="186.0" />
+                            <FontAwesomeIconView fx:id="eyeIconRegister" fill="#6B4423" glyphName="EYE" layoutX="140.0" layoutY="30.0" size="15" />
+                            <ComboBox fx:id="roleComboBox" layoutX="194.0" layoutY="8.0" prefWidth="150.0" promptText="Select Role" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" />
                         </children>
                     </AnchorPane>
-                    <Button fx:id="registerButton" maxWidth="250.0" onAction="#handleRegister" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" text="REGISTER" textFill="WHITE">
+                    <Button fx:id="registerButton" maxWidth="250.0" onAction="#handleRegister" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" text="REGISTER" textFill="WHITE">
                         <font>
                             <Font size="18.0" />
                         </font>
@@ -58,7 +58,6 @@
                 </VBox>
             </children>
         </AnchorPane>
-
         <AnchorPane fx:id="slider" layoutX="400.0" maxWidth="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #6B4423;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -72,7 +71,7 @@
                             <Font size="14.0" />
                         </font>
                     </Label>
-                    <Button fx:id="sliderButton" mnemonicParsing="false" onAction="#sliding" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: transparent;                             -fx-border-color: white;                             -fx-border-radius: 20px;" text="REGISTER" textFill="WHITE">
+                    <Button fx:id="sliderButton" mnemonicParsing="false" onAction="#sliding" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: transparent;                             -fx-border-color: white;                             -fx-border-radius: 20px;" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" text="REGISTER" textFill="WHITE">
                         <font>
                             <Font size="14.0" />
                         </font>

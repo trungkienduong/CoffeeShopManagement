@@ -46,7 +46,7 @@
 
                         <Button fx:id="inventoryBtn" layoutX="0.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="INVENTORY">
                             <graphic>
-                                <FontAwesomeIconView glyphName="WAREHOUSE" size="20" />
+                                <FontAwesomeIconView glyphName="ANCHOR" size="20" />
                             </graphic>
                         </Button>
 
