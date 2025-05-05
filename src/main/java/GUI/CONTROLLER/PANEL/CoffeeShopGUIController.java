@@ -1,98 +1,96 @@
 package GUI.CONTROLLER.PANEL;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.PieChart;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.layout.AnchorPane;
+import java.io.IOException;
 
-public class CoffeeShopGUIController implements Initializable {
-    @FXML private Button homeBtn;
-    @FXML private Button productBtn;
-    @FXML private Button employeeBtn;
-    @FXML private Button inventoryBtn;
-    @FXML private Button logoutBtn;
+public class CoffeeShopGUIController {
 
-    @FXML private TextField searchField;
+    @FXML
+    private Button homeBtn;
 
-    @FXML private Label employeeCount;
-    @FXML private Label productCount;
-    @FXML private Label inventoryCount;
+    @FXML
+    private Button productBtn;
 
-    @FXML private AreaChart<String, Number> salesChart;
-    @FXML private PieChart productChart;
+    @FXML
+    private Button employeeBtn;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        loadStatistics();
-        setupCharts();
-        setupButtonStyles();
+    @FXML
+    private Button inventoryBtn;
+
+    @FXML
+    private Button logoutBtn;
+
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private Label employeeCount;
+
+    @FXML
+    private Label productCount;
+
+    @FXML
+    private Label inventoryCount;
+
+    @FXML
+    private AnchorPane mainContent;
+
+    @FXML
+    private AreaChart<String, Number> salesChart;
+
+    @FXML
+    private PieChart productChart;
+
+    @FXML
+    private void initialize() {
+        updateDashboard();
     }
 
-    private void loadStatistics() {
-        // TODO: Load actual data from your database
-        employeeCount.setText("25");
-        productCount.setText("150");
-        inventoryCount.setText("300");
-    }
+    @FXML
+    private void handleNavigation(javafx.event.ActionEvent event) {
+        try {
+            Button clickedButton = (Button) event.getSource();
 
-    private void setupCharts() {
-        // Setup Sales Chart
-        salesChart.getData().clear();
-        // TODO: Add your sales data series here
+            if (clickedButton == homeBtn) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
+                Parent root = loader.load();
+                mainContent.getScene().setRoot(root);
+            }
+            else if (clickedButton == productBtn) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/ProductPanel.fxml"));
+                Parent productView = loader.load();
+                mainContent.getChildren().setAll(productView);
+            }
 
-        // Setup Product Distribution Chart
-        productChart.getData().clear();
-        // TODO: Add your product distribution data here
-    }
-
-    private void setupButtonStyles() {
-        // Add hover effect and click listeners to navigation buttons
-        Button[] navButtons = {homeBtn, productBtn, employeeBtn, inventoryBtn};
-        for (Button btn : navButtons) {
-            btn.getStyleClass().add("nav-button");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleNavigation(ActionEvent event) {
-        Button clickedButton = (Button) event.getSource();
-
-        // Remove selected style from all buttons
-        homeBtn.getStyleClass().remove("selected");
-        productBtn.getStyleClass().remove("selected");
-        employeeBtn.getStyleClass().remove("selected");
-        inventoryBtn.getStyleClass().remove("selected");
-
-        // Add selected style to clicked button
-        clickedButton.getStyleClass().add("selected");
-
-        // TODO: Handle navigation logic based on clicked button
-        if (clickedButton == homeBtn) {
-            // Navigate to home
-        } else if (clickedButton == productBtn) {
-            // Navigate to products
-        } else if (clickedButton == employeeBtn) {
-            // Navigate to employees
-        } else if (clickedButton == inventoryBtn) {
-            // Navigate to inventory
+    private void handleSearch() {
+        String searchQuery = searchField.getText().trim();
+        if (!searchQuery.isEmpty()) {
+            // Implement search functionality
         }
     }
 
     @FXML
-    private void handleSearch(KeyEvent event) {
-        String searchText = searchField.getText();
-        // TODO: Implement search functionality
+    private void handleLogout() {
+        // Implement logout functionality
     }
 
-    @FXML
-    private void handleLogout(ActionEvent event) {
-        // TODO: Implement logout functionality
+    private void updateDashboard() {
+        // Update statistics from database
+        // Update charts
     }
 }

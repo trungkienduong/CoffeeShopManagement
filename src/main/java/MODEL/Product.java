@@ -1,7 +1,7 @@
 package MODEL;
 
 public class Product {
-    private int productId;
+    /*private int productId;
     private String productName;
     private int categoryId;
     private double sellPrice;
@@ -95,5 +95,5 @@ public class Product {
                 ", sellPrice=" + sellPrice +
                 ", category=" + (category != null ? category.getCategoryName() : "null") +
                 '}';
-    }
+    }*/
 }

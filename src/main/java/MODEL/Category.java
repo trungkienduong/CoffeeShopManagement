@@ -5,27 +5,20 @@ public class Category {
     private String categoryName;
     private String description;
     private char categoryType; // 'I' cho Inventory (nguyên liệu), 'P' cho Product (sản phẩm)
+    private String imagePath;
 
     // Default constructor
     public Category() {
     }
 
-    // Parameterized constructor
-    public Category(int categoryId, String categoryName, String description, char categoryType) {
+    public Category(int categoryId, String categoryName, String description, char categoryType, String image) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.description = description;
         this.categoryType = categoryType;
+        this.imagePath = image;
     }
 
-    // Constructor without ID (for creating new categories)
-    public Category(String categoryName, String description, char categoryType) {
-        this.categoryName = categoryName;
-        this.description = description;
-        this.categoryType = categoryType;
-    }
-
-    // Getters and Setters
     public int getCategoryId() {
         return categoryId;
     }
@@ -55,25 +48,15 @@ public class Category {
     }
 
     public void setCategoryType(char categoryType) {
-        // Chỉ chấp nhận 'I' hoặc 'P'
-        if (categoryType == 'I' || categoryType == 'P') {
-            this.categoryType = categoryType;
-        } else {
-            throw new IllegalArgumentException("Category type must be 'I' for Inventory or 'P' for Product");
-        }
+        this.categoryType = categoryType;
     }
 
-    // Helper methods
-    public boolean isInventoryCategory() {
-        return categoryType == 'I';
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public boolean isProductCategory() {
-        return categoryType == 'P';
-    }
-
-    public String getCategoryTypeName() {
-        return categoryType == 'I' ? "Nguyên liệu" : "Sản phẩm";
+    public void setImagePath(String image) {
+        this.imagePath = image;
     }
 
     @Override
@@ -82,7 +65,8 @@ public class Category {
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
-                ", categoryType=" + getCategoryTypeName() +
+                ", categoryType=" + categoryType +
+                ", image='" + imagePath + '\'' +
                 '}';
     }
 }

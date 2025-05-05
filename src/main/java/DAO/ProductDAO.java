@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-  private static ProductDAO instance;
+  /*private static ProductDAO instance;
   private CategoryDAO categoryDAO;
 
   private ProductDAO() {
@@ -180,5 +180,5 @@ public class ProductDAO {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 }

@@ -102,6 +102,7 @@ public class LoginDialogController {
     }
 
     // Toggle login password visibility
+    @FXML
     private void toggleLoginPassword(MouseEvent event) {
         togglePasswordVisibility(passwordLogin, passwordLoginText, eyeIconLogin);
     }

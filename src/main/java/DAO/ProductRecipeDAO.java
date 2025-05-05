@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRecipeDAO {
-   private static ProductRecipeDAO instance;
+   /*private static ProductRecipeDAO instance;
    private  ProductDAO productDAO;
    private  InventoryDAO inventoryDAO;
 
@@ -188,5 +188,5 @@ public class ProductRecipeDAO {
            return false;
        }
 
-   }
+   }*/
 }

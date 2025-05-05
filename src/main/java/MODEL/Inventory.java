@@ -3,6 +3,7 @@ package MODEL;
 public class Inventory {
     private int itemId;
     private String itemName;
+    private String imagePath;
     private int categoryId;
     private double quantity;
     private int unitId;
@@ -16,43 +17,18 @@ public class Inventory {
     public Inventory() {
     }
 
-    // Parameterized constructor without linked objects
-    public Inventory(int itemId, String itemName, int categoryId, double quantity, 
-                    int unitId, double costPrice) {
+    public Inventory(int itemId, String itemName, String imagePath, int categoryId, double quantity, int unitId, double costPrice, Category category, UnitCategory unit) {
         this.itemId = itemId;
         this.itemName = itemName;
+        this.imagePath = imagePath;
         this.categoryId = categoryId;
         this.quantity = quantity;
         this.unitId = unitId;
         this.costPrice = costPrice;
-    }
-
-    // Constructor with linked objects
-    public Inventory(int itemId, String itemName, Category category, double quantity, 
-                    UnitCategory unit, double costPrice) {
-        this.itemId = itemId;
-        this.itemName = itemName;
-        this.categoryId = category.getCategoryId();
         this.category = category;
-        this.quantity = quantity;
-        this.unitId = unit.getUnitId();
         this.unit = unit;
-        this.costPrice = costPrice;
     }
 
-    // Constructor without ID (for creating new items)
-    public Inventory(String itemName, Category category, double quantity, 
-                    UnitCategory unit, double costPrice) {
-        this.itemName = itemName;
-        this.categoryId = category.getCategoryId();
-        this.category = category;
-        this.quantity = quantity;
-        this.unitId = unit.getUnitId();
-        this.unit = unit;
-        this.costPrice = costPrice;
-    }
-
-    // Getters and Setters
     public int getItemId() {
         return itemId;
     }
@@ -69,6 +45,14 @@ public class Inventory {
         this.itemName = itemName;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public int getCategoryId() {
         return categoryId;
     }
@@ -82,9 +66,6 @@ public class Inventory {
     }
 
     public void setQuantity(double quantity) {
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
-        }
         this.quantity = quantity;
     }
 
@@ -101,9 +82,6 @@ public class Inventory {
     }
 
     public void setCostPrice(double costPrice) {
-        if (costPrice < 0) {
-            throw new IllegalArgumentException("Cost price cannot be negative");
-        }
         this.costPrice = costPrice;
     }
 
@@ -112,11 +90,7 @@ public class Inventory {
     }
 
     public void setCategory(Category category) {
-        if (!category.isInventoryCategory()) {
-            throw new IllegalArgumentException("Category must be an Inventory category (type 'I')");
-        }
         this.category = category;
-        this.categoryId = category.getCategoryId();
     }
 
     public UnitCategory getUnit() {
@@ -125,25 +99,6 @@ public class Inventory {
 
     public void setUnit(UnitCategory unit) {
         this.unit = unit;
-        this.unitId = unit.getUnitId();
-    }
-
-    // Helper methods
-    public void addQuantity(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount to add must be positive");
-        }
-        this.quantity += amount;
-    }
-
-    public void subtractQuantity(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount to subtract must be positive");
-        }
-        if (amount > this.quantity) {
-            throw new IllegalArgumentException("Not enough quantity in inventory");
-        }
-        this.quantity -= amount;
     }
 
     @Override
@@ -151,12 +106,13 @@ public class Inventory {
         return "Inventory{" +
                 "itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
+                ", imagePath='" + imagePath + '\'' +
                 ", categoryId=" + categoryId +
                 ", quantity=" + quantity +
                 ", unitId=" + unitId +
                 ", costPrice=" + costPrice +
-                ", category=" + (category != null ? category.getCategoryName() : "null") +
-                ", unit=" + (unit != null ? unit.getUnitName() : "null") +
+                ", category=" + category +
+                ", unit=" + unit +
                 '}';
     }
 }

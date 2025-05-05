@@ -7,7 +7,7 @@ import MODEL.Category;
 import java.util.List;
 
 public class ProductBUS {
-    private ProductDAO productDAO;
+    /*private ProductDAO productDAO;
     private ProductRecipeDAO productRecipeDAO; // Khai báo thêm DAO cho ProductRecipe
 
     public ProductBUS() {
@@ -62,5 +62,5 @@ public class ProductBUS {
     // Tìm kiếm sản phẩm theo tên
     public List<Product> searchProductsByName(String keyword) {
         return productDAO.searchByName(keyword);
-    }
+    }*/
 }

@@ -1,7 +1,7 @@
 package MODEL;
 
 public class ProductRecipe {
-    private int productId;
+   /* private int productId;
     private int itemId;
     private double quantityUsed;
     
@@ -101,5 +101,5 @@ public class ProductRecipe {
                 ", product=" + (product != null ? product.getProductName() : "null") +
                 ", item=" + (item != null ? item.getItemName() : "null") +
                 '}';
-    }
+    }*/
 }

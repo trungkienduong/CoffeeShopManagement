@@ -6,7 +6,7 @@ import MODEL.ProductRecipe;
 import java.util.List;
 
 public class ProductRecipeBUS {
-    private final ProductRecipeDAO productRecipeDAO;
+   /* private final ProductRecipeDAO productRecipeDAO;
 
     public ProductRecipeBUS() {
         productRecipeDAO = ProductRecipeDAO.getInstance();
@@ -63,5 +63,5 @@ public class ProductRecipeBUS {
     public boolean hasIngredients(int productId) {
         if (productId <= 0) return false;
         return productRecipeDAO.checkIngredient(productId);
-    }
+    }*/
 }

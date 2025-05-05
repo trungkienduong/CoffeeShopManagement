@@ -24,7 +24,7 @@ public class CategoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Category category) {
-        String sql = "INSERT INTO [CATEGORY] (CATEGORY_NAME, CATEGORY_TYPE, DESCRIPTION) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO [CATEGORY] (CATEGORY_NAME, CATEGORY_TYPE, DESCRIPTION, IMAGE_PATH) VALUES (?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -32,6 +32,7 @@ public class CategoryDAO {
             pst.setString(1, category.getCategoryName()); // gán giá trị cho ? thứ nhất
             pst.setString(2, String.valueOf(category.getCategoryType())); // gán giá trị cho ? thứ hai
             pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ ba
+            pst.setString(4, category.getImagePath());
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -44,7 +45,7 @@ public class CategoryDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(Category category) {
-        String sql = "UPDATE [CATEGORY] SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ tư
+        String sql = "UPDATE [CATEGORY] SET CATEGORY_NAME = ?, CATEGORY_TYPE = ?, DESCRIPTION = ?, IMAGE_PATH = ? WHERE CATEGORY_ID = ?"; // gán giá trị cho ? thứ tư
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -52,7 +53,8 @@ public class CategoryDAO {
             pst.setString(1, category.getCategoryName()); // gán giá trị cho ? thứ nhất
             pst.setString(2, String.valueOf(category.getCategoryType())); // gán giá trị cho ? thứ hai
             pst.setString(3, category.getDescription()); // gán giá trị cho ? thứ ba
-            pst.setInt(4, category.getCategoryId()); // gán giá trị cho ? thứ tư
+            pst.setString(4, category.getImagePath());
+            pst.setInt(5, category.getCategoryId()); // gán giá trị cho ? thứ tư
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();

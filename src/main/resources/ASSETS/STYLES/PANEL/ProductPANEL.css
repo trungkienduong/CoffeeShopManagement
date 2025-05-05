@@ -1,0 +1,68 @@
+.transparent-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.transparent-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.product-card {
+    -fx-pref-width: 200;
+    -fx-min-width: 200;
+    -fx-max-width: 200;
+    -fx-background-color: white;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 0);
+    -fx-translate-y: -2;
+}
+
+.product-card .product-image {
+    -fx-background-radius: 8 8 0 0;
+}
+
+.product-card .product-title {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5D4037;
+}
+
+.product-card .product-price {
+    -fx-text-fill: #795548;
+}
+
+.product-card .product-description {
+    -fx-text-fill: #8D6E63;
+    -fx-wrap-text: true;
+}
+
+.action-bar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.action-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 8 12;
+    -fx-background-radius: 4;
+}
+
+.action-button:hover {
+    -fx-background-color: #EFEBE9;
+}
+
+.action-button:pressed {
+    -fx-background-color: #D7CCC8;
+}
+
+.action-button .ikonli-font-icon {
+    -fx-icon-color: #795548;
+}

@@ -16,13 +16,16 @@
                         </font>
                     </Label>
                     <TextField fx:id="usernameLogin" maxWidth="250.0" prefHeight="40.0" promptText="User Name" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" />
-                    <AnchorPane maxWidth="250.0">
+                    <AnchorPane maxWidth="250.0" prefHeight="40.0" prefWidth="250.0">
                         <children>
-                            <PasswordField fx:id="passwordLogin" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                            <TextField fx:id="passwordLoginText" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                            <FontAwesomeIconView fx:id="eyeIconLogin" fill="#6B4423" glyphName="EYE" layoutX="229.0" layoutY="26.0" size="15" />
+                            <PasswordField fx:id="passwordLogin" layoutY="9.0" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
+                            <TextField fx:id="passwordLoginText" layoutY="9.0" maxWidth="250.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
+                            <FontAwesomeIconView fx:id="eyeIconLogin" fill="#6B4423" glyphName="EYE" layoutX="229.0" layoutY="34.0" size="15" />
                         </children>
                     </AnchorPane>
+
                     <Button fx:id="loginButton" maxWidth="250.0" onAction="#handleLogin" prefHeight="40.0" style="-fx-background-color: #6B4423;                             -fx-background-radius: 20px;" stylesheets="@../../ASSETS/STYLES/PANEL/LoginDialog.css" text="LOGIN" textFill="WHITE">
                         <font>
                             <Font size="18.0" />

@@ -31,17 +31,18 @@ public class InventoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Inventory item) {
-        String sql = "INSERT INTO [INVENTORY] (ITEM_ID, ITEM_NAME, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [INVENTORY] (ITEM_ID, ITEM_NAME, IMAGE_PATH, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, item.getItemId());
             pst.setString(2, item.getItemName());
-            pst.setDouble(3, item.getQuantity());
-            pst.setInt(4, item.getCategory().getCategoryId());
-            pst.setInt(5, item.getUnitId());
-            pst.setDouble(6, item.getCostPrice());
+            pst.setString(3, item.getImagePath());
+            pst.setDouble(4, item.getQuantity());
+            pst.setInt(5, item.getCategory().getCategoryId());
+            pst.setInt(6, item.getUnitId());
+            pst.setDouble(7, item.getCostPrice());
 
             int result = pst.executeUpdate();
             return result > 0;
@@ -53,17 +54,18 @@ public class InventoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(Inventory item) {
-        String sql = "UPDATE [INVENTORY] SET ITEM_NAME = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
+        String sql = "UPDATE [INVENTORY] SET ITEM_NAME = ?, IMAGE_PATH = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, item.getItemName());
-            pst.setDouble(2, item.getQuantity());
-            pst.setInt(3, item.getCategory().getCategoryId());
-            pst.setInt(4, item.getUnitId());
-            pst.setDouble(5, item.getCostPrice());
-            pst.setInt(6, item.getItemId());
+            pst.setString(2, item.getImagePath());
+            pst.setDouble(3, item.getQuantity());
+            pst.setInt(4, item.getCategory().getCategoryId());
+            pst.setInt(5, item.getUnitId());
+            pst.setDouble(6, item.getCostPrice());
+            pst.setInt(7, item.getItemId());
 
             int result = pst.executeUpdate();
             return result > 0;
@@ -121,6 +123,7 @@ public class InventoryDAO {
                 Inventory item = new Inventory();
                 item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
+                item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
                 item.setUnitId(rs.getInt("UNIT_ID"));
@@ -148,6 +151,7 @@ public class InventoryDAO {
                 Inventory item = new Inventory();
                 item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
+                item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
                 item.setUnitId(rs.getInt("UNIT_ID"));
@@ -175,6 +179,7 @@ public class InventoryDAO {
                 Inventory item = new Inventory();
                 item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
+                item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
                 item.setUnitId(rs.getInt("UNIT_ID"));
@@ -203,6 +208,7 @@ public class InventoryDAO {
                 Inventory item = new Inventory();
                 item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
+                item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
                 item.setUnitId(rs.getInt("UNIT_ID"));

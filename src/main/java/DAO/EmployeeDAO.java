@@ -27,7 +27,7 @@ public class EmployeeDAO {
 
     //---------------------- INSERT ----------------------
     public boolean insert(Employee employee) {
-        String sql = "INSERT INTO [EMPLOYEE] (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY, IMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [EMPLOYEE] (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY, IMAGE_PATH) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -52,7 +52,7 @@ public class EmployeeDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(Employee employee) {
-        String sql = "UPDATE [EMPLOYEE] SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ? WHERE EMPLOYEE_ID = ?";
+        String sql = "UPDATE [EMPLOYEE] SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ?, IMAGE_PATH = ? WHERE EMPLOYEE_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -64,7 +64,8 @@ public class EmployeeDAO {
             pst.setString(6, employee.getAddress());
             pst.setInt(7, employee.getPositionId());
             pst.setDouble(8, employee.getSalary());
-            pst.setInt(9, employee.getEmployeeId());
+            pst.setString(9, employee.getImage());
+            pst.setInt(10, employee.getEmployeeId());
 
             // thuc thi cau lenh
             int result = pst.executeUpdate();
@@ -114,6 +115,7 @@ public class EmployeeDAO {
                 employee.setAddress(rs.getString("ADDRESS"));
                 employee.setPositionId(rs.getInt("POSITION_ID"));
                 employee.setSalary(rs.getDouble("SALARY"));
+                employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
                 employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
                 employees.add(employee);
@@ -145,6 +147,7 @@ public class EmployeeDAO {
                 employee.setAddress(rs.getString("ADDRESS"));
                 employee.setPositionId(rs.getInt("POSITION_ID"));
                 employee.setSalary(rs.getDouble("SALARY"));
+                employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
                 employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
                 return employee;
@@ -176,6 +179,7 @@ public class EmployeeDAO {
                 employee.setAddress(rs.getString("ADDRESS"));
                 employee.setPositionId(rs.getInt("POSITION_ID"));
                 employee.setSalary(rs.getDouble("SALARY"));
+                employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
                 employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
                 return employee;
@@ -208,6 +212,7 @@ public class EmployeeDAO {
                 employee.setAddress(rs.getString("ADDRESS"));
                 employee.setPositionId(rs.getInt("POSITION_ID"));
                 employee.setSalary(rs.getDouble("SALARY"));
+                employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
                 employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
                 employees.add(employee);
@@ -240,6 +245,7 @@ public class EmployeeDAO {
                 employee.setAddress(rs.getString("ADDRESS"));
                 employee.setPositionId(rs.getInt("POSITION_ID"));
                 employee.setSalary(rs.getDouble("SALARY"));
+                employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
                 employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
                 employees.add(employee);
