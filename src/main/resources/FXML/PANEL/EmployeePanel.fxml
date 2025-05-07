@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="GUI.CONTROLLER.PANEL.EmployeePanel"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane
+        fx:controller="GUI.CONTROLLER.PANEL.EmployeePanelController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" stylesheets="@../../ASSETS/STYLES/PANEL/ProductPANEL.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ScrollPane fitToWidth="true" styleClass="transparent-scroll-pane" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <FlowPane fx:id="productContainer" hgap="20" style="-fx-background-color: white;" vgap="20">
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </padding>
+                </FlowPane>
+            </content>
+        </ScrollPane>
 
+        <HBox alignment="CENTER" prefHeight="50.0" spacing="20" styleClass="action-bar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <padding>
+                <Insets bottom="10" left="20" right="20" top="10" />
+            </padding>
+            <Button mnemonicParsing="false" styleClass="action-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-edit" iconSize="16" />
+                </graphic>
+                <tooltip>
+                    <Tooltip text="Cập nhật" />
+                </tooltip>
+            </Button>
+            <Button mnemonicParsing="false" styleClass="action-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-trash" iconSize="16" />
+                </graphic>
+                <tooltip>
+                    <Tooltip text="Xóa" />
+                </tooltip>
+            </Button>
+            <Button mnemonicParsing="false" styleClass="action-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-plus" iconSize="16" text="" />
+                </graphic>
+                <tooltip>
+                    <Tooltip text="Thêm sản phẩm" />
+                </tooltip>
+            </Button>
+        </HBox>
+    </children>
 </AnchorPane>

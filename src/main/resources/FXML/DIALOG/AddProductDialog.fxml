@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="GUI.CONTROLLER.DIALOG.AddProductDialogController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="500.0" prefWidth="400.0"
+            styleClass="dialog-pane"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/AddProductDialog.css">
 
+    <VBox spacing="15" alignment="CENTER"
+          AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20"
+          styleClass="content-box">
+
+        <StackPane styleClass="image-container">
+            <ImageView fx:id="productImageView" fitHeight="200" fitWidth="200"
+                       preserveRatio="true" styleClass="product-image"/>
+            <Button fx:id="imageButton" styleClass="image-button">
+                <graphic>
+                    <FontAwesomeIconView glyphName="CAMERA" size="30" styleClass="image-icon"/>
+                </graphic>
+            </Button>
+        </StackPane>
+
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
+            <Label text="Tên sản phẩm:" styleClass="label-text"/>
+            <TextField fx:id="productNameField" HBox.hgrow="ALWAYS"
+                       styleClass="text-input" promptText="Nhập tên sản phẩm"/>
+        </HBox>
+
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
+            <Label text="Giá:" styleClass="label-text"/>
+            <TextField fx:id="priceField" HBox.hgrow="ALWAYS"
+                       styleClass="text-input" promptText="Nhập giá sản phẩm"/>
+        </HBox>
+
+        <VBox spacing="5" styleClass="input-container">
+            <Label text="Mô tả sản phẩm:" styleClass="label-text"/>
+            <TextArea fx:id="descriptionArea" prefRowCount="3"
+                      wrapText="true" styleClass="text-input"
+                      promptText="Nhập mô tả sản phẩm"/>
+        </VBox>
+
+        <HBox spacing="10" alignment="CENTER" styleClass="button-container">
+            <Button text="Xác nhận" fx:id="confirmButton"
+                    styleClass="custom-button, confirm-button"/>
+            <Button text="Hủy" fx:id="cancelButton"
+                    styleClass="custom-button, cancel-button"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

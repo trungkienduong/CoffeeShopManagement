@@ -1,0 +1,138 @@
+.main-panel {
+    -fx-background-color: #f5f5f5;
+}
+
+.control-section {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.filter-combo {
+    -fx-min-width: 150px;
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.filter-combo:focused {
+    -fx-border-color: #666;
+}
+
+.control-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 3px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-cursor: hand;
+}
+
+.control-button:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #666;
+}
+
+.control-button:pressed {
+    -fx-background-color: #e9ecef;
+}
+
+.button-icon {
+    -fx-fill: #495057;
+}
+
+/* Table Scroll Pane */
+.table-scroll-pane {
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.table-scroll-pane > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 1;
+}
+
+.table-scroll-pane > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #ddd;
+    -fx-background-radius: 2;
+}
+
+/* Table Styles */
+.inventory-table {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: #eee;
+}
+
+.inventory-table .column-header {
+    -fx-background-color: #495057;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+.inventory-table .table-row-cell {
+    -fx-background-color: white;
+}
+
+.inventory-table .table-row-cell:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+.inventory-table .table-row-cell:selected {
+    -fx-background-color: #e9ecef;
+}
+
+.inventory-table .table-cell {
+    -fx-alignment: CENTER;
+    -fx-padding: 8px;
+}
+
+.no-data-label {
+    -fx-text-fill: #666;
+    -fx-font-size: 14px;
+}
+
+/* Column specific widths */
+.index-column {
+    -fx-pref-width: 60px;
+    -fx-max-width: 60px;
+    -fx-min-width: 60px;
+}
+
+.image-column {
+    -fx-pref-width: 80px;
+    -fx-max-width: 80px;
+    -fx-min-width: 80px;
+}
+
+.name-column {
+    -fx-pref-width: 250px;
+    -fx-min-width: 200px;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.category-column {
+    -fx-pref-width: 150px;
+    -fx-min-width: 120px;
+}
+
+.quantity-column {
+    -fx-pref-width: 100px;
+    -fx-min-width: 80px;
+}
+
+.unit-column {
+    -fx-pref-width: 100px;
+    -fx-min-width: 80px;
+}
+
+.price-column {
+    -fx-pref-width: 120px;
+    -fx-min-width: 100px;
+}

@@ -1,14 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="DIALOG.PaymentDialog"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="GUI.CONTROLLER.DIALOG.AddEmployeeDialogController"
+            prefHeight="700.0" prefWidth="500.0"
+            styleClass="dialog-pane"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/AddEmployeeDialog.css">
 
+    <ScrollPane fitToWidth="true" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="scroll-pane">
+        <VBox spacing="15" alignment="CENTER" styleClass="content-box">
+
+            <StackPane styleClass="image-container">
+                <ImageView fx:id="employeeImageView" fitHeight="200" fitWidth="200"
+                           preserveRatio="true" styleClass="employee-image"/>
+                <Button fx:id="imageButton" styleClass="image-button">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="CAMERA" size="30" styleClass="image-icon"/>
+                    </graphic>
+                </Button>
+            </StackPane>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Email:" styleClass="label-text"/>
+                <Label fx:id="emailLabel" styleClass="info-label" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Chức vụ:" styleClass="label-text"/>
+                <Label fx:id="roleLabel" styleClass="info-label" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Họ và tên:" styleClass="label-text"/>
+                <TextField fx:id="fullnameField" HBox.hgrow="ALWAYS"
+                           styleClass="text-input" promptText="Nhập họ và tên"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Giới tính:" styleClass="label-text"/>
+                <ComboBox fx:id="genderComboBox" styleClass="combo-box">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Nam"/>
+                            <String fx:value="Nữ"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="CCCD:" styleClass="label-text"/>
+                <TextField fx:id="cccdField" HBox.hgrow="ALWAYS"
+                           styleClass="text-input" promptText="Nhập số CCCD"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Ngày sinh:" styleClass="label-text"/>
+                <DatePicker fx:id="birthDatePicker" HBox.hgrow="ALWAYS"
+                            styleClass="date-picker" promptText="Chọn ngày sinh"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Số điện thoại:" styleClass="label-text"/>
+                <TextField fx:id="phoneField" HBox.hgrow="ALWAYS"
+                           styleClass="text-input" promptText="Nhập số điện thoại"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Địa chỉ:" styleClass="label-text"/>
+                <TextArea fx:id="addressArea" prefRowCount="2"
+                          styleClass="text-input" promptText="Nhập địa chỉ" wrapText="true"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container">
+                <Label text="Lương:" styleClass="label-text"/>
+                <TextField fx:id="salaryField" HBox.hgrow="ALWAYS"
+                           styleClass="text-input" promptText="Nhập lương"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER" styleClass="button-container">
+                <Button text="Xác nhận" fx:id="confirmButton"
+                        styleClass="custom-button, confirm-button"/>
+                <Button text="Hủy" fx:id="cancelButton"
+                        styleClass="custom-button, cancel-button"/>
+            </HBox>
+        </VBox>
+    </ScrollPane>
 </AnchorPane>

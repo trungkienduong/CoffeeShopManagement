@@ -13,7 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ProductPanelController {
 
-    @FXML
+    /*@FXML
     private FlowPane productContainer;
 
     @FXML
@@ -47,35 +47,6 @@ public class ProductPanelController {
         });
     }
 
-    // Hàm giả lập thêm sản phẩm vào FlowPane
-    private void addMockProduct() {
-        // Tạo một product card
-        AnchorPane productCard = new AnchorPane();
-        productCard.setPrefWidth(150);
-        productCard.setPrefHeight(200);
-
-        // Thêm ảnh cho sản phẩm
-        Image image = new Image("https://via.placeholder.com/150");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(150);
-        imageView.setFitHeight(150);
-
-        // Thêm tên sản phẩm
-        Text productName = new Text("Sản phẩm mới");
-        productName.setLayoutX(10);
-        productName.setLayoutY(160);
-
-        // Thêm giá sản phẩm
-        Text productPrice = new Text("Giá: 100,000 VNĐ");
-        productPrice.setLayoutX(10);
-        productPrice.setLayoutY(180);
-
-        // Thêm tất cả vào productCard
-        productCard.getChildren().addAll(imageView, productName, productPrice);
-
-        // Thêm card vào FlowPane
-        productContainer.getChildren().add(productCard);
-    }
 
     // Hàm hiển thị thông báo (Alert) khi nhấn các nút
     private void showAlert(String title, String message) {
@@ -84,5 +55,5 @@ public class ProductPanelController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
+    }*/
 }

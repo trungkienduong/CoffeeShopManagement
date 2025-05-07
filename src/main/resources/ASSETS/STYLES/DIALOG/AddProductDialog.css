@@ -1,0 +1,93 @@
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+}
+
+.content-box {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+}
+
+.image-container {
+    -fx-min-height: 200;
+    -fx-min-width: 200;
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #6F4E37;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.image-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.image-button:hover {
+    -fx-opacity: 0.8;
+}
+
+.image-icon {
+    -fx-fill: #6F4E37;
+}
+
+.label-text {
+    -fx-text-fill: #6F4E37;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.text-input {
+    -fx-background-color: white;
+    -fx-border-color: #6F4E37;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.text-input:focused {
+    -fx-border-width: 2px;
+    -fx-border-color: #8B4513;
+}
+
+.input-container {
+    -fx-background-color: white;
+    -fx-padding: 5px;
+}
+
+.button-container {
+    -fx-padding: 10px 0 0 0;
+}
+
+.custom-button {
+    -fx-background-color: white;
+    -fx-text-fill: #6F4E37;
+    -fx-border-color: #6F4E37;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 20px;
+    -fx-font-weight: bold;
+}
+
+.custom-button:hover {
+    -fx-background-color: #6F4E37;
+    -fx-text-fill: white;
+}
+
+.confirm-button {
+    -fx-border-color: #2E7D32;
+    -fx-text-fill: #2E7D32;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #2E7D32;
+    -fx-text-fill: white;
+}
+
+.cancel-button {
+    -fx-border-color: #C62828;
+    -fx-text-fill: #C62828;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #C62828;
+    -fx-text-fill: white;
+}

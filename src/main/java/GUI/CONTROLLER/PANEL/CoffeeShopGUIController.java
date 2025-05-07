@@ -70,6 +70,16 @@ public class CoffeeShopGUIController {
                 Parent productView = loader.load();
                 mainContent.getChildren().setAll(productView);
             }
+            else if (clickedButton == employeeBtn) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/EmployeePanel.fxml"));
+                Parent productView = loader.load();
+                mainContent.getChildren().setAll(productView);
+            }
+            else if (clickedButton == inventoryBtn) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/InventoryPanel.fxml"));
+                Parent productView = loader.load();
+                mainContent.getChildren().setAll(productView);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
