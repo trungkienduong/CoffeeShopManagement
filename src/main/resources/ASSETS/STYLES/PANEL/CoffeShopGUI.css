@@ -79,6 +79,44 @@
     -fx-border-radius: 20;
 }
 
+.search-button {
+    -fx-background-color: transparent;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-alignment: center;
+}
+
+.search-button:hover {
+    -fx-background-color: transparent;
+}
+
+.search-button:pressed {
+    -fx-background-color: transparent;
+}
+
+.search-button FontAwesomeIconView {
+    -fx-fill: #5C4033;
+    -fx-opacity: 0.8;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.search-button:hover FontAwesomeIconView {
+    -fx-fill: #5C4033;
+    -fx-opacity: 1;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.search-button:pressed FontAwesomeIconView {
+    -fx-fill: #5C4033;
+    -fx-opacity: 0.6;
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+
 .stat-card {
     -fx-background-color: #5C4033;
     -fx-background-radius: 10;

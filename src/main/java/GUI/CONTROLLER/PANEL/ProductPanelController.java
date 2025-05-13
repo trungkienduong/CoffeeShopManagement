@@ -1,59 +1,58 @@
 package GUI.CONTROLLER.PANEL;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ProductPanelController {
 
-    /*@FXML
+    @FXML
     private FlowPane productContainer;
 
     @FXML
-    private Button updateButton;
+    private Button addBtn;
 
     @FXML
-    private Button deleteButton;
+    private Button editBtn;
 
     @FXML
-    private Button addButton;
+    private Button deleteBtn;
 
     @FXML
-    private AnchorPane rootPane;
+    private Button viewBtn;
 
-    // Khi khởi tạo giao diện
-    public void initialize() {
-        // Giả lập thêm sản phẩm vào FlowPane
-        addMockProduct();
-
-        // Đặt sự kiện cho nút Add Product
-        addButton.setOnAction(event -> addMockProduct());
-
-        // Đặt sự kiện cho nút Update
-        updateButton.setOnAction(event -> {
-            showAlert("Update", "Cập nhật sản phẩm!");
-        });
-
-        // Đặt sự kiện cho nút Delete
-        deleteButton.setOnAction(event -> {
-            showAlert("Delete", "Xóa sản phẩm!");
-        });
+    @FXML
+    private void initialize() {
+        // Nếu muốn load dữ liệu sản phẩm sau này, xử lý ở đây
     }
 
+    @FXML
+    private void handleAddProduct(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            Parent root = loader.load();
 
-    // Hàm hiển thị thông báo (Alert) khi nhấn các nút
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }*/
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Add New Product");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+
+            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
+            // loadProducts();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Có thể show Alert thay vì chỉ in lỗi
+        }
+    }
 }

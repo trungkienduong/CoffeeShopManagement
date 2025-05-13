@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="GUI.FXML.DIALOG.InventoryUpdateDialog"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="550.0" prefWidth="800.0" styleClass="dialog-pane"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/InventoryUpdateDialog.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CONTROLLER.DIALOG.InventoryUpdateDialogController">
 
+    <VBox alignment="CENTER" spacing="15" styleClass="content-box"
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <Label text="Thêm phiếu nhập kho" styleClass="dialog-title"/>
+
+        <GridPane hgap="25" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Mặt hàng:" styleClass="label-text"/>
+                <ComboBox fx:id="itemComboBox" promptText="Chọn mặt hàng" styleClass="combo-box"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Nhà cung cấp:" styleClass="label-text"/>
+                <TextField fx:id="supplierField" promptText="Nhập tên nhà cung cấp" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Số lượng:" styleClass="label-text"/>
+                <TextField fx:id="quantityField" promptText="Nhập số lượng" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Đơn giá:" styleClass="label-text"/>
+                <TextField fx:id="unitPriceField" promptText="Nhập đơn giá" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Ngày nhập:" styleClass="label-text"/>
+                <DatePicker fx:id="importDatePicker" promptText="Chọn ngày nhập" styleClass="date-picker"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Nhân viên:" styleClass="label-text"/>
+                <ComboBox fx:id="employeeComboBox" promptText="Chọn nhân viên" styleClass="combo-box"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                <Label text="Ghi chú:" styleClass="label-text"/>
+                <TextArea fx:id="noteArea" promptText="Nhập ghi chú" styleClass="text-area" wrapText="true"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                <Label text="Tổng tiền:" styleClass="label-text"/>
+                <Label fx:id="totalPriceLabel" styleClass="total-price-label"/>
+            </HBox>
+        </GridPane>
+
+        <HBox alignment="CENTER" spacing="25">
+            <Button fx:id="confirmButton" text="Xác nhận" styleClass="custom-button, confirm-button"/>
+            <Button fx:id="cancelButton" text="Hủy" styleClass="custom-button, cancel-button"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

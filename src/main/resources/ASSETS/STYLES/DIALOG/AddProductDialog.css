@@ -3,18 +3,80 @@
     -fx-background-radius: 5px;
 }
 
-.content-box {
+.main-container {
     -fx-background-color: white;
-    -fx-padding: 10px;
+    -fx-padding: 20px;
+}
+
+.image-section {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
 }
 
 .image-container {
-    -fx-min-height: 200;
-    -fx-min-width: 200;
-    -fx-background-color: #f5f5f5;
-    -fx-border-color: #6F4E37;
+    -fx-min-height: 180;
+    -fx-min-width: 180;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #6f4e37;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+}
+
+.form-section {
+    -fx-spacing: 15px;
+    -fx-padding: 10px 0;
+}
+
+.input-group {
+    -fx-alignment: center-left;
+}
+
+.label-text {
+    -fx-text-fill: #6f4e37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-min-width: 100px;
+    -fx-alignment: center-left;
+}
+
+.text-input {
+    -fx-background-color: white;
+    -fx-border-color: #6f4e37;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-size: 13px;
+    -fx-pref-width: 250px;
+}
+
+.price-field {
+    -fx-pref-width: 150px;
+}
+
+.currency-label {
+    -fx-text-fill: #6f4e37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 0;
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #6f4e37;
+    -fx-border-radius: 5px;
+    -fx-padding: 3px;
+    -fx-font-size: 13px;
+    -fx-pref-width: 250px;
+}
+
+.combo-box .cell {
+    -fx-text-fill: #6f4e37;
+    -fx-padding: 4px 8px;
+}
+
+.description-group TextArea {
+    -fx-pref-width: 350px;
+    -fx-pref-height: 80px;
 }
 
 .image-button {
@@ -26,68 +88,46 @@
     -fx-opacity: 0.8;
 }
 
-.image-icon {
-    -fx-fill: #6F4E37;
-}
-
-.label-text {
-    -fx-text-fill: #6F4E37;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.text-input {
-    -fx-background-color: white;
-    -fx-border-color: #6F4E37;
-    -fx-border-radius: 5px;
-    -fx-padding: 8px;
-}
-
-.text-input:focused {
-    -fx-border-width: 2px;
-    -fx-border-color: #8B4513;
-}
-
-.input-container {
-    -fx-background-color: white;
-    -fx-padding: 5px;
+.image-button .glyph-icon {
+    -fx-fill: #6f4e37;
 }
 
 .button-container {
-    -fx-padding: 10px 0 0 0;
+    -fx-alignment: center-right;
+    -fx-padding: 10px 0;
+    -fx-spacing: 15px;
 }
 
 .custom-button {
     -fx-background-color: white;
-    -fx-text-fill: #6F4E37;
-    -fx-border-color: #6F4E37;
     -fx-border-radius: 5px;
     -fx-cursor: hand;
     -fx-padding: 8px 20px;
     -fx-font-weight: bold;
-}
-
-.custom-button:hover {
-    -fx-background-color: #6F4E37;
-    -fx-text-fill: white;
+    -fx-min-width: 100px;
 }
 
 .confirm-button {
-    -fx-border-color: #2E7D32;
-    -fx-text-fill: #2E7D32;
+    -fx-border-color: #2e7d32;
+    -fx-text-fill: #2e7d32;
 }
 
 .confirm-button:hover {
-    -fx-background-color: #2E7D32;
+    -fx-background-color: #2e7d32;
     -fx-text-fill: white;
 }
 
 .cancel-button {
-    -fx-border-color: #C62828;
-    -fx-text-fill: #C62828;
+    -fx-border-color: #c62828;
+    -fx-text-fill: #c62828;
 }
 
 .cancel-button:hover {
-    -fx-background-color: #C62828;
+    -fx-background-color: #c62828;
     -fx-text-fill: white;
+}
+
+.text-input:focused, .combo-box:focused {
+    -fx-border-width: 2px;
+    -fx-border-color: #8b4513;
 }

@@ -52,24 +52,32 @@
             </children>
         </VBox>
 
-        <HBox layoutX="181.0" layoutY="6.0" prefHeight="79.0" prefWidth="620.0" styleClass="search-bar" AnchorPane.topAnchor="0.0">
+        <HBox layoutX="181.0" layoutY="6.0" prefHeight="55.0" prefWidth="620.0" styleClass="search-bar" AnchorPane.topAnchor="0.0">
             <children>
-                <AnchorPane prefHeight="79.0" prefWidth="620.0">
+                <AnchorPane prefHeight="44.0" prefWidth="620.0">
                     <children>
-                        <Label layoutX="43.0" layoutY="31.0" styleClass="search-label" text="Search" />
-                        <TextField fx:id="searchField" layoutX="126.0" layoutY="27.0" onKeyTyped="#handleSearch" prefHeight="26.0" prefWidth="192.0" promptText="Enter keyword" styleClass="search-input" />
-                        <FontAwesomeIconView glyphName="SEARCH" layoutX="100.0" layoutY="45.0" size="16" />
+                        <Label layoutX="71.0" layoutY="23.0" styleClass="search-label" text="Search">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="searchField" layoutX="127.0" layoutY="16.0" onKeyTyped="#handleSearch" prefHeight="31.0" prefWidth="298.0" promptText="Enter keyword" styleClass="search-input" />
+                        <Button layoutX="383.0" layoutY="20.0" mnemonicParsing="false" styleClass="search-button">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="SEARCH" size="16" />
+                            </graphic>
+                        </Button>
                     </children>
                 </AnchorPane>
             </children>
         </HBox>
 
-        <AnchorPane fx:id="mainContent" layoutX="181.0" layoutY="79.0" prefHeight="421.0" prefWidth="620.0" styleClass="main-content">
+        <AnchorPane fx:id="mainContent" layoutX="181.0" layoutY="55.0" prefHeight="439.0" prefWidth="620.0" styleClass="main-content" AnchorPane.topAnchor="55.0">
             <children>
                 <Pane layoutX="51.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
                     <children>
                         <Label layoutX="34.0" layoutY="19.0" styleClass="stat-title" text="Employees" />
-                        <Label fx:id="employeeCount" layoutX="34.0" layoutY="47.0" styleClass="stat-value" text="0" />
+                        <Label fx:id="employeeCount" layoutX="48.0" layoutY="47.0" styleClass="stat-value" text="0" />
                         <FontAwesomeIconView glyphName="USER" layoutX="14.0" layoutY="35.0" size="24" />
                     </children>
                 </Pane>
@@ -77,7 +85,7 @@
                 <Pane layoutX="277.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
                     <children>
                         <Label layoutX="40.0" layoutY="19.0" styleClass="stat-title" text="Products" />
-                        <Label fx:id="productCount" layoutX="39.0" layoutY="48.0" styleClass="stat-value" text="0" />
+                        <Label fx:id="productCount" layoutX="48.0" layoutY="47.0" styleClass="stat-value" text="0" />
                         <FontAwesomeIconView glyphName="COFFEE" layoutX="14.0" layoutY="35.0" size="24" />
                     </children>
                 </Pane>
@@ -85,12 +93,12 @@
                 <Pane layoutX="478.0" layoutY="14.0" prefHeight="93.0" prefWidth="108.0" styleClass="stat-card">
                     <children>
                         <Label layoutX="44.0" layoutY="19.0" styleClass="stat-title" text="Inventory" />
-                        <Label fx:id="inventoryCount" layoutX="37.0" layoutY="44.0" styleClass="stat-value" text="0" />
+                        <Label fx:id="inventoryCount" layoutX="48.0" layoutY="47.0" styleClass="stat-value" text="0" />
                         <FontAwesomeIconView glyphName="CUBES" layoutX="14.0" layoutY="35.0" size="24" />
                     </children>
                 </Pane>
 
-                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="251.0" prefWidth="319.0" title="Sales Overview">
+                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="278.0" prefWidth="319.0" title="Sales Overview">
                     <xAxis>
                         <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -99,7 +107,7 @@
                     </yAxis>
                 </AreaChart>
 
-                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="244.0" prefWidth="298.0" title="Product Distribution" />
+                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="271.0" prefWidth="298.0" title="Product Distribution" />
             </children>
         </AnchorPane>
     </children>
