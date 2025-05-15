@@ -24,10 +24,7 @@ public class Employee {
     public Employee() {
     }
 
-    // Parameterized constructor without linked objects
-    public Employee(int employeeId, String username, String fullname, char gender, 
-                   String cccd, Date dateOfBirth, String phone, String address, 
-                   int positionId, double salary, Date joinDate, String image) {
+    public Employee(int employeeId, String username, String fullname, char gender, String cccd, Date dateOfBirth, String phone, String address, int positionId, double salary, Date joinDate, String image, User user, EmployeePosition position) {
         this.employeeId = employeeId;
         this.username = username;
         this.fullname = fullname;
@@ -40,10 +37,10 @@ public class Employee {
         this.salary = salary;
         this.joinDate = joinDate;
         this.image = image;
+        this.user = user;
+        this.position = position;
     }
 
-
-    // Getters and Setters
     public int getEmployeeId() {
         return employeeId;
     }
@@ -132,13 +129,20 @@ public class Employee {
         this.joinDate = joinDate;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-        this.username = user.getUsername();
     }
 
     public EmployeePosition getPosition() {
@@ -147,15 +151,6 @@ public class Employee {
 
     public void setPosition(EmployeePosition position) {
         this.position = position;
-        this.positionId = position.getPositionId();
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     @Override

@@ -23,7 +23,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="editBtn" mnemonicParsing="false" styleClass="action-button" text="Edit">
+                <Button fx:id="editBtn" mnemonicParsing="false" styleClass="action-button" text="Edit" onAction="#handleEditProduct">
                     <graphic>
                         <FontAwesomeIconView glyphName="PENCIL" size="18"/>
                     </graphic>
@@ -35,7 +35,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="viewBtn" mnemonicParsing="false" styleClass="action-button" text="View Details">
+                <Button fx:id="viewBtn" mnemonicParsing="false" styleClass="action-button" text="View Details" onAction="#handleViewProduct">
                     <graphic>
                         <FontAwesomeIconView glyphName="INFO_CIRCLE" size="18"/>
                     </graphic>

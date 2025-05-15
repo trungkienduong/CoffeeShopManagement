@@ -164,6 +164,7 @@ public class LoginDialogController {
         String password = passwordRegister.getText();
         String role = roleComboBox.getValue();
 
+
         if (UserBUS.isValidEmail(email)) {
             // Giả sử roleComboBox trả về ID số (int) thay vì chuỗi
             int roleId = RoleListBUS.getInstance().getRoleIdByName(role); // Dùng phương thức này để lấy ID từ tên role

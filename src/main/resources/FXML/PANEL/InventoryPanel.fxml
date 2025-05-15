@@ -9,22 +9,22 @@
     <VBox spacing="2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <HBox alignment="CENTER_LEFT" spacing="5" styleClass="button-container">
-            <Button fx:id="addBtn" onAction="#handleAdd" styleClass="action-button">
+            <Button fx:id="addBtn" onAction="#handleAddInventory" styleClass="action-button">
                 <graphic>
                     <FontAwesomeIconView glyphName="PLUS" size="16" styleClass="button-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="editBtn" onAction="#handleEdit" styleClass="action-button">
+            <Button fx:id="editBtn" onAction="#handleEditInventory" styleClass="action-button">
                 <graphic>
                     <FontAwesomeIconView glyphName="EDIT" size="16" styleClass="button-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="deleteBtn" onAction="#handleDelete" styleClass="action-button">
+            <Button fx:id="deleteBtn" onAction="#handleDeleteInventory" styleClass="action-button">
                 <graphic>
                     <FontAwesomeIconView glyphName="TRASH" size="16" styleClass="button-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="viewBtn" onAction="#handleView" styleClass="action-button">
+            <Button fx:id="viewBtn" onAction="#handleViewinventory" styleClass="action-button">
                 <graphic>
                     <FontAwesomeIconView glyphName="EYE" size="16" styleClass="button-icon" />
                 </graphic>

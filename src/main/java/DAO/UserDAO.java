@@ -99,7 +99,7 @@ public class UserDAO {
                 user.setEmail(rs.getString("EMAIL"));
                 user.setRoleId(rs.getInt("ROLE_ID"));
 
-                user.setRole(roleListDAO.findById(user.getRoleId()));
+              /*  user.setRole(roleListDAO.findById(user.getRoleId()));*/
                 users.add(user);
             }
             return users;
@@ -126,7 +126,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
                 user.setRoleId(rs.getInt("ROLE_ID"));
-                user.setRole(roleListDAO.findById(user.getRoleId()));
+               /* user.setRole(roleListDAO.findById(user.getRoleId()));*/
                 return user;
             }
         } catch (SQLException e) {
@@ -152,7 +152,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
                 user.setRoleId(rs.getInt("ROLE_ID"));
-                user.setRole(roleListDAO.findById(user.getRoleId()));
+               /* user.setRole(roleListDAO.findById(user.getRoleId()));*/
                 return user;
             }
         } catch (SQLException e) {

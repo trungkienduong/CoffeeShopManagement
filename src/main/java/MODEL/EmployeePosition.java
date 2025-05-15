@@ -8,18 +8,11 @@ public class EmployeePosition {
     public EmployeePosition() {
     }
 
-    // Parameterized constructor
     public EmployeePosition(int positionId, String positionName) {
         this.positionId = positionId;
         this.positionName = positionName;
     }
 
-    // Constructor with only name (for creating new positions)
-    public EmployeePosition(String positionName) {
-        this.positionName = positionName;
-    }
-
-    // Getters and Setters
     public int getPositionId() {
         return positionId;
     }

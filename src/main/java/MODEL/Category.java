@@ -11,12 +11,12 @@ public class Category {
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName, String description, char categoryType, String image) {
+    public Category(int categoryId, String categoryName, String description, char categoryType, String imagePath) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.description = description;
         this.categoryType = categoryType;
-        this.imagePath = image;
+        this.imagePath = imagePath;
     }
 
     public int getCategoryId() {
@@ -55,8 +55,8 @@ public class Category {
         return imagePath;
     }
 
-    public void setImagePath(String image) {
-        this.imagePath = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Category {
                 ", categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
                 ", categoryType=" + categoryType +
-                ", image='" + imagePath + '\'' +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }

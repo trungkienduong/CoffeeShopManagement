@@ -1,7 +1,7 @@
 package MODEL;
 
 public class Product {
-    /*private int productId;
+   /* private int productId;
     private String productName;
     private int categoryId;
     private double sellPrice;
@@ -13,32 +13,14 @@ public class Product {
     public Product() {
     }
 
-    // Parameterized constructor without category object
-    public Product(int productId, String productName, int categoryId, double sellPrice) {
+    public Product(int productId, String productName, int categoryId, double sellPrice, Category category) {
         this.productId = productId;
         this.productName = productName;
         this.categoryId = categoryId;
         this.sellPrice = sellPrice;
-    }
-
-    // Constructor with category object
-    public Product(int productId, String productName, Category category, double sellPrice) {
-        this.productId = productId;
-        this.productName = productName;
-        this.categoryId = category.getCategoryId();
         this.category = category;
-        this.sellPrice = sellPrice;
     }
 
-    // Constructor without ID (for creating new products)
-    public Product(String productName, Category category, double sellPrice) {
-        this.productName = productName;
-        this.categoryId = category.getCategoryId();
-        this.category = category;
-        this.sellPrice = sellPrice;
-    }
-
-    // Getters and Setters
     public int getProductId() {
         return productId;
     }

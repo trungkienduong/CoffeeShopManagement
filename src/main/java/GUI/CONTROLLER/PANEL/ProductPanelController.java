@@ -55,4 +55,53 @@ public class ProductPanelController {
             // Có thể show Alert thay vì chỉ in lỗi
         }
     }
+
+    @FXML
+    private void handleEditProduct(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Edit Product");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+
+            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
+            // loadProducts();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Có thể show Alert thay vì chỉ in lỗi
+        }
+    }
+
+    @FXML
+    private void handleDeleteProduct(ActionEvent event) {
+        // Xử lý xóa sản phẩm
+    }
+
+    @FXML
+    private void handleViewProduct(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("View Product");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+
+            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
+            // loadProducts();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Có thể show Alert thay vì chỉ in lỗi
+        }
+    }
 }

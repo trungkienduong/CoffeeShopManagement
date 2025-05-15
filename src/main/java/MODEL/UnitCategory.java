@@ -9,20 +9,12 @@ public class UnitCategory {
     public UnitCategory() {
     }
 
-    // Parameterized constructor
     public UnitCategory(int unitId, String unitName, String description) {
         this.unitId = unitId;
         this.unitName = unitName;
         this.description = description;
     }
 
-    // Constructor without ID (for creating new units)
-    public UnitCategory(String unitName, String description) {
-        this.unitName = unitName;
-        this.description = description;
-    }
-
-    // Getters and Setters
     public int getUnitId() {
         return unitId;
     }

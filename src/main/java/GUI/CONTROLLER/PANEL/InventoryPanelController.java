@@ -35,7 +35,7 @@ public class InventoryPanelController {
     }
 
     @FXML
-    private void handleAdd(ActionEvent event) {
+    private void handleAddInventory(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));
             Parent root = loader.load();
@@ -57,20 +57,51 @@ public class InventoryPanelController {
     }
 
     @FXML
-    private void handleEdit(ActionEvent event) {
-        // Xử lý chỉnh sửa sản phẩm tại đây
-        System.out.println("Edit product");
+    private void handleEditInventory(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Edit Product");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+
+            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nиф cần
+            // loadProducts();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Có thể show Alert thay vì chỉ in lỗi nиф muốn
+        }
     }
 
     @FXML
-    private void handleDelete(ActionEvent event) {
+    private void handleDeleteInventory(ActionEvent event) {
         // Xử lý xóa sản phẩm tại đây
         System.out.println("Delete product");
     }
 
     @FXML
-    private void handleView(ActionEvent event) {
-        // Xử lý xem chi tiết sản phẩm tại đây
-        System.out.println("View product");
+    private void handleViewinventory(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("View Product");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();  // Chờ dialog đóng newcom
+
+            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nиф cần            // loadProducts();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Có thể show Alert thay vì chỉ in lỗi nиф muốn
+        }
     }
 }
