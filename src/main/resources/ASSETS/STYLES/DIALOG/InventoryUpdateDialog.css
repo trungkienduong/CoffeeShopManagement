@@ -38,6 +38,17 @@
     -fx-pref-width: 250px;
 }
 
+.price-field {
+    -fx-pref-width: 150px !important;
+    -fx-max-width: 150px;
+}
+
+.currency-label {
+    -fx-text-fill: #6f4e37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
 .combo-box {
     -fx-background-color: white;
     -fx-border-color: #6f4e37;
@@ -59,13 +70,71 @@
     -fx-pref-width: 250px;
 }
 
+.date-picker .arrow-button {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #6f4e37;
+}
+
+.date-picker .cell {
+    -fx-background-color: white;
+    -fx-text-fill: #6f4e37;
+}
+
+.date-picker .cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.date-picker .cell:focused {
+    -fx-background-color: #e8e8e8;
+}
+
+.date-picker .selected {
+    -fx-background-color: #6f4e37;
+    -fx-text-fill: white;
+}
+
+.date-picker .selected:focused {
+    -fx-background-color: #6f4e37;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup {
+    -fx-border-color: #6f4e37;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #6f4e37;
+}
+
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: white;
+}
+
+.date-picker-popup .week-number-cell {
+    -fx-text-fill: #6f4e37;
+}
+
 .text-area {
     -fx-background-color: white;
     -fx-border-color: #6f4e37;
     -fx-border-radius: 5px;
-    -fx-pref-width: 350px;
-    -fx-pref-height: 80px;
+    -fx-pref-width: 550px;
+    -fx-pref-height: 45px;
     -fx-padding: 8px;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
 }
 
 .total-price-label {
@@ -109,4 +178,43 @@
 .text-area:focused {
     -fx-border-width: 2px;
     -fx-border-color: #8b4513;
+}
+
+.supplier-input-container {
+    -fx-min-width: 250px;
+    -fx-pref-width: 250px;
+    -fx-min-height: 32px;
+}
+
+.supplier-combo {
+    -fx-pref-width: 200px;
+}
+
+.add-supplier-button {
+    -fx-translate-x: 210px;
+    -fx-translate-y: 0;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-padding: 0;
+    -fx-background-color: white;
+    -fx-border-color: #6f4e37;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-alignment: center;
+}
+
+.add-supplier-button:hover {
+    -fx-background-color: #6f4e37;
+}
+
+.add-supplier-button .button-icon {
+    -fx-fill: #6f4e37;
+}
+
+.add-supplier-button:hover .button-icon {
+    -fx-fill: white;
 }

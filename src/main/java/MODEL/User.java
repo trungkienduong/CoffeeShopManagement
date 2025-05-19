@@ -4,18 +4,19 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private int roleId;
-    /*private RoleList role;*/ // Đối tượng RoleList để lưu thông tin quyền
+
+    // đối tượng list quyen
+    private RoleList role; // Đối tượng RoleList để lưu thông tin quyền
 
     // Default constructor
     public User() {
     }
 
-    public User(String username, String password, String email, int roleId) {
+    public User(String username, String password, String email, RoleList role) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roleId = roleId;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -42,12 +43,12 @@ public class User {
         this.email = email;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public RoleList getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(RoleList role) {
+        this.role = role;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class User {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", roleId=" + roleId +
+                ", role=" + role +
                 '}';
     }
 }

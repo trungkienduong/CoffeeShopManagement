@@ -59,7 +59,7 @@ public class ProductPanelController {
     @FXML
     private void handleEditProduct(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditProductDialog.fxml")); // sửa lại đường dẫn nếu cần
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();
@@ -86,7 +86,7 @@ public class ProductPanelController {
     @FXML
     private void handleViewProduct(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ViewProductDialog.fxml")); // sửa lại đường dẫn nếu cần
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();

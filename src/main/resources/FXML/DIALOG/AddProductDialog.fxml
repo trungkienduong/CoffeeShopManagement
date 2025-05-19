@@ -1,67 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.geometry.Insets?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="GUI.CONTROLLER.DIALOG.AddProductDialogController"
-            prefHeight="400.0" prefWidth="700.0"
-            styleClass="dialog-pane"
-            stylesheets="@../../ASSETS/STYLES/DIALOG/AddProductDialog.css">
-
-    <HBox spacing="20" styleClass="main-container"
-          AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
-          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
-
+<AnchorPane prefHeight="400.0" prefWidth="700.0" styleClass="dialog-pane" stylesheets="@../../ASSETS/STYLES/DIALOG/AddProductDialog.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.AddProductDialogController">
+    <HBox spacing="30" styleClass="main-container" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
         <!-- Left Section - Image -->
         <VBox styleClass="image-section">
             <StackPane styleClass="image-container">
-                <ImageView fx:id="productImageView" fitHeight="180" fitWidth="180"
-                           preserveRatio="true"/>
-                <Button fx:id="imageButton" onAction="#onChooseImage"
-                        styleClass="image-button">
+                <ImageView fx:id="productImageView" fitHeight="200" fitWidth="200" preserveRatio="false" />
+                <Button fx:id="imageButton" onAction="#onChooseImage" styleClass="image-button">
                     <graphic>
-                        <FontAwesomeIconView glyphName="CAMERA" size="30"/>
+                        <FontAwesomeIconView glyphName="CAMERA" size="35" />
                     </graphic>
                 </Button>
             </StackPane>
         </VBox>
 
         <!-- Right Section - Form -->
-        <VBox spacing="15" styleClass="form-section">
+        <VBox spacing="20" styleClass="form-section" HBox.hgrow="ALWAYS">
             <HBox spacing="15" styleClass="input-group">
-                <Label text="Tên sản phẩm:" styleClass="label-text"/>
-                <TextField fx:id="productNameField" styleClass="text-input"/>
+                <Label styleClass="label-text" text="Loại sản phẩm:" />
+                <Pane styleClass="type-input-container">
+                    <ComboBox fx:id="recipeComboBox" styleClass="combo-box" />
+                    <Button fx:id="addTypeButton" styleClass="custom-button, add-type-button">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="PLUS" size="14" styleClass="button-icon"/>
+                        </graphic>
+                    </Button>
+                </Pane>
             </HBox>
 
             <HBox spacing="15" styleClass="input-group">
-                <Label text="Công thức:" styleClass="label-text"/>
-                <ComboBox fx:id="recipeComboBox" styleClass="combo-box"/>
+                <Label styleClass="label-text" text="Tên sản phẩm:" />
+                <TextField fx:id="productNameField" styleClass="text-input" />
             </HBox>
 
             <HBox spacing="15" styleClass="input-group">
-                <Label text="Giá:" styleClass="label-text"/>
-                <TextField fx:id="priceField" styleClass="text-input, price-field"/>
-                <Label text="VND" styleClass="currency-label"/>
+                <Label styleClass="label-text" text="Giá:" />
+                <TextField fx:id="priceField" styleClass="text-input, price-field" />
+                <Label styleClass="currency-label" text="VND" />
             </HBox>
 
             <VBox spacing="10" styleClass="description-group">
-                <Label text="Mô tả:" styleClass="label-text"/>
-                <TextArea fx:id="descriptionArea" styleClass="text-input"
-                          prefRowCount="3" wrapText="true"/>
+                <Label styleClass="label-text" text="Mô tả:" />
+                <TextArea fx:id="descriptionArea" prefHeight="35.0" styleClass="text-input" wrapText="true" />
             </VBox>
 
             <HBox spacing="15" styleClass="button-container">
-                <Button text="Xác nhận" fx:id="confirmButton"
-                        onAction="#onConfirm"
-                        styleClass="custom-button, confirm-button"/>
-                <Button text="Hủy" fx:id="cancelButton"
-                        onAction="#onCancel"
-                        styleClass="custom-button, cancel-button"/>
+                <Button fx:id="confirmButton" onAction="#onConfirm" styleClass="custom-button, confirm-button" text="Xác nhận" />
+                <Button fx:id="cancelButton" onAction="#onCancel" styleClass="custom-button, cancel-button" text="Hủy" />
             </HBox>
         </VBox>
     </HBox>

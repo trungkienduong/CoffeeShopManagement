@@ -11,7 +11,6 @@ public class Employee {
     private Date dateOfBirth;
     private String phone;
     private String address;
-    private int positionId;
     private double salary;
     private Date joinDate;
     private String image; // đường dẫn ảnh
@@ -24,7 +23,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int employeeId, String username, String fullname, char gender, String cccd, Date dateOfBirth, String phone, String address, int positionId, double salary, Date joinDate, String image, User user, EmployeePosition position) {
+    public Employee(int employeeId, String username, String fullname, char gender, String cccd, Date dateOfBirth, String phone, String address, double salary, Date joinDate, String image, User user, EmployeePosition position) {
         this.employeeId = employeeId;
         this.username = username;
         this.fullname = fullname;
@@ -33,7 +32,6 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
         this.phone = phone;
         this.address = address;
-        this.positionId = positionId;
         this.salary = salary;
         this.joinDate = joinDate;
         this.image = image;
@@ -105,14 +103,6 @@ public class Employee {
         this.address = address;
     }
 
-    public int getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
-    }
-
     public double getSalary() {
         return salary;
     }
@@ -164,7 +154,6 @@ public class Employee {
                 ", dateOfBirth=" + dateOfBirth +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
-                ", positionId=" + positionId +
                 ", salary=" + salary +
                 ", joinDate=" + joinDate +
                 ", image='" + image + '\'' +

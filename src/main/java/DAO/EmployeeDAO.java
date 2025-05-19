@@ -38,7 +38,7 @@ public class EmployeeDAO {
             pst.setDate(5, new java.sql.Date(employee.getDateOfBirth().getTime()));
             pst.setString(6, employee.getPhone());
             pst.setString(7, employee.getAddress());
-            pst.setInt(8, employee.getPositionId());
+            pst.setInt(8, employee.getPosition().getPositionId());
             pst.setDouble(9, employee.getSalary());
             pst.setString(10, employee.getImage());
             // thuc thi cau lenh
@@ -62,7 +62,7 @@ public class EmployeeDAO {
             pst.setDate(4, new java.sql.Date(employee.getDateOfBirth().getTime()));
             pst.setString(5, employee.getPhone());
             pst.setString(6, employee.getAddress());
-            pst.setInt(7, employee.getPositionId());
+            pst.setInt(7, employee.getPosition().getPositionId());
             pst.setDouble(8, employee.getSalary());
             pst.setString(9, employee.getImage());
             pst.setInt(10, employee.getEmployeeId());
@@ -113,11 +113,13 @@ public class EmployeeDAO {
                 employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
                 employee.setPhone(rs.getString("PHONE"));
                 employee.setAddress(rs.getString("ADDRESS"));
-                employee.setPositionId(rs.getInt("POSITION_ID"));
+
+                int positionId = rs.getInt("POSITION_ID");
+                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
                 employee.setSalary(rs.getDouble("SALARY"));
                 employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
                 employees.add(employee);
             }
         } catch (SQLException e) {
@@ -145,11 +147,13 @@ public class EmployeeDAO {
                 employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
                 employee.setPhone(rs.getString("PHONE"));
                 employee.setAddress(rs.getString("ADDRESS"));
-                employee.setPositionId(rs.getInt("POSITION_ID"));
+
+                int positionId = rs.getInt("POSITION_ID");
+                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
                 employee.setSalary(rs.getDouble("SALARY"));
                 employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
                 return employee;
             }
         } catch (SQLException e) {
@@ -177,11 +181,13 @@ public class EmployeeDAO {
                 employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
                 employee.setPhone(rs.getString("PHONE"));
                 employee.setAddress(rs.getString("ADDRESS"));
-                employee.setPositionId(rs.getInt("POSITION_ID"));
+
+                int positionId = rs.getInt("POSITION_ID");
+                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
                 employee.setSalary(rs.getDouble("SALARY"));
                 employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
                 return employee;
             }
         } catch (SQLException e) {
@@ -210,11 +216,13 @@ public class EmployeeDAO {
                 employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
                 employee.setPhone(rs.getString("PHONE"));
                 employee.setAddress(rs.getString("ADDRESS"));
-                employee.setPositionId(rs.getInt("POSITION_ID"));
+
+                int position = rs.getInt("POSITION_ID");
+                employee.setPosition(EmployeePositionDAO.getInstance().findById(position));
                 employee.setSalary(rs.getDouble("SALARY"));
                 employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
                 employees.add(employee);
             }
         } catch (SQLException e) {
@@ -243,11 +251,13 @@ public class EmployeeDAO {
                 employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
                 employee.setPhone(rs.getString("PHONE"));
                 employee.setAddress(rs.getString("ADDRESS"));
-                employee.setPositionId(rs.getInt("POSITION_ID"));
+
+                int position = rs.getInt("POSITION_ID");
+                employee.setPosition(EmployeePositionDAO.getInstance().findById(position));
                 employee.setSalary(rs.getDouble("SALARY"));
                 employee.setImage(rs.getString("IMAGE_PATH"));
                 employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPositionId()));
+                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
                 employees.add(employee);
             }
         } catch (SQLException e) {

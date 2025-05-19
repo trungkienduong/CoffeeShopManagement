@@ -87,7 +87,7 @@ public class InventoryPanelController {
     @FXML
     private void handleViewinventory(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryViewDialog.fxml"));
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();

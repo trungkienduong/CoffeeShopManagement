@@ -1,0 +1,108 @@
+/* Tổng thể Dialog */
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+}
+
+.dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6f4e37;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Container chính */
+.main-container {
+    -fx-background-color: white;
+    -fx-padding: 25px;
+}
+
+/* Phần hình ảnh */
+.image-section {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}
+
+.image-container {
+    -fx-min-height: 200;
+    -fx-min-width: 200;
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #6f4e37;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 8, 0, 0, 0);
+}
+
+/* Phần form bên phải */
+.form-section {
+    -fx-spacing: 22px;
+    -fx-padding: 15px 0;
+}
+
+/* Nhóm thông tin */
+.info-group {
+    -fx-alignment: center-left;
+    -fx-spacing: 15px;
+}
+
+/* Label hiển thị */
+.label-text {
+    -fx-text-fill: #6f4e37;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-min-width: 110px;
+    -fx-alignment: center-left;
+}
+
+/* Text hiển thị thông tin */
+.info-text {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 8px 0;
+}
+
+/* Giá hiển thị */
+.price-text {
+    -fx-font-weight: bold;
+    -fx-text-fill: #6f4e37;
+}
+
+/* Đơn vị tiền */
+.currency-label {
+    -fx-text-fill: #6f4e37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 0;
+}
+
+/* Mô tả */
+.description-group {
+    -fx-spacing: 10px;
+}
+
+.description-group .info-text {
+    -fx-font-style: italic;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 5px;
+}
+
+/* Button style */
+.custom-button {
+    -fx-background-color: white;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 20px;
+    -fx-font-weight: bold;
+    -fx-min-width: 100px;
+}
+
+.close-button {
+    -fx-border-color: #6f4e37;
+    -fx-text-fill: #6f4e37;
+}
+
+.close-button:hover {
+    -fx-background-color: #6f4e37;
+    -fx-text-fill: white;
+}

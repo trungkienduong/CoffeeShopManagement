@@ -41,7 +41,7 @@ public class InventoryDAO {
             pst.setString(3, item.getImagePath());
             pst.setDouble(4, item.getQuantity());
             pst.setInt(5, item.getCategory().getCategoryId());
-            pst.setInt(6, item.getUnitId());
+            pst.setInt(6, item.getUnit().getUnitId());
             pst.setDouble(7, item.getCostPrice());
 
             int result = pst.executeUpdate();
@@ -63,7 +63,7 @@ public class InventoryDAO {
             pst.setString(2, item.getImagePath());
             pst.setDouble(3, item.getQuantity());
             pst.setInt(4, item.getCategory().getCategoryId());
-            pst.setInt(5, item.getUnitId());
+            pst.setInt(5, item.getUnit().getUnitId());
             pst.setDouble(6, item.getCostPrice());
             pst.setInt(7, item.getItemId());
 
@@ -126,7 +126,11 @@ public class InventoryDAO {
                 item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-                item.setUnitId(rs.getInt("UNIT_ID"));
+
+                int unitId = rs.getInt("UNIT_ID");
+                UnitCategory unit = unitCategoryDAO.findById(unitId);
+                item.setUnit(unit);
+
                 item.setCostPrice(rs.getDouble("COST_PRICE"));
                 list.add(item);
             }
@@ -154,7 +158,10 @@ public class InventoryDAO {
                 item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-                item.setUnitId(rs.getInt("UNIT_ID"));
+
+                int unitId = rs.getInt("UNIT_ID");
+                UnitCategory unit = unitCategoryDAO.findById(unitId);
+                item.setUnit(unit);
                 item.setCostPrice(rs.getDouble("COST_PRICE"));
                 return item;
             }
@@ -182,7 +189,10 @@ public class InventoryDAO {
                 item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-                item.setUnitId(rs.getInt("UNIT_ID"));
+
+                int unitId = rs.getInt("UNIT_ID");
+                UnitCategory unit = unitCategoryDAO.findById(unitId);
+                item.setUnit(unit);
                 item.setCostPrice(rs.getDouble("COST_PRICE"));
                 list.add(item);
             }
@@ -211,7 +221,10 @@ public class InventoryDAO {
                 item.setImagePath(rs.getString("IMAGE_PATH"));
                 item.setQuantity(rs.getDouble("QUANTITY"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-                item.setUnitId(rs.getInt("UNIT_ID"));
+
+                int unitId = rs.getInt("UNIT_ID");
+                UnitCategory unit = unitCategoryDAO.findById(unitId);
+                item.setUnit(unit);
                 item.setCostPrice(rs.getDouble("COST_PRICE"));
                 list.add(item);
             }

@@ -33,7 +33,7 @@ public class UserDAO {
             pst.setString(1, user.getUsername()); // gán giá trị cho ? thứ nhất
             pst.setString(2, user.getPassword()); // gán giá trị cho ? thứ hai
             pst.setString(3, user.getEmail()); // gán giá trị cho ? thứ ba
-            pst.setInt(4, user.getRoleId()); // gán giá trị cho ? thứ tư
+            pst.setInt(4, user.getRole().getRoleId()); // gán giá trị cho ? thứ tư
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -53,7 +53,7 @@ public class UserDAO {
 
             pst.setString(1, user.getPassword()); // gán giá trị cho ? thứ hai
             pst.setString(2, user.getEmail()); // gán giá trị cho ? thứ ba
-            pst.setInt(3, user.getRoleId()); // gán giá trị cho ? thứ tư
+            pst.setInt(3, user.getRole().getRoleId()); // gán giá trị cho ? thứ tư
             pst.setString(4, user.getUsername()); // gán giá trị cho ? thứ nhất
 
             // thực thi câu lệnh
@@ -97,9 +97,10 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
-                user.setRoleId(rs.getInt("ROLE_ID"));
 
-              /*  user.setRole(roleListDAO.findById(user.getRoleId()));*/
+                int roleId = rs.getInt("ROLE_ID");
+                user.setRole(RoleListDAO.getInstance().findById(roleId));
+
                 users.add(user);
             }
             return users;
@@ -125,8 +126,10 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
-                user.setRoleId(rs.getInt("ROLE_ID"));
-               /* user.setRole(roleListDAO.findById(user.getRoleId()));*/
+
+                int roleId = rs.getInt("ROLE_ID");
+                user.setRole(RoleListDAO.getInstance().findById(roleId));
+
                 return user;
             }
         } catch (SQLException e) {
@@ -151,8 +154,10 @@ public class UserDAO {
                 user.setUsername(rs.getString("USERNAME"));
                 user.setPassword(rs.getString("PASSWORD"));
                 user.setEmail(rs.getString("EMAIL"));
-                user.setRoleId(rs.getInt("ROLE_ID"));
-               /* user.setRole(roleListDAO.findById(user.getRoleId()));*/
+
+                int roleId = rs.getInt("ROLE_ID");
+                user.setRole(RoleListDAO.getInstance().findById(roleId));
+
                 return user;
             }
         } catch (SQLException e) {
@@ -170,6 +175,7 @@ public class UserDAO {
 
             pst.setString(1, username); // gán giá trị cho ? thứ nhất
             pst.setString(2, password); // gán giá trị cho ? thứ hai
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return true;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-  /*private static ProductDAO instance;
+  private static ProductDAO instance;
   private CategoryDAO categoryDAO;
 
   private ProductDAO() {
@@ -94,7 +94,9 @@ public class ProductDAO {
                 Product product = new Product();
                 product.setProductId(rs.getInt("PRODUCT_ID"));
                 product.setProductName(rs.getString("PRODUCT_NAME"));
-                product.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+
+                int categoryId = rs.getInt("CATEGORY_ID");
+                product.setCategory(CategoryDAO.getInstance().findById(categoryId));
                 product.setSellPrice(rs.getDouble("SELL_PRICE"));
                 list.add(product);
             }
@@ -119,7 +121,9 @@ public class ProductDAO {
                 Product product = new Product();
                 product.setProductId(rs.getInt("PRODUCT_ID"));
                 product.setProductName(rs.getString("PRODUCT_NAME"));
-                product.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+
+                int categoryId = rs.getInt("CATEGORY_ID");
+                product.setCategory(CategoryDAO.getInstance().findById(categoryId));
                 product.setSellPrice(rs.getDouble("SELL_PRICE"));
                 return product;
             }
@@ -145,7 +149,7 @@ public class ProductDAO {
                 Product product = new Product();
                 product.setProductId(rs.getInt("PRODUCT_ID"));
                 product.setProductName(rs.getString("PRODUCT_NAME"));
-                product.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+                product.setCategory(category);
                 product.setSellPrice(rs.getDouble("SELL_PRICE"));
                 list.add(product);
             }
@@ -171,7 +175,10 @@ public class ProductDAO {
                 Product product = new Product();
                 product.setProductId(rs.getInt("PRODUCT_ID"));
                 product.setProductName(rs.getString("PRODUCT_NAME"));
-                product.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
+
+                int categoryId = rs.getInt("CATEGORY_ID");
+                product.setCategory(CategoryDAO.getInstance().findById(categoryId));
+
                 product.setSellPrice(rs.getDouble("SELL_PRICE"));
                 list.add(product);
             }
@@ -180,5 +187,5 @@ public class ProductDAO {
             e.printStackTrace();
             return null;
         }
-    }*/
+    }
 }

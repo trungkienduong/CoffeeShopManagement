@@ -24,13 +24,12 @@ public class UnitCategoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(UnitCategory unitCategory) {
-        String sql = "INSERT INTO [UNIT_CATEGORY] (UNIT_NAME, DESCRIPTION) VALUES (?, ?)";
+        String sql = "INSERT INTO [UNIT_CATEGORY] (UNIT_NAME) VALUES (?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, unitCategory.getUnitName()); // gán giá trị cho ? thứ nhất
-            pst.setString(2, unitCategory.getDescription()); // gán giá trị cho ? thứ hai
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -43,14 +42,13 @@ public class UnitCategoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(UnitCategory unitCategory) {
-        String sql = "UPDATE [UNIT_CATEGORY] SET UNIT_NAME = ?, DESCRIPTION = ? WHERE UNIT_ID = ?";
+        String sql = "UPDATE [UNIT_CATEGORY] SET UNIT_NAME = ? WHERE UNIT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, unitCategory.getUnitName()); // gán giá trị cho ? thứ hai
-            pst.setString(2, unitCategory.getDescription()); // gán giá trị cho ? thứ hai
-            pst.setInt(3, unitCategory.getUnitId()); // gán giá trị cho ? thứ hai
+            pst.setInt(2, unitCategory.getUnitId()); // gán giá trị cho ? thứ hai
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -91,7 +89,7 @@ public class UnitCategoryDAO {
                 UnitCategory unitCategory = new UnitCategory();
                 unitCategory.setUnitId(rs.getInt("UNIT_ID"));
                 unitCategory.setUnitName(rs.getString("UNIT_NAME"));
-                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+
                 unitCategories.add(unitCategory);
             }
             return unitCategories;
@@ -114,7 +112,7 @@ public class UnitCategoryDAO {
                 UnitCategory unitCategory = new UnitCategory();
                 unitCategory.setUnitId(rs.getInt("UNIT_ID"));
                 unitCategory.setUnitName(rs.getString("UNIT_NAME"));
-                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+
                 return unitCategory;
             }
         } catch (SQLException e) {
@@ -136,7 +134,7 @@ public class UnitCategoryDAO {
                 UnitCategory unitCategory = new UnitCategory();
                 unitCategory.setUnitId(rs.getInt("UNIT_ID"));
                 unitCategory.setUnitName(rs.getString("UNIT_NAME"));
-                unitCategory.setDescription(rs.getString("DESCRIPTION"));
+
                 return unitCategory;
             }
         } catch (SQLException e) {

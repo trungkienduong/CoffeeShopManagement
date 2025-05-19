@@ -3,7 +3,6 @@ package MODEL;
 public class Category {
     private int categoryId;
     private String categoryName;
-    private String description;
     private char categoryType; // 'I' cho Inventory (nguyên liệu), 'P' cho Product (sản phẩm)
     private String imagePath;
 
@@ -11,10 +10,9 @@ public class Category {
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName, String description, char categoryType, String imagePath) {
+    public Category(int categoryId, String categoryName, char categoryType, String imagePath) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
-        this.description = description;
         this.categoryType = categoryType;
         this.imagePath = imagePath;
     }
@@ -33,14 +31,6 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public char getCategoryType() {
@@ -64,7 +54,6 @@ public class Category {
         return "Category{" +
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
-                ", description='" + description + '\'' +
                 ", categoryType=" + categoryType +
                 ", imagePath='" + imagePath + '\'' +
                 '}';

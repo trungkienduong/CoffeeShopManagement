@@ -3,16 +3,14 @@ package MODEL;
 public class UnitCategory {
     private int unitId;
     private String unitName;
-    private String description;
 
     // Default constructor
     public UnitCategory() {
     }
 
-    public UnitCategory(int unitId, String unitName, String description) {
+    public UnitCategory(int unitId, String unitName) {
         this.unitId = unitId;
         this.unitName = unitName;
-        this.description = description;
     }
 
     public int getUnitId() {
@@ -31,20 +29,11 @@ public class UnitCategory {
         this.unitName = unitName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         return "UnitCategory{" +
                 "unitId=" + unitId +
                 ", unitName='" + unitName + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -4,9 +4,7 @@ public class Inventory {
     private int itemId;
     private String itemName;
     private String imagePath;
-    private int categoryId;
     private double quantity;
-    private int unitId;
     private double costPrice;
     
     // Đối tượng liên kết
@@ -17,13 +15,11 @@ public class Inventory {
     public Inventory() {
     }
 
-    public Inventory(int itemId, String itemName, String imagePath, int categoryId, double quantity, int unitId, double costPrice, Category category, UnitCategory unit) {
+    public Inventory(int itemId, String itemName, String imagePath, double quantity, double costPrice, Category category, UnitCategory unit) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.imagePath = imagePath;
-        this.categoryId = categoryId;
         this.quantity = quantity;
-        this.unitId = unitId;
         this.costPrice = costPrice;
         this.category = category;
         this.unit = unit;
@@ -53,28 +49,12 @@ public class Inventory {
         this.imagePath = imagePath;
     }
 
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public double getQuantity() {
         return quantity;
     }
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
-    }
-
-    public int getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(int unitId) {
-        this.unitId = unitId;
     }
 
     public double getCostPrice() {
@@ -107,9 +87,7 @@ public class Inventory {
                 "itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
                 ", imagePath='" + imagePath + '\'' +
-                ", categoryId=" + categoryId +
                 ", quantity=" + quantity +
-                ", unitId=" + unitId +
                 ", costPrice=" + costPrice +
                 ", category=" + category +
                 ", unit=" + unit +

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="550.0" prefWidth="800.0" styleClass="dialog-pane"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/InventoryViewDialog.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CONTROLLER.DIALOG.InventoryViewDialogController">
+
+    <VBox alignment="CENTER" spacing="15" styleClass="content-box"
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <Label text="Chi tiết phiếu nhập kho" styleClass="dialog-title"/>
+
+        <GridPane hgap="25" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Mặt hàng:" styleClass="label-text"/>
+                <Label fx:id="itemLabel" styleClass="info-text"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Nhà cung cấp:" styleClass="label-text"/>
+                <Label fx:id="supplierLabel" styleClass="info-text"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Số lượng:" styleClass="label-text"/>
+                <Label fx:id="quantityLabel" styleClass="info-text"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Đơn giá:" styleClass="label-text"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <Label fx:id="unitPriceLabel" styleClass="info-text"/>
+                    <Label text="VND" styleClass="currency-label"/>
+                </HBox>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Ngày nhập:" styleClass="label-text"/>
+                <Label fx:id="importDateLabel" styleClass="info-text"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Nhân viên:" styleClass="label-text"/>
+                <Label fx:id="employeeLabel" styleClass="info-text"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                <Label text="Ghi chú:" styleClass="label-text"/>
+                <Label fx:id="noteLabel" styleClass="info-text" wrapText="true"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="info-container" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                <Label text="Tổng tiền:" styleClass="label-text"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <Label fx:id="totalPriceLabel" styleClass="total-price-label"/>
+                    <Label text="VND" styleClass="currency-label"/>
+                </HBox>
+            </HBox>
+        </GridPane>
+
+        <HBox alignment="CENTER" spacing="25">
+            <Button fx:id="closeButton" text="Đóng" styleClass="custom-button, close-button"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

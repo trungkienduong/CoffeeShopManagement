@@ -2,6 +2,7 @@ package GUI.CONTROLLER.DIALOG;
 
 import BUS.RoleListBUS;
 import BUS.UserBUS;
+import MODEL.RoleList;
 import MODEL.User;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -162,14 +163,13 @@ public class LoginDialogController {
         String username = usernameRegister.getText();
         String email = emailRegister.getText();
         String password = passwordRegister.getText();
-        String role = roleComboBox.getValue();
-
+        String roleName = roleComboBox.getValue(); // giả sử là "Admin", "Nhân viên",...
 
         if (UserBUS.isValidEmail(email)) {
-            // Giả sử roleComboBox trả về ID số (int) thay vì chuỗi
-            int roleId = RoleListBUS.getInstance().getRoleIdByName(role); // Dùng phương thức này để lấy ID từ tên role
+            int roleId = RoleListBUS.getInstance().getRoleIdByName(roleName); // 🔄 String ➜ int
+            RoleList roleObj = RoleListBUS.getInstance().getRoleById(roleId); // ✅ dùng int đúng kiểu
 
-            User newUser = new User(username, password, email, roleId); // Truyền ID role vào constructor
+            User newUser = new User(username, password, email, roleObj);
 
             if (userBUS.insertUser(newUser)) {
 //                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "Account successfully created for " + username);
