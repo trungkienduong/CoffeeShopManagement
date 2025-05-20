@@ -8,10 +8,23 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 0);
 }
 
-.shop-title {
-    -fx-text-fill: #5C4033;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
+.logo-container {
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-min-width: 120;
+    -fx-min-height: 120;
+    -fx-max-width: 120;
+    -fx-max-height: 120;
+    -fx-effect: dropshadow(gaussian, rgba(92,64,51,0.2), 10, 0, 0, 4);
+    -fx-padding: 10;
+    -fx-border-color: #5C4033;
+    -fx-border-radius: 50%;
+    -fx-border-width: 2;
+    -fx-alignment: center;
+}
+
+.logo-container ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
 .nav-button {
@@ -23,11 +36,14 @@
     -fx-padding: 10 20;
     -fx-graphic-text-gap: 10;
     -fx-min-width: 181;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
 }
 
 .nav-button:hover {
     -fx-background-color: #5C4033;
     -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
 }
 
 .nav-button:selected {
@@ -37,6 +53,7 @@
 
 .nav-button FontAwesomeIconView {
     -fx-fill: #5C4033;
+    -fx-opacity: 0.9;
 }
 
 .nav-button:hover FontAwesomeIconView {
@@ -46,14 +63,22 @@
 .logout-button {
     -fx-background-color: transparent;
     -fx-padding: 10;
+    -fx-cursor: hand;
 }
 
 .logout-button:hover {
     -fx-background-color: #ffeeee;
+    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.1), 5, 0, 0, 1);
 }
 
 .logout-button FontAwesomeIconView {
     -fx-fill: #5C4033;
+    -fx-opacity: 0.8;
+}
+
+.logout-button:hover FontAwesomeIconView {
+    -fx-fill: #ff4444;
+    -fx-opacity: 1;
 }
 
 .search-bar {
@@ -71,12 +96,14 @@
     -fx-background-radius: 20;
     -fx-padding: 8;
     -fx-prompt-text-fill: #999999;
+    -fx-transition: all 0.3s ease;
 }
 
 .search-input:focused {
     -fx-background-color: white;
     -fx-border-color: #5C4033;
     -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(92,64,51,0.2), 4, 0, 0, 0);
 }
 
 .search-button {
@@ -86,14 +113,6 @@
     -fx-min-width: 30;
     -fx-min-height: 30;
     -fx-alignment: center;
-}
-
-.search-button:hover {
-    -fx-background-color: transparent;
-}
-
-.search-button:pressed {
-    -fx-background-color: transparent;
 }
 
 .search-button FontAwesomeIconView {
@@ -109,18 +128,18 @@
     -fx-scale-y: 1.1;
 }
 
-.search-button:pressed FontAwesomeIconView {
-    -fx-fill: #5C4033;
-    -fx-opacity: 0.6;
-    -fx-scale-x: 0.9;
-    -fx-scale-y: 0.9;
-}
-
-
 .stat-card {
     -fx-background-color: #5C4033;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .stat-title {
@@ -136,6 +155,7 @@
 
 .stat-card FontAwesomeIconView {
     -fx-fill: white;
+    -fx-opacity: 0.9;
 }
 
 .main-content {
@@ -144,11 +164,14 @@
 
 .chart {
     -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-padding: 10;
 }
 
 .chart-title {
     -fx-text-fill: #5C4033;
     -fx-font-weight: bold;
+    -fx-font-size: 14px;
 }
 
 .axis {
@@ -161,4 +184,17 @@
 
 .chart-legend-item {
     -fx-text-fill: #5C4033;
+}
+
+.chart-series-line {
+    -fx-stroke: #5C4033;
+    -fx-stroke-width: 2px;
+}
+
+.default-color0.chart-series-area-fill {
+    -fx-fill: rgba(92,64,51,0.1);
+}
+
+.default-color0.chart-series-area-line {
+    -fx-stroke: #5C4033;
 }

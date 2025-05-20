@@ -80,7 +80,10 @@
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <Label text="Lương:" styleClass="label-text"/>
-                <TextField fx:id="salaryField" promptText="Nhập lương" styleClass="text-input"/>
+                <HBox spacing="5" alignment="CENTER_LEFT" styleClass="salary-container">
+                    <TextField fx:id="salaryField" promptText="VD: 10000000" styleClass="text-input, salary-input"/>
+                    <Label text="VND" styleClass="currency-label"/>
+                </HBox>
             </HBox>
         </GridPane>
 

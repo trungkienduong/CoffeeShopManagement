@@ -20,13 +20,12 @@
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-min-width: 100px;
-    -fx-alignment: center-left;
 }
 
-.input-container {
-    -fx-alignment: center-left;
-    -fx-spacing: 15px;
-    -fx-padding: 10px 0;
+.input-group {
+    -fx-min-height: 35px;
+    -fx-pref-height: 35px;
+    -fx-padding: 0 0 10 0;
 }
 
 .text-input {
@@ -35,12 +34,11 @@
     -fx-border-radius: 5px;
     -fx-padding: 8px;
     -fx-font-size: 13px;
-    -fx-pref-width: 250px;
+    -fx-pref-width: 200px;
 }
 
 .price-field {
-    -fx-pref-width: 150px !important;
-    -fx-max-width: 150px;
+    -fx-pref-width: 150px;
 }
 
 .currency-label {
@@ -55,7 +53,7 @@
     -fx-border-radius: 5px;
     -fx-padding: 3px;
     -fx-font-size: 13px;
-    -fx-pref-width: 250px;
+    -fx-pref-width: 200px;
 }
 
 .combo-box .cell {
@@ -63,11 +61,35 @@
     -fx-padding: 4px 8px;
 }
 
+.icon-button {
+    -fx-background-color: white;
+    -fx-border-color: #6f4e37;
+    -fx-border-radius: 5px;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.icon-button:hover {
+    -fx-background-color: #6f4e37;
+}
+
+.icon-button:hover .button-icon {
+    -fx-fill: white;
+}
+
+.button-icon {
+    -fx-fill: #6f4e37;
+}
+
 .date-picker {
     -fx-background-color: white;
     -fx-border-color: #6f4e37;
     -fx-border-radius: 5px;
-    -fx-pref-width: 250px;
+    -fx-pref-width: 200px;
 }
 
 .date-picker .arrow-button {
@@ -178,43 +200,4 @@
 .text-area:focused {
     -fx-border-width: 2px;
     -fx-border-color: #8b4513;
-}
-
-.supplier-input-container {
-    -fx-min-width: 250px;
-    -fx-pref-width: 250px;
-    -fx-min-height: 32px;
-}
-
-.supplier-combo {
-    -fx-pref-width: 200px;
-}
-
-.add-supplier-button {
-    -fx-translate-x: 210px;
-    -fx-translate-y: 0;
-    -fx-pref-width: 32px;
-    -fx-pref-height: 32px;
-    -fx-min-width: 32px;
-    -fx-min-height: 32px;
-    -fx-max-width: 32px;
-    -fx-max-height: 32px;
-    -fx-padding: 0;
-    -fx-background-color: white;
-    -fx-border-color: #6f4e37;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
-    -fx-alignment: center;
-}
-
-.add-supplier-button:hover {
-    -fx-background-color: #6f4e37;
-}
-
-.add-supplier-button .button-icon {
-    -fx-fill: #6f4e37;
-}
-
-.add-supplier-button:hover .button-icon {
-    -fx-fill: white;
 }

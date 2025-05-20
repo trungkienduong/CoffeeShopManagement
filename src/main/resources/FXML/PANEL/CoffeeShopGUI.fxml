@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../../ASSETS/STYLES/PANEL/CoffeShopGUI.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.CoffeeShopGUIController">
     <children>
@@ -12,31 +13,31 @@
             <children>
                 <AnchorPane prefHeight="517.0" prefWidth="181.0">
                     <children>
-                        <Label layoutX="4.0" layoutY="38.0" styleClass="shop-title" text="COFFEE SHOP" AnchorPane.leftAnchor="0.0">
-                            <font>
-                                <Font name="System Bold" size="28.0" />
-                            </font>
-                        </Label>
+                        <StackPane layoutX="30.0" layoutY="20.0" styleClass="logo-container">
+                            <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
+                                <Image url="@../../ASSETS/IMAGES/logo.png" />
+                            </ImageView>
+                        </StackPane>
 
-                        <Button fx:id="homeBtn" layoutX="0.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="HOME">
+                        <Button fx:id="homeBtn" layoutX="0.0" layoutY="160.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="HOME">
                             <graphic>
                                 <FontAwesomeIconView glyphName="HOME" size="20" />
                             </graphic>
                         </Button>
 
-                        <Button fx:id="productBtn" layoutX="0.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="PRODUCT">
+                        <Button fx:id="productBtn" layoutX="0.0" layoutY="210.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="PRODUCT">
                             <graphic>
                                 <FontAwesomeIconView glyphName="COFFEE" size="20" />
                             </graphic>
                         </Button>
 
-                        <Button fx:id="employeeBtn" layoutX="0.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="EMPLOYEE">
+                        <Button fx:id="employeeBtn" layoutX="0.0" layoutY="260.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="EMPLOYEE">
                             <graphic>
                                 <FontAwesomeIconView glyphName="USERS" size="20" />
                             </graphic>
                         </Button>
 
-                        <Button fx:id="inventoryBtn" layoutX="0.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="INVENTORY">
+                        <Button fx:id="inventoryBtn" layoutX="0.0" layoutY="310.0" mnemonicParsing="false" onAction="#handleNavigation" styleClass="nav-button" text="INVENTORY">
                             <graphic>
                                 <FontAwesomeIconView glyphName="ANCHOR" size="20" />
                             </graphic>
@@ -52,7 +53,7 @@
             </children>
         </VBox>
 
-        <HBox layoutX="181.0" layoutY="6.0" prefHeight="55.0" prefWidth="620.0" styleClass="search-bar" AnchorPane.topAnchor="0.0">
+        <HBox layoutX="181.0" layoutY="0.0" prefHeight="55.0" prefWidth="620.0" styleClass="search-bar" AnchorPane.topAnchor="0.0">
             <children>
                 <AnchorPane prefHeight="44.0" prefWidth="620.0">
                     <children>

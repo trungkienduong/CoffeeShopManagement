@@ -77,6 +77,28 @@
     -fx-border-color: #8B4513;
 }
 
+.salary-container {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.salary-input {
+    -fx-min-width: 150px;
+    -fx-max-width: 150px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.salary-input:focused {
+    -fx-border-width: 2px;
+    -fx-border-color: #8B4513;
+}
+
+.currency-label {
+    -fx-text-fill: #6F4E37;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 0 0 0;
+}
+
 .address-input {
     -fx-min-width: 550px;
     -fx-max-width: 550px;
