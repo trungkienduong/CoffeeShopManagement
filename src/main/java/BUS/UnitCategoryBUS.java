@@ -2,13 +2,13 @@ package BUS;
 
 import DAO.UnitCategoryDAO;
 import MODEL.UnitCategory;
+
 import java.util.List;
 
 public class UnitCategoryBUS {
     private static UnitCategoryBUS instance;
-    private UnitCategoryDAO unitCategoryDAO;
-
-    private static final int DEFAULT_UNIT_ID = 1; // Đơn vị mặc định
+    private final UnitCategoryDAO unitCategoryDAO;
+    private static final int DEFAULT_UNIT_ID = 1;
 
     private UnitCategoryBUS() {
         unitCategoryDAO = UnitCategoryDAO.getInstance();
@@ -22,66 +22,48 @@ public class UnitCategoryBUS {
     }
 
     // -------------------- Insert --------------------
-    public void insertCategory(UnitCategory unitCategory) {
+    public boolean insertCategory(UnitCategory unitCategory) {
         if (isUnitCategoryUnique(unitCategory.getUnitName())) {
-            try {
-                unitCategoryDAO.insert(unitCategory);
-            } catch (Exception e) {
-                System.err.println("Error inserting unit category: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Unit category already exists.");
+            return unitCategoryDAO.insert(unitCategory);
         }
+        return false; // đã tồn tại
     }
 
     // -------------------- Update --------------------
-    public void updateCategory(UnitCategory unitCategory) {
-        try {
-            unitCategoryDAO.update(unitCategory);
-        } catch (Exception e) {
-            System.err.println("Error updating unit category: " + e.getMessage());
-        }
+    public boolean updateCategory(UnitCategory unitCategory) {
+        return unitCategoryDAO.update(unitCategory);
     }
 
     // -------------------- Can Delete --------------------
     public boolean canDeleteUnitCategory(int unitId) {
         UnitCategory unitCategory = unitCategoryDAO.findById(unitId);
-        if (unitCategory == null) {
-            return false; // Unit category does not exist
-        }
-        // Kiểm tra xem unit category có phải là unit category mặc định hay không
-        return unitCategory.getUnitId() != DEFAULT_UNIT_ID;
+        return unitCategory != null && unitCategory.getUnitId() != DEFAULT_UNIT_ID;
     }
 
     // -------------------- Delete --------------------
-    public void deleteId(int unitId) {
+    public boolean deleteById(int unitId) {
         if (canDeleteUnitCategory(unitId)) {
-            try {
-                unitCategoryDAO.delete(unitId);
-            } catch (Exception e) {
-                System.err.println("Error deleting unit category: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Cannot delete the default unit category.");
+            return unitCategoryDAO.delete(unitId);
         }
+        return false;
     }
 
     // -------------------- Get All --------------------
-    public List<UnitCategory> GetAll() {
+    public List<UnitCategory> getAll() {
         return unitCategoryDAO.getAll();
     }
 
     // -------------------- Find By Name --------------------
-    public UnitCategory FindByName(String unitName) {
+    public UnitCategory findByName(String unitName) {
         return unitCategoryDAO.findByName(unitName);
     }
 
     // -------------------- Find By ID --------------------
-    public UnitCategory FindById(int unitId) {
+    public UnitCategory findById(int unitId) {
         return unitCategoryDAO.findById(unitId);
     }
 
-    // -------------------- Check Category --------------------
+    // -------------------- Check Unique --------------------
     public boolean isUnitCategoryUnique(String unitName) {
         return unitCategoryDAO.findByName(unitName) == null;
     }

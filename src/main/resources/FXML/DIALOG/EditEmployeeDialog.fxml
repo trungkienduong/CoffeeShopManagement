@@ -1,14 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="DIALOG.CreateOrderDialog"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="550.0" prefWidth="800.0" styleClass="dialog-pane"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/AddEmployeeDialog.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CONTROLLER.DIALOG.EditEmployeeDialogController">
 
+    <VBox alignment="CENTER" spacing="15" styleClass="content-box"
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <HBox alignment="CENTER" spacing="30">
+            <StackPane styleClass="image-container">
+                <ImageView fx:id="employeeImageView" fitHeight="130" fitWidth="130"
+                           preserveRatio="false" styleClass="employee-image"/>
+                <Button fx:id="imageButton" styleClass="image-button">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="CAMERA" size="25" styleClass="image-icon"/>
+                    </graphic>
+                </Button>
+            </StackPane>
+
+            <VBox spacing="10">
+                <HBox spacing="10" styleClass="input-container">
+                    <Label text="Email:" styleClass="label-text"/>
+                    <Label fx:id="emailLabel" styleClass="info-label"/>
+                </HBox>
+                <HBox spacing="10" styleClass="input-container">
+                    <Label text="Chức vụ:" styleClass="label-text"/>
+                    <Label fx:id="roleLabel" styleClass="info-label"/>
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <GridPane hgap="25" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Họ và tên:" styleClass="label-text"/>
+                <TextField fx:id="fullnameField" promptText="Nhập họ và tên" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Giới tính:" styleClass="label-text"/>
+                <ComboBox fx:id="genderComboBox" styleClass="combo-box">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Nam"/>
+                            <String fx:value="Nữ"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="CCCD:" styleClass="label-text"/>
+                <TextField fx:id="cccdField" promptText="Nhập số CCCD" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Ngày sinh:" styleClass="label-text"/>
+                <DatePicker fx:id="birthDatePicker" promptText="Chọn ngày sinh" styleClass="date-picker"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Số điện thoại:" styleClass="label-text"/>
+                <TextField fx:id="phoneField" promptText="Nhập số điện thoại" styleClass="text-input"/>
+            </HBox>
+
+            <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Lương:" styleClass="label-text"/>
+                <HBox spacing="5" alignment="CENTER_LEFT" styleClass="salary-container">
+                    <TextField fx:id="salaryField" promptText="VD: 10000000" styleClass="text-input, salary-input"/>
+                    <Label text="VND" styleClass="currency-label"/>
+                </HBox>
+            </HBox>
+        </GridPane>
+
+        <HBox spacing="10" styleClass="input-container">
+            <Label text="Địa chỉ:" styleClass="label-text"/>
+            <TextField fx:id="addressField" promptText="Nhập địa chỉ" styleClass="text-input, address-input"/>
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="25">
+            <Button fx:id="confirmButton" text="Xác nhận" styleClass="custom-button, confirm-button"/>
+            <Button fx:id="cancelButton" text="Hủy" styleClass="custom-button, cancel-button"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

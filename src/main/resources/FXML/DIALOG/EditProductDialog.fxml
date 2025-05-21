@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="700.0" styleClass="dialog-pane" stylesheets="@../../ASSETS/STYLES/DIALOG/EditProductDialog.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.EditProductDialogController">
+<AnchorPane prefHeight="400.0" prefWidth="700.0" styleClass="dialog-pane" stylesheets="@../../ASSETS/STYLES/DIALOG/AddProductDialog.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.EditProductDialogController">
     <HBox spacing="30" styleClass="main-container" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
         <!-- Left Section - Image -->
         <VBox styleClass="image-section">
@@ -23,7 +23,14 @@
         <VBox spacing="20" styleClass="form-section" HBox.hgrow="ALWAYS">
             <HBox spacing="15" styleClass="input-group">
                 <Label styleClass="label-text" text="Loại sản phẩm:" />
-                <ComboBox fx:id="recipeComboBox" prefHeight="35.0" prefWidth="110.0" styleClass="combo-box" />
+                <Pane styleClass="type-input-container">
+                    <ComboBox fx:id="recipeComboBox" styleClass="combo-box" />
+                    <Button fx:id="addTypeButton" styleClass="custom-button, add-type-button">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="PLUS" size="14" styleClass="button-icon"/>
+                        </graphic>
+                    </Button>
+                </Pane>
             </HBox>
 
             <HBox spacing="15" styleClass="input-group">
@@ -33,13 +40,13 @@
 
             <HBox spacing="15" styleClass="input-group">
                 <Label styleClass="label-text" text="Giá:" />
-                <TextField fx:id="priceField" prefWidth="150.0" styleClass="text-input, price-field" />
+                <TextField fx:id="priceField" styleClass="text-input, price-field" />
                 <Label styleClass="currency-label" text="VND" />
             </HBox>
 
             <VBox spacing="10" styleClass="description-group">
                 <Label styleClass="label-text" text="Mô tả:" />
-                <TextArea fx:id="descriptionArea" prefHeight="35.0" prefWidth="365.0" styleClass="text-input" wrapText="true" />
+                <TextArea fx:id="descriptionArea" prefHeight="35.0" styleClass="text-input" wrapText="true" />
             </VBox>
 
             <HBox spacing="15" styleClass="button-container">

@@ -1,38 +1,39 @@
 package MODEL;
 
 public class Supplier {
-    private int supperlierId;
-    private String supperlierName;
+    private int supplierId;
+    private String supplierName;
     private String phone;
     private String address;
     private String email;
 
-
+    // Constructors
     public Supplier() {
     }
 
-    public Supplier(int supperlierId, String supperlierName, String phone, String address, String email) {
-        this.supperlierId = supperlierId;
-        this.supperlierName = supperlierName;
+    public Supplier(int supplierId, String supplierName, String phone, String address, String email) {
+        this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.phone = phone;
         this.address = address;
         this.email = email;
     }
 
-    public int getSupperlierId() {
-        return supperlierId;
+    // Getters and setters
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupperlierId(int supperlierId) {
-        this.supperlierId = supperlierId;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
-    public String getSupperlierName() {
-        return supperlierName;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setSupperlierName(String supperlierName) {
-        this.supperlierName = supperlierName;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getPhone() {
@@ -57,16 +58,5 @@ public class Supplier {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "Supplier{" +
-                "supperlierId=" + supperlierId +
-                ", supperlierName='" + supperlierName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

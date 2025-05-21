@@ -25,7 +25,7 @@
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label styleClass="label-text" text="Mặt hàng:" />
                 <ComboBox fx:id="itemComboBox" layoutX="100" promptText="Chọn mặt hàng" styleClass="combo-box, item-combo"/>
-                <Button fx:id="addItemButton" layoutX="320" layoutY="0" styleClass="icon-button">
+                <Button fx:id="addItemButton" layoutX="320" layoutY="0" styleClass="icon-button" onAction="#handleIconButtonClick">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon"/>
                     </graphic>
@@ -35,7 +35,7 @@
             <Pane styleClass="input-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
                 <Label styleClass="label-text" text="Đơn vị:" />
                 <ComboBox fx:id="unitComboBox" layoutX="100" promptText="Chọn đơn vị" styleClass="combo-box, unit-combo"/>
-                <Button fx:id="addUnitButton" layoutX="320" layoutY="0" styleClass="icon-button">
+                <Button fx:id="addUnitButton" layoutX="320" layoutY="0" styleClass="icon-button" onAction="#handleIconButtonClick">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon"/>
                     </graphic>
@@ -45,7 +45,7 @@
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="1">
                 <Label styleClass="label-text" text="Nhà cung cấp:" />
                 <ComboBox fx:id="supplierComboBox" layoutX="100" promptText="Chọn nhà cung cấp" styleClass="combo-box, supplier-combo"/>
-                <Button fx:id="addSupplierButton" layoutX="320" layoutY="0" styleClass="icon-button">
+                <Button fx:id="addSupplierButton" layoutX="320" layoutY="0" styleClass="icon-button" onAction="#handleIconButtonClick">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon"/>
                     </graphic>
