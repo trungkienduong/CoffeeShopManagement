@@ -4,24 +4,24 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ImportLog {
-    private int importId;                   // IMPORT_ID
-    private String supplierName;           // SUPPLIER_NAME
-    private LocalDate importDate;          // IMPORT_DATE
-    private BigDecimal quantity;           // QUANTITY
-    private BigDecimal unitPrice;          // UNIT_PRICE
-    private String note;                   // NOTE
+    private int importId;
+    private Supplier supplier;             // Thay cho supplierName, liên kết khóa ngoại SUPPLIER_ID
+    private LocalDate importDate;
+    private BigDecimal quantity;
+    private BigDecimal unitPrice;
+    private String note;
 
-    private Inventory item;                // ITEM_ID (khóa ngoại tới bảng INVENTORY)
-    private Employee employee;             // EMPLOYEE_ID (khóa ngoại tới bảng EMPLOYEE)
+    private Inventory item;
+    private Employee employee;
 
     public ImportLog() {
     }
 
-    public ImportLog(int importId, String supplierName, LocalDate importDate,
+    public ImportLog(int importId, Supplier supplier, LocalDate importDate,
                      BigDecimal quantity, BigDecimal unitPrice, String note,
                      Inventory item, Employee employee) {
         this.importId = importId;
-        this.supplierName = supplierName;
+        this.supplier = supplier;
         this.importDate = importDate;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
@@ -38,12 +38,12 @@ public class ImportLog {
         this.importId = importId;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public LocalDate getImportDate() {
@@ -109,7 +109,7 @@ public class ImportLog {
     public String toString() {
         return "ImportLog{" +
                 "importId=" + importId +
-                ", supplierName='" + supplierName + '\'' +
+                ", supplier=" + (supplier != null ? supplier.getSupplierName() : "null") +
                 ", importDate=" + importDate +
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +

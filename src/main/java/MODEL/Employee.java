@@ -1,32 +1,58 @@
 package MODEL;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Employee {
+
+    public enum Gender {
+        MALE('M'), FEMALE('F');
+
+        private final char code;
+
+        Gender(char code) {
+            this.code = code;
+        }
+
+        public char getCode() {
+            return code;
+        }
+
+        public static Gender fromCode(char code) {
+            return code == 'F' ? FEMALE : MALE;
+        }
+
+        @Override
+        public String toString() {
+            return this == MALE ? "M" : "F";
+        }
+    }
+
     private int employeeId;
-    private String username; // tên đăng nhập
-    private String fullname; // tên nhân viên
-    private char gender;
+    private String username;
+    private String fullName;
+    private Gender gender;
     private String cccd;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phone;
     private String address;
     private double salary;
-    private Date joinDate;
-    private String image; // đường dẫn ảnh
-    
-    // Đối tượng liên kết
-    private User user;
+    private LocalDate joinDate;
+    private String imagePath;
+
+    private int positionId;
     private EmployeePosition position;
+    private User user;
 
-    // Default constructor
-    public Employee() {
-    }
+    // Constructors
+    public Employee() {}
 
-    public Employee(int employeeId, String username, String fullname, char gender, String cccd, Date dateOfBirth, String phone, String address, double salary, Date joinDate, String image, User user, EmployeePosition position) {
+    public Employee(int employeeId, String username, String fullName, Gender gender, String cccd,
+                    LocalDate dateOfBirth, String phone, String address, double salary,
+                    LocalDate joinDate, String imagePath, int positionId) {
         this.employeeId = employeeId;
         this.username = username;
-        this.fullname = fullname;
+        this.fullName = fullName;
         this.gender = gender;
         this.cccd = cccd;
         this.dateOfBirth = dateOfBirth;
@@ -34,10 +60,11 @@ public class Employee {
         this.address = address;
         this.salary = salary;
         this.joinDate = joinDate;
-        this.image = image;
-        this.user = user;
-        this.position = position;
+        this.imagePath = imagePath;
+        this.positionId = positionId;
     }
+
+    // Getters and Setters
 
     public int getEmployeeId() {
         return employeeId;
@@ -55,20 +82,28 @@ public class Employee {
         this.username = username;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public char getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public void setGenderFromCode(char code) {
+        this.gender = Gender.fromCode(code);
+    }
+
+    public char getGenderCode() {
+        return gender != null ? gender.getCode() : ' ';
     }
 
     public String getCccd() {
@@ -79,12 +114,20 @@ public class Employee {
         this.cccd = cccd;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public Date getDateOfBirthSql() {
+        return dateOfBirth != null ? Date.valueOf(dateOfBirth) : null;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date date) {
+        this.dateOfBirth = date != null ? date.toLocalDate() : null;
     }
 
     public String getPhone() {
@@ -111,28 +154,36 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Date getJoinDate() {
+    public LocalDate getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public Date getJoinDateSql() {
+        return joinDate != null ? Date.valueOf(joinDate) : null;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
         this.joinDate = joinDate;
     }
 
-    public String getImage() {
-        return image;
+    public void setJoinDate(Date date) {
+        this.joinDate = date != null ? date.toLocalDate() : null;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public User getUser() {
-        return user;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public int getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
     }
 
     public EmployeePosition getPosition() {
@@ -141,24 +192,25 @@ public class Employee {
 
     public void setPosition(EmployeePosition position) {
         this.position = position;
+        if (position != null) {
+            this.positionId = position.getPositionId();
+        }
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if (user != null) {
+            this.username = user.getUsername();
+        }
+    }
+
+    // Optional toString
     @Override
     public String toString() {
-        return "Employee{" +
-                "employeeId=" + employeeId +
-                ", username='" + username + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", gender=" + gender +
-                ", cccd='" + cccd + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", salary=" + salary +
-                ", joinDate=" + joinDate +
-                ", image='" + image + '\'' +
-                ", user=" + user +
-                ", position=" + position +
-                '}';
+        return fullName + " - " + (position != null ? position.getPositionName() : "Chưa rõ");
     }
 }

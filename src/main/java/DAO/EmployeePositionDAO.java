@@ -1,18 +1,14 @@
 package DAO;
 
 import MODEL.EmployeePosition;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeePositionDAO {
     private static EmployeePositionDAO instance;
 
-    private EmployeePositionDAO() {
-    }
+    private EmployeePositionDAO() {}
 
     public static EmployeePositionDAO getInstance() {
         if (instance == null) {
@@ -21,125 +17,103 @@ public class EmployeePositionDAO {
         return instance;
     }
 
-    // ---------------------- INSERT ----------------------
-    public boolean insert(EmployeePosition employeePosition) {
-        String sql = "INSERT INTO [EMPLOYEE_POSITION] (POSITION_NAME) VALUES (?)";
+    // ---------------------- SELECT ALL ----------------------
+    public List<EmployeePosition> selectAll() {
+        List<EmployeePosition> list = new ArrayList<>();
+        String query = "SELECT * FROM EMPLOYEE_POSITION";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
-            pst.setString(1, employeePosition.getPositionName()); // gán giá trị cho ? thứ nhất
+            while (rs.next()) {
+                EmployeePosition position = new EmployeePosition(
+                        rs.getInt("POSITION_ID"),
+                        rs.getString("POSITION_NAME")
+                );
+                list.add(position);
+            }
 
-            // thực thi câu lệnh
-            int result = pst.executeUpdate();
-            return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return list;
+    }
+
+    // ---------------------- INSERT ----------------------
+    public boolean insert(EmployeePosition position) {
+        String query = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, position.getPositionName());
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     // ---------------------- UPDATE ----------------------
-    public boolean update(EmployeePosition employeePosition) {
-        String sql = "UPDATE [EMPLOYEE_POSITION] SET POSITION_NAME = ? WHERE POSITION_ID = ?";
+    public boolean update(EmployeePosition position) {
+        String query = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setString(1, employeePosition.getPositionName()); // gán giá trị cho ? thứ hai
-            pst.setInt(2, employeePosition.getPositionId()); // gán giá trị cho ? thứ hai
+            stmt.setString(1, position.getPositionName());
+            stmt.setInt(2, position.getPositionId());
+            return stmt.executeUpdate() > 0;
 
-            // thực thi câu lệnh
-            int result = pst.executeUpdate();
-            return result > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return false;
     }
 
     // ---------------------- DELETE ----------------------
     public boolean delete(int positionId) {
-        String sql = "DELETE FROM [EMPLOYEE_POSITION] WHERE POSITION_ID = ?";
+        String query = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setInt(1, positionId);
+            stmt.setInt(1, positionId);
+            return stmt.executeUpdate() > 0;
 
-            // thuc thi cau lenh
-            int result = pst.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // ---------------------- GET ALL ----------------------
-
-    public List<EmployeePosition> getAll() {
-        String sql = "SELECT * FROM [EMPLOYEE_POSITION]";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-
-            List<EmployeePosition> list = new ArrayList<>();
-            while (rs.next()) {
-                EmployeePosition employeePosition = new EmployeePosition();
-                employeePosition.setPositionId(rs.getInt("POSITION_ID"));
-                employeePosition.setPositionName(rs.getString("POSITION_NAME"));
-                list.add(employeePosition);
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // ---------------------- GET BY NAME ----------------------
-    public EmployeePosition findByName(String positionName) {
-        String sql = "SELECT * FROM [EMPLOYEE_POSITION] WHERE POSITION_NAME = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setString(1, positionName);
-
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                EmployeePosition employeePosition = new EmployeePosition();
-                employeePosition.setPositionId(rs.getInt("POSITION_ID"));
-                employeePosition.setPositionName(rs.getString("POSITION_NAME"));
-                return employeePosition;
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return false;
     }
 
-    //---------------------- GET BY ID ----------------------
+    // ---------------------- FIND BY ID ----------------------
     public EmployeePosition findById(int positionId) {
-        String sql = "SELECT * FROM [EMPLOYEE_POSITION] WHERE POSITION_ID = ?";
+        String query = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setInt(1, positionId);
-
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                EmployeePosition employeePosition = new EmployeePosition();
-                employeePosition.setPositionId(rs.getInt("POSITION_ID"));
-                employeePosition.setPositionName(rs.getString("POSITION_NAME"));
-                return employeePosition;
+            stmt.setInt(1, positionId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new EmployeePosition(
+                            rs.getInt("POSITION_ID"),
+                            rs.getString("POSITION_NAME")
+                    );
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

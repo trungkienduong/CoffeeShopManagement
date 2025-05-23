@@ -1,17 +1,14 @@
 package GUI.CONTROLLER.DIALOG;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.event.ActionEvent;
+import MODEL.Employee;
 
 public class ViewEmployeeDialogController {
-
-    @FXML
-    private ImageView employeeImageView;
 
     @FXML
     private Label emailLabel;
@@ -40,33 +37,40 @@ public class ViewEmployeeDialogController {
     @FXML
     private Label addressLabel;
 
-    // Khởi tạo controller
     @FXML
-    private void initialize() {
-        // Gán ảnh từ internet (ảnh ổn định và nhẹ)
-        try {
-            Image image = new Image("https://randomuser.me/api/portraits/men/75.jpg", true);
-            employeeImageView.setImage(image);
-        } catch (Exception e) {
-            System.out.println("Không thể tải ảnh: " + e.getMessage());
-        }
+    private ImageView employeeImageView;
 
-        // Gán dữ liệu giả lập
-        emailLabel.setText("nguyenvana@gmail.com");
-        roleLabel.setText("Nhân viên pha chế");
-        fullnameLabel.setText("Nguyễn Văn A");
-        genderLabel.setText("Nam");
-        cccdLabel.setText("123456789012");
-        birthDateLabel.setText("01/01/2000");
-        phoneLabel.setText("0901234567");
-        salaryLabel.setText("7,000,000 VND");
-        addressLabel.setText("123 Đường Trà Sữa, Quận Cà Phê, TP. Đà Lạt");
+    @FXML
+    private Button closeButton;
+
+    // Gọi khi truyền dữ liệu từ ngoài vào
+    public void setEmployee(Employee employee) {
+        if (employee == null) return;
+
+        fullnameLabel.setText(employee.getFullName());
+        genderLabel.setText(String.valueOf(employee.getGender()));
+        cccdLabel.setText(employee.getCccd());
+        birthDateLabel.setText(employee.getDateOfBirth() != null ? employee.getDateOfBirth().toString() : "");
+        phoneLabel.setText(employee.getPhone());
+        salaryLabel.setText(String.format("%.0f", employee.getSalary()));
+        addressLabel.setText(employee.getAddress());
+        emailLabel.setText(employee.getUser().getEmail());
+        roleLabel.setText(employee.getPosition().getPositionName());
+
+        // Load ảnh (nếu có URL hợp lệ, bạn có thể chỉnh lại đường dẫn cho phù hợp)
+        if (employee.getImagePath() != null && !employee.getImagePath().isEmpty()) {
+            try {
+                Image image = new Image(employee.getImagePath());
+                employeeImageView.setImage(image);
+            } catch (Exception e) {
+                System.out.println("Không thể load ảnh nhân viên: " + e.getMessage());
+            }
+        }
     }
 
-    // Xử lý khi nhấn nút Đóng
     @FXML
-    private void handleClose(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    private void handleClose() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 }

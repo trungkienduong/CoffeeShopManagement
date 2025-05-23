@@ -1,21 +1,18 @@
 package DAO;
 
 import MODEL.Employee;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import MODEL.EmployeePosition;
+import MODEL.User;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO {
     private static EmployeeDAO instance;
-    private UserDAO userDAO;
-    private EmployeePositionDAO employeePositionDAO;
 
     private EmployeeDAO() {
-        userDAO = UserDAO.getInstance();
-        employeePositionDAO = EmployeePositionDAO.getInstance();
+        // Singleton constructor
     }
 
     public static EmployeeDAO getInstance() {
@@ -25,244 +22,149 @@ public class EmployeeDAO {
         return instance;
     }
 
-    //---------------------- INSERT ----------------------
-    public boolean insert(Employee employee) {
-        String sql = "INSERT INTO [EMPLOYEE] (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY, IMAGE_PATH) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setString(1, employee.getUsername());
-            pst.setString(2, employee.getFullname());
-            pst.setString(3, String.valueOf(employee.getGender()));
-            pst.setString(4, employee.getCccd());
-            pst.setDate(5, new java.sql.Date(employee.getDateOfBirth().getTime()));
-            pst.setString(6, employee.getPhone());
-            pst.setString(7, employee.getAddress());
-            pst.setInt(8, employee.getPosition().getPositionId());
-            pst.setDouble(9, employee.getSalary());
-            pst.setString(10, employee.getImage());
-            // thuc thi cau lenh
-            int result = pst.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //---------------------- UPDATE ----------------------
-    public boolean update(Employee employee) {
-        String sql = "UPDATE [EMPLOYEE] SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, POSITION_ID = ?, SALARY = ?, IMAGE_PATH = ? WHERE EMPLOYEE_ID = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setString(1, employee.getFullname());
-            pst.setString(2, String.valueOf(employee.getGender()));
-            pst.setString(3, employee.getCccd());
-            pst.setDate(4, new java.sql.Date(employee.getDateOfBirth().getTime()));
-            pst.setString(5, employee.getPhone());
-            pst.setString(6, employee.getAddress());
-            pst.setInt(7, employee.getPosition().getPositionId());
-            pst.setDouble(8, employee.getSalary());
-            pst.setString(9, employee.getImage());
-            pst.setInt(10, employee.getEmployeeId());
-
-            // thuc thi cau lenh
-            int result = pst.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //---------------------- DELETE ----------------------
-    public boolean delete(int employeeId) {
-        String sql = "DELETE FROM [EMPLOYEE] WHERE EMPLOYEE_ID = ?";
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, employeeId);
-
-            // thuc thi cau lenh
-            int result = pst.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //---------------------- GET ALL ----------------------
-    public List<Employee> getAll() {
+    public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM [EMPLOYEE]";
+        String query = "SELECT * FROM EMPLOYEE";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()){
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
-                employee.setUsername(rs.getString("USERNAME"));
-                employee.setFullname(rs.getString("FULLNAME"));
-                employee.setGender(rs.getString("GENDER").charAt(0));
-                employee.setCccd(rs.getString("CCCD"));
-                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
-                employee.setPhone(rs.getString("PHONE"));
-                employee.setAddress(rs.getString("ADDRESS"));
-
-                int positionId = rs.getInt("POSITION_ID");
-                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
-                employee.setSalary(rs.getDouble("SALARY"));
-                employee.setImage(rs.getString("IMAGE_PATH"));
-                employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
-                employees.add(employee);
+                employees.add(extractEmployee(rs));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Có thể thay bằng Logger
         }
+
         return employees;
     }
 
-    //---------------------- GET BY NAME ----------------------
-    public Employee findByName(String username) {
-        String sql = "SELECT * FROM [EMPLOYEE] WHERE USERNAME = ?";
+    public Employee getEmployeeById(int id) {
+        String query = "SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setString(1, username); // gán giá trị cho ? thứ nhất
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
-                employee.setUsername(rs.getString("USERNAME"));
-                employee.setFullname(rs.getString("FULLNAME"));
-                employee.setGender(rs.getString("GENDER").charAt(0));
-                employee.setCccd(rs.getString("CCCD"));
-                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
-                employee.setPhone(rs.getString("PHONE"));
-                employee.setAddress(rs.getString("ADDRESS"));
+            stmt.setInt(1, id);
 
-                int positionId = rs.getInt("POSITION_ID");
-                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
-                employee.setSalary(rs.getDouble("SALARY"));
-                employee.setImage(rs.getString("IMAGE_PATH"));
-                employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
-                return employee;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return extractEmployee(rs);
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
-    //---------------------- GET BY ID ----------------------
-    public Employee findById(int employeeId) {
-        String sql = "SELECT * FROM [EMPLOYEE] WHERE EMPLOYEE_ID = ?";
+    public boolean insertEmployee(Employee emp) {
+        String query = "INSERT INTO EMPLOYEE (USERNAME, FULLNAME, GENDER, CCCD, DATE_OF_BIRTH, PHONE, ADDRESS, POSITION_ID, SALARY, JOIN_DATE, IMAGE_PATH) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setInt(1, employeeId); // gán giá trị cho ? thứ nhất
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
-                employee.setUsername(rs.getString("USERNAME"));
-                employee.setFullname(rs.getString("FULLNAME"));
-                employee.setGender(rs.getString("GENDER").charAt(0));
-                employee.setCccd(rs.getString("CCCD"));
-                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
-                employee.setPhone(rs.getString("PHONE"));
-                employee.setAddress(rs.getString("ADDRESS"));
+            prepareEmployeeStatement(stmt, emp, false);
+            return stmt.executeUpdate() > 0;
 
-                int positionId = rs.getInt("POSITION_ID");
-                employee.setPosition(EmployeePositionDAO.getInstance().findById(positionId));
-                employee.setSalary(rs.getDouble("SALARY"));
-                employee.setImage(rs.getString("IMAGE_PATH"));
-                employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
-                return employee;
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return false;
     }
 
-    //---------------------- GET BY POSITION ----------------------
-    public List<Employee> findByPosition(int positionId) {
-        List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM [EMPLOYEE] WHERE POSITION_ID = ?";
+    public boolean updateEmployee(Employee emp) {
+        String query = "UPDATE EMPLOYEE SET FULLNAME = ?, GENDER = ?, CCCD = ?, DATE_OF_BIRTH = ?, PHONE = ?, ADDRESS = ?, " +
+                "POSITION_ID = ?, SALARY = ?, JOIN_DATE = ?, IMAGE_PATH = ? WHERE EMPLOYEE_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setInt(1, positionId);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
-                employee.setUsername(rs.getString("USERNAME"));
-                employee.setFullname(rs.getString("FULLNAME"));
-                employee.setGender(rs.getString("GENDER").charAt(0));
-                employee.setCccd(rs.getString("CCCD"));
-                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
-                employee.setPhone(rs.getString("PHONE"));
-                employee.setAddress(rs.getString("ADDRESS"));
+            prepareEmployeeStatement(stmt, emp, true);
+            return stmt.executeUpdate() > 0;
 
-                int position = rs.getInt("POSITION_ID");
-                employee.setPosition(EmployeePositionDAO.getInstance().findById(position));
-                employee.setSalary(rs.getDouble("SALARY"));
-                employee.setImage(rs.getString("IMAGE_PATH"));
-                employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
-                employees.add(employee);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return employees;
+
+        return false;
     }
 
-    //---------------------- SEARCH BY NAME ----------------------
-    public List<Employee> searchByName(String keyword) {
-        List<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM [EMPLOYEE] WHERE FULLNAME LIKE ?";
+    public boolean deleteEmployee(int employeeId) {
+        String query = "DELETE FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            pst.setString(1, "%" + keyword + "%");
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
-                employee.setUsername(rs.getString("USERNAME"));
-                employee.setFullname(rs.getString("FULLNAME"));
-                employee.setGender(rs.getString("GENDER").charAt(0));
-                employee.setCccd(rs.getString("CCCD"));
-                employee.setDateOfBirth(rs.getDate("DATE_OF_BIRTH"));
-                employee.setPhone(rs.getString("PHONE"));
-                employee.setAddress(rs.getString("ADDRESS"));
+            stmt.setInt(1, employeeId);
+            return stmt.executeUpdate() > 0;
 
-                int position = rs.getInt("POSITION_ID");
-                employee.setPosition(EmployeePositionDAO.getInstance().findById(position));
-                employee.setSalary(rs.getDouble("SALARY"));
-                employee.setImage(rs.getString("IMAGE_PATH"));
-                employee.setJoinDate(rs.getDate("JOIN_DATE"));
-                employee.setPosition(employeePositionDAO.findById(employee.getPosition().getPositionId()));
-                employees.add(employee);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return employees;
+
+        return false;
     }
+
+    // ======= Helper Methods =======
+
+    private Employee extractEmployee(ResultSet rs) throws SQLException {
+        Employee emp = new Employee();
+
+        emp.setEmployeeId(rs.getInt("EMPLOYEE_ID"));
+        emp.setUsername(rs.getString("USERNAME"));
+        emp.setFullName(rs.getString("FULLNAME"));
+        emp.setGender(Employee.Gender.fromCode(rs.getString("GENDER").charAt(0)));
+        emp.setCccd(rs.getString("CCCD"));
+        emp.setDateOfBirth(rs.getDate("DATE_OF_BIRTH").toLocalDate());
+        emp.setPhone(rs.getString("PHONE"));
+        emp.setAddress(rs.getString("ADDRESS"));
+        emp.setSalary(rs.getDouble("SALARY"));
+        emp.setJoinDate(rs.getDate("JOIN_DATE").toLocalDate());
+        emp.setImagePath(rs.getString("IMAGE_PATH"));
+
+        int positionId = rs.getInt("POSITION_ID");
+        emp.setPosition(new EmployeePosition(positionId, null));
+
+        emp.setUser(new User(rs.getString("USERNAME"), null, null, null));
+
+        return emp;
+    }
+
+    private void prepareEmployeeStatement(PreparedStatement stmt, Employee emp, boolean isUpdate) throws SQLException {
+        if (!isUpdate) {
+            // Insert: vị trí tham số giống thứ tự câu SQL insert
+            stmt.setString(1, emp.getUsername());
+            stmt.setString(2, emp.getFullName());
+            stmt.setString(3, String.valueOf(emp.getGender()));
+            stmt.setString(4, emp.getCccd());
+            stmt.setDate(5, java.sql.Date.valueOf(emp.getDateOfBirth())); // Chuyển LocalDate sang java.sql.Date
+            stmt.setString(6, emp.getPhone());
+            stmt.setString(7, emp.getAddress());
+            stmt.setInt(8, emp.getPosition().getPositionId());
+            stmt.setDouble(9, emp.getSalary());
+            stmt.setDate(10, java.sql.Date.valueOf(emp.getJoinDate()));
+            stmt.setString(11, emp.getImagePath());
+        } else {
+            // Update: vị trí tham số giống thứ tự câu SQL update
+            stmt.setString(1, emp.getFullName());
+            stmt.setString(2, String.valueOf(emp.getGender()));
+            stmt.setString(3, emp.getCccd());
+            stmt.setDate(4, java.sql.Date.valueOf(emp.getDateOfBirth()));
+            stmt.setString(5, emp.getPhone());
+            stmt.setString(6, emp.getAddress());
+            stmt.setInt(7, emp.getPosition().getPositionId());
+            stmt.setDouble(8, emp.getSalary());
+            stmt.setDate(9, java.sql.Date.valueOf(emp.getJoinDate()));
+            stmt.setString(10, emp.getImagePath());
+            stmt.setInt(11, emp.getEmployeeId());
+        }
+    }
+
 }

@@ -205,3 +205,11 @@
     -fx-background-color: #C62828;
     -fx-text-fill: white;
 }
+
+.coffee-brown-text {
+    -fx-text-fill: #6F4E37;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10 0 0;
+    -fx-min-width: 250;
+    -fx-pref-width: 250;
+}

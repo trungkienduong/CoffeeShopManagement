@@ -6,124 +6,51 @@ import MODEL.Employee;
 import java.util.List;
 
 public class EmployeeBUS {
-    private static EmployeeBUS instance;
-    private EmployeeDAO employeeDAO;
+    private final EmployeeDAO employeeDAO;
 
-    private EmployeeBUS() {
-        employeeDAO = EmployeeDAO.getInstance();
+    public EmployeeBUS() {
+        this.employeeDAO = EmployeeDAO.getInstance();
     }
 
-    public static EmployeeBUS getInstance() {
-        if (instance == null) {
-            instance = new EmployeeBUS();
-        }
-        return instance;
+    public List<Employee> getAllEmployees() {
+        return employeeDAO.getAllEmployees();
     }
 
-    //---------------------- INSERT ----------------------
-    public boolean insertEmployee(Employee employee) {
-        if (employee == null) {
-            System.out.println("Invalid employee data.");
-            return false;
-        }
-
-        // Kiểm tra trùng username
-        if (employeeDAO.findByName(employee.getUsername()) != null) {
-            System.out.println("Username already exists.");
-            return false;
-        }
-
-        // Kiểm tra các trường bắt buộc
-        if (employee.getFullname() == null || employee.getFullname().isEmpty()) {
-            System.out.println("Full name is required.");
-            return false;
-        }
-
-        if (employee.getCccd() == null || employee.getCccd().isEmpty()) {
-            System.out.println("CCCD is required.");
-            return false;
-        }
-
-        if (employee.getPhone() == null || employee.getPhone().isEmpty()) {
-            System.out.println("Phone number is required.");
-            return false;
-        }
-
-        if (employee.getAddress() == null || employee.getAddress().isEmpty()) {
-            System.out.println("Address is required.");
-            return false;
-        }
-
-        // Kiểm tra lương hợp lệ
-        if (employee.getSalary() < 0) {
-            System.out.println("Salary must be greater than or equal to 0.");
-            return false;
-        }
-
-        // Thực hiện insert vào DB
-        return employeeDAO.insert(employee);
+    public Employee getEmployeeById(int id) {
+        return employeeDAO.getEmployeeById(id);
     }
 
-    //---------------------- UPDATE ----------------------
-    public boolean updateEmployee(Employee employee) {
-        if (employee == null) {
-            System.out.println("Invalid employee data.");
+    public boolean addEmployee(Employee emp) {
+        // Kiểm tra hợp lệ nếu cần (ví dụ: CCCD đúng định dạng, không null các trường bắt buộc)
+        if (emp == null || emp.getUsername() == null || emp.getFullName() == null) {
             return false;
         }
 
-        // Kiểm tra thông tin bắt buộc
-        if (employee.getFullname() == null || employee.getFullname().isEmpty()) {
-            System.out.println("Full name is required.");
-            return false;
-        }
-
-        if (employee.getCccd() == null || employee.getCccd().isEmpty()) {
-            System.out.println("CCCD is required.");
-            return false;
-        }
-
-        if (employee.getPhone() == null || employee.getPhone().isEmpty()) {
-            System.out.println("Phone number is required.");
-            return false;
-        }
-
-        if (employee.getAddress() == null || employee.getAddress().isEmpty()) {
-            System.out.println("Address is required.");
-            return false;
-        }
-
-        // Kiểm tra lương hợp lệ
-        if (employee.getSalary() < 0) {
-            System.out.println("Salary must be greater than or equal to 0.");
-            return false;
-        }
-
-        // Thực hiện update vào DB
-        return employeeDAO.update(employee);
+        return employeeDAO.insertEmployee(emp);
     }
 
-    //---------------------- DELETE ----------------------
-    public boolean deleteEmployee(int employeeId) {
-        return employeeDAO.delete(employeeId);
+    public boolean updateEmployee(Employee emp) {
+        if (emp == null || emp.getEmployeeId() == 0) {
+            return false;
+        }
+
+        return employeeDAO.updateEmployee(emp);
     }
 
-    //---------------------- GET ALL ----------------------
-    public List<Employee> getAll() {
-        return employeeDAO.getAll();
+    public boolean deleteEmployee(int id) {
+        return employeeDAO.deleteEmployee(id);
     }
 
-    //---------------------- FIND BY NAME ----------------------
-    public Employee FindByName(String username) {
-        return employeeDAO.findByName(username);
-    }
-
-    //---------------------- FIND BY ID ----------------------
-    public Employee FindById(int employeeId) {
-        return employeeDAO.findById(employeeId);
-    }
-
-    //---------------------- SEARCH BY NAME ----------------------
-    public List<Employee> searchByName(String keyword) {
-        return employeeDAO.searchByName(keyword);
+    public List<Employee> searchEmployees(String keyword) {
+        // Gợi ý: nếu bạn muốn mở rộng, có thể viết thêm method search trong DAO.
+        List<Employee> all = getAllEmployees();
+        return all.stream()
+                .filter(e ->
+                        e.getFullName().toLowerCase().contains(keyword.toLowerCase()) ||
+                                e.getUsername().toLowerCase().contains(keyword.toLowerCase()) ||
+                                e.getPhone().contains(keyword) ||
+                                e.getCccd().contains(keyword)
+                )
+                .toList();
     }
 }

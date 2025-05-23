@@ -29,14 +29,20 @@ public class EmployeePanelController {
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Thêm nhân viên mới");
-            dialogStage.initModality(Modality.APPLICATION_MODAL); // Chặn tương tác với cửa sổ chính
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setResizable(false);
             dialogStage.setScene(new Scene(root));
-            dialogStage.showAndWait(); // Chờ dialog đóng mới tiếp tục
+
+            // LẤY CONTROLLER và truyền stage vào
+            GUI.CONTROLLER.DIALOG.AddEmployeeDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace(); // Có thể thay bằng showAlert lỗi nếu muốn
+            e.printStackTrace();
         }
     }
+
 
     @FXML
     private void handleViewEmployee(ActionEvent event) {

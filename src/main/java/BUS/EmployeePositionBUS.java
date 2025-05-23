@@ -6,70 +6,43 @@ import MODEL.EmployeePosition;
 import java.util.List;
 
 public class EmployeePositionBUS {
-    private static EmployeePositionBUS instance;
-    private final EmployeePositionDAO employeePositionDAO;
+    private final EmployeePositionDAO dao;
 
-    private EmployeePositionBUS() {
-        employeePositionDAO = EmployeePositionDAO.getInstance();
+    public EmployeePositionBUS() {
+        this.dao = EmployeePositionDAO.getInstance();
     }
 
-    public static EmployeePositionBUS getInstance() {
-        if (instance == null) {
-            instance = new EmployeePositionBUS();
+    public List<EmployeePosition> getAllPositions() {
+        return dao.selectAll();
+    }
+
+    public EmployeePosition getPositionById(int id) {
+        return dao.findById(id);
+    }
+
+    public boolean addPosition(EmployeePosition position) {
+        if (position == null || position.getPositionName() == null || position.getPositionName().isEmpty()) {
+            return false;
         }
-        return instance;
+
+        return dao.insert(position);
     }
 
-    // ----------------- INSERT -----------------
-    public boolean insertEmployeePosition(EmployeePosition employeePosition) {
-        if (employeePosition != null && employeePosition.getPositionName() != null && !employeePosition.getPositionName().isEmpty()) {
-            try {
-                return employeePositionDAO.insert(employeePosition);
-            } catch (Exception e) {
-                System.err.println("Insert error: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Position name cannot be empty.");
+    public boolean updatePosition(EmployeePosition position) {
+        if (position == null || position.getPositionId() <= 0 || position.getPositionName() == null || position.getPositionName().isEmpty()) {
+            return false;
         }
-        return false;
+
+        return dao.update(position);
     }
 
-    // ----------------- UPDATE -----------------
-    public boolean updateEmployeePosition(EmployeePosition employeePosition) {
-        if (employeePosition != null && employeePosition.getPositionName() != null && !employeePosition.getPositionName().isEmpty()) {
-            try {
-                return employeePositionDAO.update(employeePosition);
-            } catch (Exception e) {
-                System.err.println("Update error: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Position name cannot be empty.");
-        }
-        return false;
+    public boolean deletePosition(int id) {
+        return dao.delete(id);
     }
 
-    // ----------------- DELETE -----------------
-    // (Cẩn thận) Xóa tất cả chức vụ
-    public boolean deleteEmployeePosition(int positionId) {
-        try {
-            return employeePositionDAO.delete(positionId);
-        } catch (Exception e) {
-            System.err.println("Delete position error: " + e.getMessage());
-        }
-        return false;
-    }
-
-
-    // ----------------- GET / FIND -----------------
-    public List<EmployeePosition> GetAll() {
-        return employeePositionDAO.getAll();
-    }
-
-    public EmployeePosition FindByName(String positionName) {
-        return employeePositionDAO.findByName(positionName);
-    }
-
-    public EmployeePosition FindById(int positionId) {
-        return employeePositionDAO.findById(positionId);
+    public List<EmployeePosition> searchPositionByName(String keyword) {
+        return dao.selectAll().stream()
+                .filter(p -> p.getPositionName().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
     }
 }
