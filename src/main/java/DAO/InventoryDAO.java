@@ -3,19 +3,16 @@ package DAO;
 import MODEL.Inventory;
 import MODEL.Category;
 import MODEL.UnitCategory;
-import MODEL.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryDAO {
     private static InventoryDAO instance;
-    private CategoryDAO categoryDAO;
-    private UnitCategoryDAO unitCategoryDAO;
+    private final CategoryDAO categoryDAO;
+    private final UnitCategoryDAO unitCategoryDAO;
 
     private InventoryDAO() {
         categoryDAO = CategoryDAO.getInstance();
@@ -31,21 +28,17 @@ public class InventoryDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Inventory item) {
-        String sql = "INSERT INTO [INVENTORY] (ITEM_ID, ITEM_NAME, IMAGE_PATH, QUANTITY, CATEGORY_ID, UNIT_ID, COST_PRICE) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO INVENTORY (ITEM_NAME, CATEGORY_ID, UNIT_ID, QUANTITY, COST_PRICE) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, item.getItemId());
-            pst.setString(2, item.getItemName());
-            pst.setString(3, item.getImagePath());
-            pst.setDouble(4, item.getQuantity());
-            pst.setInt(5, item.getCategory().getCategoryId());
-            pst.setInt(6, item.getUnit().getUnitId());
-            pst.setDouble(7, item.getCostPrice());
+            pst.setString(1, item.getItemName());
+            pst.setInt(2, item.getCategory().getCategoryId());
+            pst.setInt(3, item.getUnit().getUnitId());
+            pst.setBigDecimal(4, item.getQuantity());
+            pst.setBigDecimal(5, item.getCostPrice());
 
-            int result = pst.executeUpdate();
-            return result > 0;
+            return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -54,39 +47,33 @@ public class InventoryDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(Inventory item) {
-        String sql = "UPDATE [INVENTORY] SET ITEM_NAME = ?, IMAGE_PATH = ?, QUANTITY = ?, CATEGORY_ID = ?, UNIT_ID = ?, COST_PRICE = ? WHERE ITEM_ID = ?";
-
+        String sql = "UPDATE INVENTORY SET CATEGORY_ID = ?, UNIT_ID = ?, QUANTITY = ?, COST_PRICE = ? WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, item.getItemName());
-            pst.setString(2, item.getImagePath());
-            pst.setDouble(3, item.getQuantity());
-            pst.setInt(4, item.getCategory().getCategoryId());
-            pst.setInt(5, item.getUnit().getUnitId());
-            pst.setDouble(6, item.getCostPrice());
-            pst.setInt(7, item.getItemId());
+            pst.setInt(1, item.getCategory().getCategoryId());
+            pst.setInt(2, item.getUnit().getUnitId());
+            pst.setBigDecimal(3, item.getQuantity());
+            pst.setBigDecimal(4, item.getCostPrice());
+            pst.setString(5, item.getItemName());
 
-            int result = pst.executeUpdate();
-            return result > 0;
+            return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // ---------------------- UPDATE ----------------------
-    public boolean updateQuantity(int itemId, double newQuantity) {
-        String sql = "UPDATE [INVENTORY] SET QUANTITY = ? WHERE ITEM_ID = ?";
-
+    // ---------------------- UPDATE QUANTITY ----------------------
+    public boolean updateQuantity(String itemName, BigDecimal newQuantity) {
+        String sql = "UPDATE INVENTORY SET QUANTITY = ? WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setDouble(1, newQuantity);
-            pst.setInt(2, itemId);
+            pst.setBigDecimal(1, newQuantity);
+            pst.setString(2, itemName);
 
-            int result = pst.executeUpdate();
-            return result > 0;
+            return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -94,16 +81,13 @@ public class InventoryDAO {
     }
 
     // ---------------------- DELETE ----------------------
-    public boolean delete(int itemId) {
-        String sql = "DELETE FROM INVENTORY WHERE ITEM_ID = ?";
-
+    public boolean delete(String itemName) {
+        String sql = "DELETE FROM INVENTORY WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, itemId);
-            int result = pst.executeUpdate();
-            return result > 0;
-
+            pst.setString(1, itemName);
+            return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -112,28 +96,23 @@ public class InventoryDAO {
 
     // ---------------------- GET ALL ----------------------
     public List<Inventory> getAll() {
-        String sql = "SELECT * FROM [INVENTORY]";
+        String sql = "SELECT * FROM INVENTORY";
+        List<Inventory> list = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 
-            List<Inventory> list = new ArrayList<>();
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
-                item.setImagePath(rs.getString("IMAGE_PATH"));
-                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setQuantity(rs.getBigDecimal("QUANTITY"));
+                item.setCostPrice(rs.getBigDecimal("COST_PRICE"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-
-                int unitId = rs.getInt("UNIT_ID");
-                UnitCategory unit = unitCategoryDAO.findById(unitId);
-                item.setUnit(unit);
-
-                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                item.setUnit(unitCategoryDAO.findById(rs.getInt("UNIT_ID")));
                 list.add(item);
             }
+
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,61 +120,53 @@ public class InventoryDAO {
         }
     }
 
-    // ---------------------- GET BY ID ----------------------
-    public Inventory findById(int itemId) {
-        String sql = "SELECT * FROM [INVENTORY] WHERE ITEM_ID = ?";
+    // ---------------------- FIND BY NAME ----------------------
+    public Inventory findByName(String itemName) {
+        String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, itemId);
-
+            pst.setString(1, itemName);
             ResultSet rs = pst.executeQuery();
+
             if (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
-                item.setImagePath(rs.getString("IMAGE_PATH"));
-                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setQuantity(rs.getBigDecimal("QUANTITY"));
+                item.setCostPrice(rs.getBigDecimal("COST_PRICE"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-
-                int unitId = rs.getInt("UNIT_ID");
-                UnitCategory unit = unitCategoryDAO.findById(unitId);
-                item.setUnit(unit);
-                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                item.setUnit(unitCategoryDAO.findById(rs.getInt("UNIT_ID")));
                 return item;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    // ---------------------- GET BY CATEGORY ----------------------
+    // ---------------------- FIND BY CATEGORY ----------------------
     public List<Inventory> findByCategory(int categoryId) {
-        String sql = "SELECT * FROM [INVENTORY] WHERE CATEGORY_ID = ?";
+        String sql = "SELECT * FROM INVENTORY WHERE CATEGORY_ID = ?";
+        List<Inventory> list = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, categoryId);
-
             ResultSet rs = pst.executeQuery();
-            List<Inventory> list = new ArrayList<>();
+
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
-                item.setImagePath(rs.getString("IMAGE_PATH"));
-                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setQuantity(rs.getBigDecimal("QUANTITY"));
+                item.setCostPrice(rs.getBigDecimal("COST_PRICE"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-
-                int unitId = rs.getInt("UNIT_ID");
-                UnitCategory unit = unitCategoryDAO.findById(unitId);
-                item.setUnit(unit);
-                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                item.setUnit(unitCategoryDAO.findById(rs.getInt("UNIT_ID")));
                 list.add(item);
             }
+
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -205,29 +176,25 @@ public class InventoryDAO {
 
     // ---------------------- SEARCH BY NAME ----------------------
     public List<Inventory> searchByName(String keyword) {
-        String sql = "SELECT * FROM [INVENTORY] WHERE ITEM_NAME LIKE ?";
+        String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME LIKE ?";
+        List<Inventory> list = new ArrayList<>();
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, "%" + keyword + "%");
-
             ResultSet rs = pst.executeQuery();
-            List<Inventory> list = new ArrayList<>();
+
             while (rs.next()) {
                 Inventory item = new Inventory();
-                item.setItemId(rs.getInt("ITEM_ID"));
                 item.setItemName(rs.getString("ITEM_NAME"));
-                item.setImagePath(rs.getString("IMAGE_PATH"));
-                item.setQuantity(rs.getDouble("QUANTITY"));
+                item.setQuantity(rs.getBigDecimal("QUANTITY"));
+                item.setCostPrice(rs.getBigDecimal("COST_PRICE"));
                 item.setCategory(categoryDAO.findById(rs.getInt("CATEGORY_ID")));
-
-                int unitId = rs.getInt("UNIT_ID");
-                UnitCategory unit = unitCategoryDAO.findById(unitId);
-                item.setUnit(unit);
-                item.setCostPrice(rs.getDouble("COST_PRICE"));
+                item.setUnit(unitCategoryDAO.findById(rs.getInt("UNIT_ID")));
                 list.add(item);
             }
+
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -236,18 +203,18 @@ public class InventoryDAO {
     }
 
     // ---------------------- CHECK QUANTITY ----------------------
-    public boolean checkQuantity(int itemId, double quantity) {
-        String sql = "SELECT QUANTITY FROM [INVENTORY] WHERE ITEM_ID = ?";
+    public boolean checkQuantity(String itemName, BigDecimal quantity) {
+        String sql = "SELECT QUANTITY FROM INVENTORY WHERE ITEM_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, itemId);
-
+            pst.setString(1, itemName);
             ResultSet rs = pst.executeQuery();
+
             if (rs.next()) {
-                double currentQuantity = rs.getDouble("QUANTITY");
-                return currentQuantity >= quantity;
+                BigDecimal current = rs.getBigDecimal("QUANTITY");
+                return current.compareTo(quantity) >= 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();

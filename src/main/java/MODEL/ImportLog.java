@@ -3,33 +3,44 @@ package MODEL;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Model đại diện cho bảng IMPORT_LOG trong database.
+ */
 public class ImportLog {
-    private int importId;
-    private Supplier supplier;             // Thay cho supplierName, liên kết khóa ngoại SUPPLIER_ID
-    private LocalDate importDate;
-    private BigDecimal quantity;
-    private BigDecimal unitPrice;
-    private String note;
+    private int importId;          // IMPORT_ID
+    private String itemName;       // ITEM_NAME
+    private int categoryId;        // CATEGORY_ID
+    private int unitId;            // UNIT_ID
+    private int supplierId;        // SUPPLIER_ID
+    private LocalDate importDate;  // IMPORT_DATE
+    private BigDecimal quantity;   // QUANTITY
+    private BigDecimal unitPrice;  // UNIT_PRICE
+    // totalPrice là trường tính toán trên SQL, không cần lưu trong model
+    private Integer employeeId;    // EMPLOYEE_ID có thể null
+    private String note;           // NOTE
 
-    private Inventory item;
-    private Employee employee;
-
+    // Constructor không tham số
     public ImportLog() {
+        this.importDate = LocalDate.now(); // mặc định ngày hiện tại
     }
 
-    public ImportLog(int importId, Supplier supplier, LocalDate importDate,
-                     BigDecimal quantity, BigDecimal unitPrice, String note,
-                     Inventory item, Employee employee) {
+    // Constructor đầy đủ tham số (trừ totalPrice vì là trường tính toán)
+    public ImportLog(int importId, String itemName, int categoryId, int unitId, int supplierId,
+                     LocalDate importDate, BigDecimal quantity, BigDecimal unitPrice,
+                     Integer employeeId, String note) {
         this.importId = importId;
-        this.supplier = supplier;
+        this.itemName = itemName;
+        this.categoryId = categoryId;
+        this.unitId = unitId;
+        this.supplierId = supplierId;
         this.importDate = importDate;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+        this.employeeId = employeeId;
         this.note = note;
-        this.item = item;
-        this.employee = employee;
     }
 
+    // Getters và Setters
     public int getImportId() {
         return importId;
     }
@@ -38,12 +49,36 @@ public class ImportLog {
         this.importId = importId;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(int unitId) {
+        this.unitId = unitId;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public LocalDate getImportDate() {
@@ -59,6 +94,9 @@ public class ImportLog {
     }
 
     public void setQuantity(BigDecimal quantity) {
+        if (quantity != null && quantity.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
         this.quantity = quantity;
     }
 
@@ -67,7 +105,18 @@ public class ImportLog {
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
+        if (unitPrice != null && unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Unit price must be non-negative");
+        }
         this.unitPrice = unitPrice;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getNote() {
@@ -78,25 +127,8 @@ public class ImportLog {
         this.note = note;
     }
 
-    public Inventory getItem() {
-        return item;
-    }
-
-    public void setItem(Inventory item) {
-        this.item = item;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     /**
-     * Tính tổng tiền (totalPrice) từ quantity * unitPrice.
-     * Không cần trường riêng vì SQL đã tính toán cột này.
+     * Tính tổng tiền (tương tự TOTAL_PRICE trong DB).
      */
     public BigDecimal getTotalPrice() {
         if (quantity != null && unitPrice != null) {
@@ -109,14 +141,16 @@ public class ImportLog {
     public String toString() {
         return "ImportLog{" +
                 "importId=" + importId +
-                ", supplier=" + (supplier != null ? supplier.getSupplierName() : "null") +
+                ", itemName='" + itemName + '\'' +
+                ", categoryId=" + categoryId +
+                ", unitId=" + unitId +
+                ", supplierId=" + supplierId +
                 ", importDate=" + importDate +
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +
                 ", totalPrice=" + getTotalPrice() +
+                ", employeeId=" + employeeId +
                 ", note='" + note + '\'' +
-                ", item=" + item +
-                ", employee=" + employee +
                 '}';
     }
 }

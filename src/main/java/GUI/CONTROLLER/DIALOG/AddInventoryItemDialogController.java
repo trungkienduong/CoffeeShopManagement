@@ -22,7 +22,7 @@ public class AddInventoryItemDialogController {
 
     @FXML
     private void initialize() {
-        categoryBUS = new CategoryBUS();
+        categoryBUS = CategoryBUS.getInstance();
 
         confirmButton.setOnAction(event -> onConfirm());
         cancelButton.setOnAction(event -> onCancel());

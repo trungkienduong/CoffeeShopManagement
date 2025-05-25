@@ -2,11 +2,13 @@ package BUS;
 
 import DAO.InventoryDAO;
 import MODEL.Inventory;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public class InventoryBUS {
     private static InventoryBUS instance;
-    private InventoryDAO inventoryDAO;
+    private final InventoryDAO inventoryDAO;
 
     private InventoryBUS() {
         inventoryDAO = InventoryDAO.getInstance();
@@ -26,10 +28,10 @@ public class InventoryBUS {
                 return inventoryDAO.insert(item);
             } catch (Exception e) {
                 System.err.println("Error inserting inventory item: " + e.getMessage());
-                return false;
             }
+        } else {
+            System.out.println("Invalid item.");
         }
-        System.out.println("Invalid item.");
         return false;
     }
 
@@ -40,17 +42,17 @@ public class InventoryBUS {
                 return inventoryDAO.update(item);
             } catch (Exception e) {
                 System.err.println("Error updating inventory item: " + e.getMessage());
-                return false;
             }
+        } else {
+            System.out.println("Invalid item.");
         }
-        System.out.println("Invalid item.");
         return false;
     }
 
     // -------------------- UPDATE QUANTITY --------------------
-    public boolean updateQuantity(int itemId, double newQuantity) {
+    public boolean updateQuantity(String itemName, BigDecimal newQuantity) {
         try {
-            return inventoryDAO.updateQuantity(itemId, newQuantity);
+            return inventoryDAO.updateQuantity(itemName, newQuantity);
         } catch (Exception e) {
             System.err.println("Error updating inventory quantity: " + e.getMessage());
             return false;
@@ -58,9 +60,9 @@ public class InventoryBUS {
     }
 
     // -------------------- DELETE --------------------
-    public boolean deleteItem(int itemId) {
+    public boolean deleteItem(String itemName) {
         try {
-            return inventoryDAO.delete(itemId);
+            return inventoryDAO.delete(itemName);
         } catch (Exception e) {
             System.err.println("Error deleting inventory item: " + e.getMessage());
             return false;
@@ -68,7 +70,7 @@ public class InventoryBUS {
     }
 
     // -------------------- GET ALL --------------------
-    public List<Inventory> GetAll() {
+    public List<Inventory> getAll() {
         try {
             return inventoryDAO.getAll();
         } catch (Exception e) {
@@ -77,17 +79,17 @@ public class InventoryBUS {
         }
     }
 
-    // -------------------- GET BY ID --------------------
-    public Inventory FindById(int itemId) {
+    // -------------------- FIND BY NAME --------------------
+    public Inventory findByName(String itemName) {
         try {
-            return inventoryDAO.findById(itemId);
+            return inventoryDAO.findByName(itemName);
         } catch (Exception e) {
-            System.err.println("Error finding inventory item by ID: " + e.getMessage());
+            System.err.println("Error finding inventory item by name: " + e.getMessage());
             return null;
         }
     }
 
-    // -------------------- GET BY CATEGORY --------------------
+    // -------------------- FIND BY CATEGORY --------------------
     public List<Inventory> findByCategory(int categoryId) {
         try {
             return inventoryDAO.findByCategory(categoryId);
@@ -108,9 +110,9 @@ public class InventoryBUS {
     }
 
     // -------------------- CHECK QUANTITY --------------------
-    public boolean checkQuantity(int itemId, double quantity) {
+    public boolean checkQuantity(String itemName, BigDecimal quantity) {
         try {
-            return inventoryDAO.checkQuantity(itemId, quantity);
+            return inventoryDAO.checkQuantity(itemName, quantity);
         } catch (Exception e) {
             System.err.println("Error checking inventory quantity: " + e.getMessage());
             return false;
@@ -119,15 +121,15 @@ public class InventoryBUS {
 
     // -------------------- VALIDATE ITEM --------------------
     private boolean isValidItem(Inventory item) {
-        if (item.getItemName() == null || item.getItemName().isEmpty()) {
+        if (item.getItemName() == null || item.getItemName().trim().isEmpty()) {
             System.out.println("Item name is required.");
             return false;
         }
-        if (item.getQuantity() < 0) {
+        if (item.getQuantity() == null || item.getQuantity().compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("Quantity cannot be negative.");
             return false;
         }
-        if (item.getCostPrice() < 0) {
+        if (item.getCostPrice() == null || item.getCostPrice().compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("Cost price cannot be negative.");
             return false;
         }

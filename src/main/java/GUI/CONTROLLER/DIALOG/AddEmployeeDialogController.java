@@ -52,9 +52,10 @@ public class AddEmployeeDialogController {
     private String imagePath;
 
     public AddEmployeeDialogController() {
-        employeeBUS = new EmployeeBUS();
-        positionBUS = new EmployeePositionBUS();
+        employeeBUS = EmployeeBUS.getInstance();
+        positionBUS = EmployeePositionBUS.getInstance(); // nếu EmployeePositionBUS có getInstance()
         userBUS = UserBUS.getInstance();
+
     }
 
     public void setDialogStage(Stage dialogStage) {

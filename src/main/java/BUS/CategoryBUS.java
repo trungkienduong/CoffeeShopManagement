@@ -6,10 +6,20 @@ import MODEL.Category;
 import java.util.List;
 
 public class CategoryBUS {
-    private CategoryDAO categoryDAO;
+    private static CategoryBUS instance; // Singleton instance
+    private final CategoryDAO categoryDAO;
 
-    public CategoryBUS() {
+    // Constructor riêng tư để ngăn việc tạo đối tượng từ bên ngoài
+    private CategoryBUS() {
         categoryDAO = CategoryDAO.getInstance();
+    }
+
+    // Phương thức truy cập Singleton
+    public static CategoryBUS getInstance() {
+        if (instance == null) {
+            instance = new CategoryBUS();
+        }
+        return instance;
     }
 
     // Lấy danh sách tất cả loại sản phẩm
@@ -47,7 +57,6 @@ public class CategoryBUS {
             return false;
         }
 
-        // Kiểm tra nếu tên mới trùng với tên của loại khác
         Category byName = categoryDAO.findByName(newName.trim());
         if (byName != null && byName.getCategoryId() != id) {
             System.out.println("Tên loại mới đã tồn tại");

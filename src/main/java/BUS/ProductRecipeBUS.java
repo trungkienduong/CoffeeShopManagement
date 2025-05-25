@@ -3,10 +3,11 @@ package BUS;
 import DAO.ProductRecipeDAO;
 import MODEL.ProductRecipe;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductRecipeBUS {
-   /* private final ProductRecipeDAO productRecipeDAO;
+    private final ProductRecipeDAO productRecipeDAO;
 
     public ProductRecipeBUS() {
         productRecipeDAO = ProductRecipeDAO.getInstance();
@@ -14,7 +15,10 @@ public class ProductRecipeBUS {
 
     // Thêm công thức mới
     public boolean addProductRecipe(ProductRecipe recipe) {
-        if (recipe == null || recipe.getProductId() <= 0 || recipe.getItemId() <= 0 || recipe.getQuantityUsed() <= 0) {
+        if (recipe == null
+                || recipe.getProduct() == null || recipe.getProduct().getProductId() <= 0
+                || recipe.getItem() == null || recipe.getItem().getItemName() == null || recipe.getItem().getItemName().isEmpty()
+                || recipe.getQuantityUsed() == null || recipe.getQuantityUsed().compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("Thông tin công thức không hợp lệ!");
             return false;
         }
@@ -23,7 +27,10 @@ public class ProductRecipeBUS {
 
     // Cập nhật số lượng nguyên liệu sử dụng cho sản phẩm
     public boolean updateProductRecipe(ProductRecipe recipe) {
-        if (recipe == null || recipe.getProductId() <= 0 || recipe.getItemId() <= 0 || recipe.getQuantityUsed() <= 0) {
+        if (recipe == null
+                || recipe.getProduct() == null || recipe.getProduct().getProductId() <= 0
+                || recipe.getItem() == null || recipe.getItem().getItemName() == null || recipe.getItem().getItemName().isEmpty()
+                || recipe.getQuantityUsed() == null || recipe.getQuantityUsed().compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("Thông tin công thức không hợp lệ!");
             return false;
         }
@@ -31,9 +38,9 @@ public class ProductRecipeBUS {
     }
 
     // Xóa nguyên liệu ra khỏi công thức của sản phẩm
-    public boolean deleteProductRecipe(int productId, int itemId) {
-        if (productId <= 0 || itemId <= 0) return false;
-        return productRecipeDAO.delete(productId, itemId);
+    public boolean deleteProductRecipe(int productId, String itemName) {
+        if (productId <= 0 || itemName == null || itemName.isEmpty()) return false;
+        return productRecipeDAO.delete(productId, itemName);
     }
 
     // Xóa toàn bộ công thức của một sản phẩm
@@ -54,14 +61,14 @@ public class ProductRecipeBUS {
     }
 
     // Lấy danh sách sản phẩm có dùng nguyên liệu này
-    public List<ProductRecipe> getRecipesByItem(int itemId) {
-        if (itemId <= 0) return null;
-        return productRecipeDAO.findByItem(itemId);
+    public List<ProductRecipe> getRecipesByItem(String itemName) {
+        if (itemName == null || itemName.isEmpty()) return null;
+        return productRecipeDAO.findByItem(itemName);
     }
 
     // Kiểm tra sản phẩm có công thức không
     public boolean hasIngredients(int productId) {
         if (productId <= 0) return false;
         return productRecipeDAO.checkIngredient(productId);
-    }*/
+    }
 }

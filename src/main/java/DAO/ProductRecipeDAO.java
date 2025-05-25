@@ -29,13 +29,13 @@ public class ProductRecipeDAO {
 
     //---------------------- INSERT ----------------------
     public boolean insert(ProductRecipe productRecipe) {
-        String sql = "INSERT INTO [PRODUCT_RECIPE] (PRODUCT_ID, ITEM_ID, QUANTITY_USED) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO [PRODUCT_RECIPE] (PRODUCT_ID, ITEM_NAME, QUANTITY_USED) VALUES (?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, productRecipe.getProduct().getProductId());
-            pst.setInt(2, productRecipe.getItem().getItemId());
+            pst.setString(2, productRecipe.getItem().getItemName());
             pst.setBigDecimal(3, productRecipe.getQuantityUsed());
 
             int result = pst.executeUpdate();
@@ -48,14 +48,14 @@ public class ProductRecipeDAO {
 
     //---------------------- UPDATE ----------------------
     public boolean update(ProductRecipe productRecipe) {
-        String sql = "UPDATE [PRODUCT_RECIPE] SET QUANTITY_USED = ? WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+        String sql = "UPDATE [PRODUCT_RECIPE] SET QUANTITY_USED = ? WHERE PRODUCT_ID = ? AND ITEM_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setBigDecimal(1, productRecipe.getQuantityUsed());
             pst.setInt(2, productRecipe.getProduct().getProductId());
-            pst.setInt(3, productRecipe.getItem().getItemId());
+            pst.setString(3, productRecipe.getItem().getItemName());
 
             int result = pst.executeUpdate();
             return result > 0;
@@ -66,14 +66,14 @@ public class ProductRecipeDAO {
     }
 
     //---------------------- DELETE ----------------------
-    public boolean delete(int productId, int itemId) {
-        String sql = "DELETE FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ? AND ITEM_ID = ?";
+    public boolean delete(int productId, String itemName) {
+        String sql = "DELETE FROM [PRODUCT_RECIPE] WHERE PRODUCT_ID = ? AND ITEM_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, productId);
-            pst.setInt(2, itemId);
+            pst.setString(2, itemName);
 
             int result = pst.executeUpdate();
             return result > 0;
@@ -116,8 +116,8 @@ public class ProductRecipeDAO {
                 Product product = productDAO.findById(productId);
                 productRecipe.setProduct(product);
 
-                int itemId = rs.getInt("ITEM_ID");
-                Inventory item = inventoryDAO.findById(itemId);
+                String itemName = rs.getString("ITEM_NAME");
+                Inventory item = inventoryDAO.findByName(itemName);
                 productRecipe.setItem(item);
 
                 productRecipe.setQuantityUsed(rs.getBigDecimal("QUANTITY_USED"));
@@ -146,8 +146,8 @@ public class ProductRecipeDAO {
 
                     productRecipe.setProduct(productDAO.findById(productId));
 
-                    int itemId = rs.getInt("ITEM_ID");
-                    Inventory item = inventoryDAO.findById(itemId);
+                    String itemName = rs.getString("ITEM_NAME");
+                    Inventory item = inventoryDAO.findByName(itemName);
                     productRecipe.setItem(item);
 
                     productRecipe.setQuantityUsed(rs.getBigDecimal("QUANTITY_USED"));
@@ -162,13 +162,13 @@ public class ProductRecipeDAO {
     }
 
     //---------------------- GET BY ITEM ----------------------
-    public List<ProductRecipe> findByItem(int itemId) {
-        String sql = "SELECT * FROM [PRODUCT_RECIPE] WHERE ITEM_ID = ?";
+    public List<ProductRecipe> findByItem(String itemName) {
+        String sql = "SELECT * FROM [PRODUCT_RECIPE] WHERE ITEM_NAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, itemId);
+            pst.setString(1, itemName);
 
             try (ResultSet rs = pst.executeQuery()) {
                 List<ProductRecipe> list = new ArrayList<>();
@@ -179,7 +179,7 @@ public class ProductRecipeDAO {
                     Product product = productDAO.findById(productId);
                     productRecipe.setProduct(product);
 
-                    productRecipe.setItem(inventoryDAO.findById(itemId));
+                    productRecipe.setItem(inventoryDAO.findByName(itemName));
 
                     productRecipe.setQuantityUsed(rs.getBigDecimal("QUANTITY_USED"));
                     list.add(productRecipe);

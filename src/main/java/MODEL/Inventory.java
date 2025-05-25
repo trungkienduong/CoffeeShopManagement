@@ -1,12 +1,13 @@
 package MODEL;
 
+import java.math.BigDecimal;
+
 public class Inventory {
-    private int itemId;
+
     private String itemName;
-    private String imagePath;
-    private double quantity;
-    private double costPrice;
-    
+    private BigDecimal quantity;
+    private BigDecimal costPrice;
+
     // Đối tượng liên kết
     private Category category;
     private UnitCategory unit;
@@ -15,22 +16,12 @@ public class Inventory {
     public Inventory() {
     }
 
-    public Inventory(int itemId, String itemName, String imagePath, double quantity, double costPrice, Category category, UnitCategory unit) {
-        this.itemId = itemId;
+    public Inventory(String itemName, BigDecimal quantity, BigDecimal costPrice, Category category, UnitCategory unit) {
         this.itemName = itemName;
-        this.imagePath = imagePath;
         this.quantity = quantity;
         this.costPrice = costPrice;
         this.category = category;
         this.unit = unit;
-    }
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
     }
 
     public String getItemName() {
@@ -41,27 +32,19 @@ public class Inventory {
         this.itemName = itemName;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public double getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
-    public double getCostPrice() {
+    public BigDecimal getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(BigDecimal costPrice) {
         this.costPrice = costPrice;
     }
 
@@ -84,9 +67,7 @@ public class Inventory {
     @Override
     public String toString() {
         return "Inventory{" +
-                "itemId=" + itemId +
-                ", itemName='" + itemName + '\'' +
-                ", imagePath='" + imagePath + '\'' +
+                "itemName='" + itemName + '\'' +
                 ", quantity=" + quantity +
                 ", costPrice=" + costPrice +
                 ", category=" + category +

@@ -6,10 +6,18 @@ import MODEL.EmployeePosition;
 import java.util.List;
 
 public class EmployeePositionBUS {
+    private static EmployeePositionBUS instance;
     private final EmployeePositionDAO dao;
 
-    public EmployeePositionBUS() {
+    private EmployeePositionBUS() {
         this.dao = EmployeePositionDAO.getInstance();
+    }
+
+    public static EmployeePositionBUS getInstance() {
+        if (instance == null) {
+            instance = new EmployeePositionBUS();
+        }
+        return instance;
     }
 
     public List<EmployeePosition> getAllPositions() {

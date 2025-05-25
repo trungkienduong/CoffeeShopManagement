@@ -8,8 +8,20 @@ import java.util.List;
 public class EmployeeBUS {
     private final EmployeeDAO employeeDAO;
 
+    // 1. Tạo instance tĩnh duy nhất
+    private static EmployeeBUS instance;
+
+    // 2. Constructor private để tránh tạo instance ngoài class
     public EmployeeBUS() {
         this.employeeDAO = EmployeeDAO.getInstance();
+    }
+
+    // 3. Phương thức lấy instance duy nhất
+    public static EmployeeBUS getInstance() {
+        if (instance == null) {
+            instance = new EmployeeBUS();
+        }
+        return instance;
     }
 
     public List<Employee> getAllEmployees() {
@@ -21,7 +33,6 @@ public class EmployeeBUS {
     }
 
     public boolean addEmployee(Employee emp) {
-        // Kiểm tra hợp lệ nếu cần (ví dụ: CCCD đúng định dạng, không null các trường bắt buộc)
         if (emp == null || emp.getUsername() == null || emp.getFullName() == null) {
             return false;
         }
@@ -42,7 +53,6 @@ public class EmployeeBUS {
     }
 
     public List<Employee> searchEmployees(String keyword) {
-        // Gợi ý: nếu bạn muốn mở rộng, có thể viết thêm method search trong DAO.
         List<Employee> all = getAllEmployees();
         return all.stream()
                 .filter(e ->

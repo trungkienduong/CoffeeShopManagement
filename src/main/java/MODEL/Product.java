@@ -1,22 +1,23 @@
 package MODEL;
 
+import java.math.BigDecimal;
+
 public class Product {
     private int productId;
     private String productName;
-    private double sellPrice;
+    private Category category;  // giữ đối tượng Category
+    private BigDecimal sellPrice;
+    private String imagePath;
 
-    // Đối tượng liên kết
-    private Category category;
-
-    // Default constructor
     public Product() {
     }
 
-    public Product(int productId, String productName, double sellPrice, Category category) {
+    public Product(int productId, String productName, Category category, BigDecimal sellPrice, String imagePath) {
         this.productId = productId;
         this.productName = productName;
-        this.sellPrice = sellPrice;
         this.category = category;
+        this.sellPrice = sellPrice;
+        this.imagePath = imagePath;
     }
 
     public int getProductId() {
@@ -35,14 +36,6 @@ public class Product {
         this.productName = productName;
     }
 
-    public double getSellPrice() {
-        return sellPrice;
-    }
-
-    public void setSellPrice(double sellPrice) {
-        this.sellPrice = sellPrice;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -51,13 +44,30 @@ public class Product {
         this.category = category;
     }
 
+    public BigDecimal getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(BigDecimal sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
+                ", category=" + (category != null ? category.getCategoryName() : "null") +
                 ", sellPrice=" + sellPrice +
-                ", category=" + category +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }
