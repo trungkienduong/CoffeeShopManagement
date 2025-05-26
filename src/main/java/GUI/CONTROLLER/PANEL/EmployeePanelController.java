@@ -64,7 +64,7 @@ public class EmployeePanelController {
     @FXML
     private void handleEditEmployee(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddEmployeeDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditEmployeeDialog.fxml"));
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();

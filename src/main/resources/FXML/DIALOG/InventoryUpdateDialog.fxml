@@ -87,8 +87,8 @@
         </GridPane>
 
         <HBox alignment="CENTER" spacing="25">
-            <Button fx:id="confirmButton"  styleClass="custom-button, confirm-button" text="Xác nhận" />
-            <Button fx:id="cancelButton" styleClass="custom-button, cancel-button" text="Hủy" />
+            <Button fx:id="confirmButton" onAction="#handleConfirm" styleClass="custom-button, confirm-button" text="Xác nhận" />
+            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="custom-button, cancel-button" text="Hủy" />
         </HBox>
     </VBox>
 </AnchorPane>

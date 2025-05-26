@@ -1,13 +1,14 @@
 package GUI.CONTROLLER.DIALOG;
 
-import BUS.CategoryBUS;
+import BUS.IngredientCategoryBUS;
+import MODEL.IngredientCategory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-public class AddInventoryItemDialogController {
+public class AddIngredientCategoryDialogController {
 
     @FXML
     private TextField unitNameField;
@@ -18,11 +19,11 @@ public class AddInventoryItemDialogController {
     @FXML
     private Button cancelButton;
 
-    private CategoryBUS categoryBUS;
+    private IngredientCategoryBUS categoryBUS;
 
     @FXML
     private void initialize() {
-        categoryBUS = CategoryBUS.getInstance();
+        categoryBUS = IngredientCategoryBUS.getInstance();
 
         confirmButton.setOnAction(event -> onConfirm());
         cancelButton.setOnAction(event -> onCancel());
@@ -32,17 +33,20 @@ public class AddInventoryItemDialogController {
         String categoryName = unitNameField.getText();
 
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            showAlert("Lỗi", "Tên mặt hàng không được để trống.");
+            showAlert("Lỗi", "Tên loại nguyên liệu không được để trống.");
             return;
         }
 
-        boolean success = categoryBUS.addCategory(categoryName.trim());
+        IngredientCategory category = new IngredientCategory();
+        category.setIngredientCategoryName(categoryName.trim());
+
+        boolean success = categoryBUS.addCategory(category);
 
         if (success) {
-            showAlert("Thành công", "Thêm mặt hàng mới thành công!");
+            showAlert("Thành công", "Thêm loại nguyên liệu mới thành công!");
             closeDialog();
         } else {
-            showAlert("Lỗi", "Tên mặt hàng đã tồn tại hoặc có lỗi xảy ra.");
+            showAlert("Lỗi", "Tên loại nguyên liệu đã tồn tại hoặc có lỗi xảy ra.");
         }
     }
 

@@ -24,7 +24,8 @@ public class EmployeeDAO {
 
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM EMPLOYEE";
+        String query = "SELECT E.*, P.POSITION_NAME FROM EMPLOYEE E " +
+                "JOIN EMPLOYEE_POSITION P ON E.POSITION_ID = P.POSITION_ID";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -35,19 +36,44 @@ public class EmployeeDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Có thể thay bằng Logger
+            e.printStackTrace();
         }
 
         return employees;
     }
 
     public Employee getEmployeeById(int id) {
-        String query = "SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        String query = "SELECT E.*, P.POSITION_NAME FROM EMPLOYEE E " +
+                "JOIN EMPLOYEE_POSITION P ON E.POSITION_ID = P.POSITION_ID " +
+                "WHERE E.EMPLOYEE_ID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return extractEmployee(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Employee getByUsername(String username) {
+        String query = "SELECT E.*, P.POSITION_NAME FROM EMPLOYEE E " +
+                "JOIN EMPLOYEE_POSITION P ON E.POSITION_ID = P.POSITION_ID " +
+                "WHERE E.USERNAME = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -130,7 +156,8 @@ public class EmployeeDAO {
         emp.setImagePath(rs.getString("IMAGE_PATH"));
 
         int positionId = rs.getInt("POSITION_ID");
-        emp.setPosition(new EmployeePosition(positionId, null));
+        String positionName = rs.getString("POSITION_NAME");  // lấy tên chức vụ
+        emp.setPosition(new EmployeePosition(positionId, positionName));
 
         emp.setUser(new User(rs.getString("USERNAME"), null, null, null));
 
@@ -139,12 +166,11 @@ public class EmployeeDAO {
 
     private void prepareEmployeeStatement(PreparedStatement stmt, Employee emp, boolean isUpdate) throws SQLException {
         if (!isUpdate) {
-            // Insert: vị trí tham số giống thứ tự câu SQL insert
             stmt.setString(1, emp.getUsername());
             stmt.setString(2, emp.getFullName());
             stmt.setString(3, String.valueOf(emp.getGender()));
             stmt.setString(4, emp.getCccd());
-            stmt.setDate(5, java.sql.Date.valueOf(emp.getDateOfBirth())); // Chuyển LocalDate sang java.sql.Date
+            stmt.setDate(5, java.sql.Date.valueOf(emp.getDateOfBirth()));
             stmt.setString(6, emp.getPhone());
             stmt.setString(7, emp.getAddress());
             stmt.setInt(8, emp.getPosition().getPositionId());
@@ -152,7 +178,6 @@ public class EmployeeDAO {
             stmt.setDate(10, java.sql.Date.valueOf(emp.getJoinDate()));
             stmt.setString(11, emp.getImagePath());
         } else {
-            // Update: vị trí tham số giống thứ tự câu SQL update
             stmt.setString(1, emp.getFullName());
             stmt.setString(2, String.valueOf(emp.getGender()));
             stmt.setString(3, emp.getCccd());
@@ -166,5 +191,4 @@ public class EmployeeDAO {
             stmt.setInt(11, emp.getEmployeeId());
         }
     }
-
 }

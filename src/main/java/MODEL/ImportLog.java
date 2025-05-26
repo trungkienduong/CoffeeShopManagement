@@ -4,48 +4,63 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * Model đại diện cho bảng IMPORT_LOG trong database.
+ * Model đại diện cho bảng IMPORT_LOG trong cơ sở dữ liệu.
  */
 public class ImportLog {
-    private int importId;          // IMPORT_ID
-    private String itemName;       // ITEM_NAME
-    private int categoryId;        // CATEGORY_ID
-    private int unitId;            // UNIT_ID
-    private int supplierId;        // SUPPLIER_ID
-    private LocalDate importDate;  // IMPORT_DATE
-    private BigDecimal quantity;   // QUANTITY
-    private BigDecimal unitPrice;  // UNIT_PRICE
-    // totalPrice là trường tính toán trên SQL, không cần lưu trong model
-    private Integer employeeId;    // EMPLOYEE_ID có thể null
-    private String note;           // NOTE
+    private Integer importId;           // IMPORT_ID: Mã phiếu nhập (nullable, tự tăng từ DB)
+    private String itemName;            // ITEM_NAME: Tên nguyên liệu
+    private int ingredientCategoryId;  // INGREDIENT_CATEGORY_ID: Loại nguyên liệu
+    private int unitId;                // UNIT_ID: Đơn vị tính
+    private int supplierId;            // SUPPLIER_ID: Nhà cung cấp
+    private LocalDate importDate;      // IMPORT_DATE: Ngày nhập
+    private BigDecimal quantity;       // QUANTITY: Số lượng nhập
+    private BigDecimal unitPrice;      // UNIT_PRICE: Giá nhập trên đơn vị
+    private Integer employeeId;        // EMPLOYEE_ID: Mã nhân viên nhập (nullable)
+    private String note;               // NOTE: Ghi chú nhập hàng (nullable)
 
-    // Constructor không tham số
     public ImportLog() {
-        this.importDate = LocalDate.now(); // mặc định ngày hiện tại
+        // Constructor mặc định để sử dụng khi khởi tạo rỗng
     }
 
-    // Constructor đầy đủ tham số (trừ totalPrice vì là trường tính toán)
-    public ImportLog(int importId, String itemName, int categoryId, int unitId, int supplierId,
+
+    // Constructor dùng khi tạo mới ImportLog để insert (không có importId)
+    public ImportLog(String itemName, int ingredientCategoryId, int unitId, int supplierId,
+                     LocalDate importDate, BigDecimal quantity, BigDecimal unitPrice,
+                     Integer employeeId, String note) {
+        this.itemName = itemName;
+        this.ingredientCategoryId = ingredientCategoryId;
+        this.unitId = unitId;
+        this.supplierId = supplierId;
+        this.importDate = (importDate != null) ? importDate : LocalDate.now();
+        setQuantity(quantity);
+        setUnitPrice(unitPrice);
+        this.employeeId = employeeId;
+        this.note = note;
+    }
+
+    // Constructor đầy đủ dùng khi lấy dữ liệu từ DB (có importId)
+    public ImportLog(Integer importId, String itemName, int ingredientCategoryId, int unitId, int supplierId,
                      LocalDate importDate, BigDecimal quantity, BigDecimal unitPrice,
                      Integer employeeId, String note) {
         this.importId = importId;
         this.itemName = itemName;
-        this.categoryId = categoryId;
+        this.ingredientCategoryId = ingredientCategoryId;
         this.unitId = unitId;
         this.supplierId = supplierId;
-        this.importDate = importDate;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
+        this.importDate = (importDate != null) ? importDate : LocalDate.now();
+        setQuantity(quantity);
+        setUnitPrice(unitPrice);
         this.employeeId = employeeId;
         this.note = note;
     }
 
     // Getters và Setters
-    public int getImportId() {
+
+    public Integer getImportId() {
         return importId;
     }
 
-    public void setImportId(int importId) {
+    public void setImportId(Integer importId) {
         this.importId = importId;
     }
 
@@ -57,12 +72,12 @@ public class ImportLog {
         this.itemName = itemName;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public int getIngredientCategoryId() {
+        return ingredientCategoryId;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setIngredientCategoryId(int ingredientCategoryId) {
+        this.ingredientCategoryId = ingredientCategoryId;
     }
 
     public int getUnitId() {
@@ -86,7 +101,7 @@ public class ImportLog {
     }
 
     public void setImportDate(LocalDate importDate) {
-        this.importDate = importDate;
+        this.importDate = (importDate != null) ? importDate : LocalDate.now();
     }
 
     public BigDecimal getQuantity() {
@@ -94,8 +109,8 @@ public class ImportLog {
     }
 
     public void setQuantity(BigDecimal quantity) {
-        if (quantity != null && quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than 0");
+        if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
         }
         this.quantity = quantity;
     }
@@ -105,8 +120,8 @@ public class ImportLog {
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
-        if (unitPrice != null && unitPrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Unit price must be non-negative");
+        if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Đơn giá phải >= 0");
         }
         this.unitPrice = unitPrice;
     }
@@ -128,7 +143,7 @@ public class ImportLog {
     }
 
     /**
-     * Tính tổng tiền (tương tự TOTAL_PRICE trong DB).
+     * Tổng tiền = quantity * unitPrice
      */
     public BigDecimal getTotalPrice() {
         if (quantity != null && unitPrice != null) {
@@ -142,7 +157,7 @@ public class ImportLog {
         return "ImportLog{" +
                 "importId=" + importId +
                 ", itemName='" + itemName + '\'' +
-                ", categoryId=" + categoryId +
+                ", ingredientCategoryId=" + ingredientCategoryId +
                 ", unitId=" + unitId +
                 ", supplierId=" + supplierId +
                 ", importDate=" + importDate +

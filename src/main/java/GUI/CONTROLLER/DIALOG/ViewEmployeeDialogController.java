@@ -1,76 +1,123 @@
 package GUI.CONTROLLER.DIALOG;
 
+import BUS.EmployeeBUS;
+import BUS.UserBUS;
+import MODEL.Employee;
+import MODEL.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import MODEL.Employee;
+
+import java.time.format.DateTimeFormatter;
 
 public class ViewEmployeeDialogController {
 
     @FXML
+    private ImageView employeeImageView;
+    @FXML
     private Label emailLabel;
-
     @FXML
     private Label roleLabel;
-
     @FXML
     private Label fullnameLabel;
-
     @FXML
     private Label genderLabel;
-
     @FXML
     private Label cccdLabel;
-
     @FXML
     private Label birthDateLabel;
-
     @FXML
     private Label phoneLabel;
-
     @FXML
     private Label salaryLabel;
-
     @FXML
     private Label addressLabel;
-
-    @FXML
-    private ImageView employeeImageView;
-
     @FXML
     private Button closeButton;
 
-    // Gọi khi truyền dữ liệu từ ngoài vào
-    public void setEmployee(Employee employee) {
-        if (employee == null) return;
+    private Stage dialogStage;
+    private final UserBUS userBUS;
+    private final EmployeeBUS employeeBUS;
 
-        fullnameLabel.setText(employee.getFullName());
-        genderLabel.setText(String.valueOf(employee.getGender()));
-        cccdLabel.setText(employee.getCccd());
-        birthDateLabel.setText(employee.getDateOfBirth() != null ? employee.getDateOfBirth().toString() : "");
-        phoneLabel.setText(employee.getPhone());
-        salaryLabel.setText(String.format("%.0f", employee.getSalary()));
-        addressLabel.setText(employee.getAddress());
-        emailLabel.setText(employee.getUser().getEmail());
-        roleLabel.setText(employee.getPosition().getPositionName());
+    public ViewEmployeeDialogController() {
+        userBUS = UserBUS.getInstance();
+        employeeBUS = EmployeeBUS.getInstance();
+    }
 
-        // Load ảnh (nếu có URL hợp lệ, bạn có thể chỉnh lại đường dẫn cho phù hợp)
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+
+    @FXML
+    private void initialize() {
+        User currentUser = userBUS.getCurrentUser();
+        if (currentUser == null) {
+            showEmptyData();
+            return;
+        }
+
+        // Lấy Employee từ username của currentUser
+        Employee currentEmployee = employeeBUS.getEmployeeByUsername(currentUser.getUsername());
+
+        if (currentEmployee == null) {
+            showEmptyData();
+            return;
+        }
+
+        loadEmployeeInfo(currentEmployee);
+    }
+
+    private void loadEmployeeInfo(Employee employee) {
+        // Ảnh
         if (employee.getImagePath() != null && !employee.getImagePath().isEmpty()) {
             try {
-                Image image = new Image(employee.getImagePath());
+                Image image = new Image("file:" + employee.getImagePath());
                 employeeImageView.setImage(image);
             } catch (Exception e) {
-                System.out.println("Không thể load ảnh nhân viên: " + e.getMessage());
+                employeeImageView.setImage(null);
             }
+        } else {
+            employeeImageView.setImage(null);
         }
+
+        emailLabel.setText(userBUS.getCurrentUser().getEmail());
+        roleLabel.setText(employee.getPosition() != null ? employee.getPosition().getPositionName() : "");
+        fullnameLabel.setText(employee.getFullName() != null ? employee.getFullName() : "");
+        genderLabel.setText(employee.getGender() != null ? (employee.getGender().toString().equals("MALE") ? "Nam" : "Nữ") : "");
+        cccdLabel.setText(employee.getCccd() != null ? employee.getCccd() : "");
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if (employee.getDateOfBirth() != null) {
+            birthDateLabel.setText(employee.getDateOfBirth().format(dtf));
+        } else {
+            birthDateLabel.setText("");
+        }
+
+        phoneLabel.setText(employee.getPhone() != null ? employee.getPhone() : "");
+        salaryLabel.setText(String.valueOf(employee.getSalary()));
+        addressLabel.setText(employee.getAddress() != null ? employee.getAddress() : "");
+    }
+
+    private void showEmptyData() {
+        emailLabel.setText("Không có dữ liệu");
+        roleLabel.setText("-");
+        fullnameLabel.setText("-");
+        genderLabel.setText("-");
+        cccdLabel.setText("-");
+        birthDateLabel.setText("-");
+        phoneLabel.setText("-");
+        salaryLabel.setText("-");
+        addressLabel.setText("-");
+        employeeImageView.setImage(null);
     }
 
     @FXML
     private void handleClose() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        if (dialogStage != null) {
+            dialogStage.close();
+        }
     }
 }

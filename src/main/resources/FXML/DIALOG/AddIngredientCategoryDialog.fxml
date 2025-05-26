@@ -4,20 +4,20 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="250.0" prefWidth="400.0" styleClass="dialog-pane"
-            stylesheets="@../../ASSETS/STYLES/DIALOG/AddUnitCategoryDialog.css"
+            stylesheets="@../../ASSETS/STYLES/DIALOG/AddIngredientCategoryDialog.css"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="GUI.CONTROLLER.DIALOG.AddInventoryItemDialogController">
+            fx:controller="GUI.CONTROLLER.DIALOG.AddIngredientCategoryDialogController">
 
     <VBox alignment="CENTER" spacing="25" styleClass="content-box"
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <Label styleClass="dialog-title" text="Thêm mặt hàng mới" />
+        <Label styleClass="dialog-title" text="Thêm loại nguyên liệu mới" />
 
         <Pane styleClass="input-group">
-            <Label styleClass="label-text" text="Tên mặt hàng:" />
-            <TextField fx:id="unitNameField" layoutX="120" promptText="Nhập tên mặt hàng (vd: sữa, bột cà phê, đường)"
+            <Label styleClass="label-text" text="Tên Nguyên liệu:" />
+            <TextField fx:id="unitNameField" layoutX="120" promptText="Nhập tên nguyên liệu (vd: sữa, bột cà phê, đường)"
                        styleClass="text-input" />
         </Pane>
 

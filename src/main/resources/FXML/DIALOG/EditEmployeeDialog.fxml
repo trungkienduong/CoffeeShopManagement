@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="550.0" prefWidth="800.0" styleClass="dialog-pane"
             stylesheets="@../../ASSETS/STYLES/DIALOG/AddEmployeeDialog.css"
-            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="GUI.CONTROLLER.DIALOG.EditEmployeeDialogController">
 
@@ -21,7 +21,7 @@
             <StackPane styleClass="image-container">
                 <ImageView fx:id="employeeImageView" fitHeight="130" fitWidth="130"
                            preserveRatio="false" styleClass="employee-image"/>
-                <Button fx:id="imageButton" styleClass="image-button">
+                <Button fx:id="browseButton" styleClass="image-button">
                     <graphic>
                         <FontAwesomeIconView glyphName="CAMERA" size="25" styleClass="image-icon"/>
                     </graphic>
@@ -29,13 +29,13 @@
             </StackPane>
 
             <VBox spacing="10">
-                <HBox spacing="10" styleClass="input-container">
-                    <Label text="Email:" styleClass="label-text"/>
-                    <Label fx:id="emailLabel" styleClass="info-label"/>
+                <HBox spacing="10" styleClass="input-container" minWidth="400">
+                    <Label text="Email:" styleClass="label-text" minWidth="60"/>
+                    <TextField fx:id="emailField" styleClass="text-input" disable="true"/>
                 </HBox>
                 <HBox spacing="10" styleClass="input-container">
-                    <Label text="Chức vụ:" styleClass="label-text"/>
-                    <Label fx:id="roleLabel" styleClass="info-label"/>
+                    <Label text="Chức vụ:" styleClass="label-text" minWidth="60"/>
+                    <ComboBox fx:id="positionComboBox" styleClass="combo-box"/>
                 </HBox>
             </VBox>
         </HBox>
@@ -48,19 +48,12 @@
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label text="Họ và tên:" styleClass="label-text"/>
-                <TextField fx:id="fullnameField" promptText="Nhập họ và tên" styleClass="text-input"/>
+                <TextField fx:id="fullNameField" promptText="Nhập họ và tên" styleClass="text-input"/>
             </HBox>
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
                 <Label text="Giới tính:" styleClass="label-text"/>
-                <ComboBox fx:id="genderComboBox" styleClass="combo-box">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Nam"/>
-                            <String fx:value="Nữ"/>
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <ComboBox fx:id="genderComboBox" styleClass="combo-box"/>
             </HBox>
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -93,8 +86,8 @@
         </HBox>
 
         <HBox alignment="CENTER" spacing="25">
-            <Button fx:id="confirmButton" text="Xác nhận" styleClass="custom-button, confirm-button"/>
-            <Button fx:id="cancelButton" text="Hủy" styleClass="custom-button, cancel-button"/>
+            <Button fx:id="saveButton" text="Xác nhận" styleClass="custom-button, confirm-button"/>
+            <Button fx:id="cancelButton" text="Hủy" onAction="#handleCancel" styleClass="custom-button, cancel-button"/>
         </HBox>
     </VBox>
 </AnchorPane>
