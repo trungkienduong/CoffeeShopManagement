@@ -1,5 +1,7 @@
 package GUI.CONTROLLER.PANEL;
 
+import BUS.ProductBUS;
+import MODEL.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ProductPanelController {
 
@@ -29,15 +32,46 @@ public class ProductPanelController {
     @FXML
     private Button viewBtn;
 
+    private Product selectedProduct = null; // giữ sản phẩm đang chọn (bạn cần bổ sung xử lý chọn)
+
     @FXML
     private void initialize() {
-        // Nếu muốn load dữ liệu sản phẩm sau này, xử lý ở đây
+        loadProducts();
+    }
+
+    /**
+     * Load danh sách sản phẩm, tạo card và thêm vào container
+     */
+    private void loadProducts() {
+        productContainer.getChildren().clear();
+
+        List<Product> products = ProductBUS.getInstance().getAllProducts();
+
+        for (Product product : products) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ProductCard.fxml"));
+                Parent productCard = loader.load();
+
+                GUI.CONTROLLER.DIALOG.ProductCardDialogController cardController = loader.getController();
+                cardController.setProduct(product);
+
+                // Nếu muốn bắt sự kiện click chọn card (ví dụ để edit/delete)
+                productCard.setOnMouseClicked(e -> {
+                    selectedProduct = product;
+                    // Bạn có thể thêm logic highlight card khi chọn
+                });
+
+                productContainer.getChildren().add(productCard);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
     private void handleAddProduct(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml"));
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();
@@ -47,20 +81,27 @@ public class ProductPanelController {
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
 
-            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
-            // loadProducts();
+            // Sau khi dialog đóng, refresh lại danh sách
+            loadProducts();
 
         } catch (IOException e) {
             e.printStackTrace();
-            // Có thể show Alert thay vì chỉ in lỗi
         }
     }
 
     @FXML
     private void handleEditProduct(ActionEvent event) {
+        if (selectedProduct == null) {
+            System.out.println("Chưa chọn sản phẩm để sửa!");
+            return;
+        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditProductDialog.fxml"));
             Parent root = loader.load();
+
+            // Truyền sản phẩm đã chọn sang dialog sửa (nếu cần)
+            GUI.CONTROLLER.DIALOG.EditProductDialogController controller = loader.getController();
+            controller.setProduct(selectedProduct);
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -69,25 +110,43 @@ public class ProductPanelController {
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
 
-            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
-            // loadProducts();
+            loadProducts();
 
         } catch (IOException e) {
             e.printStackTrace();
-            // Có thể show Alert thay vì chỉ in lỗi
         }
     }
 
     @FXML
     private void handleDeleteProduct(ActionEvent event) {
-        // Xử lý xóa sản phẩm
+        if (selectedProduct == null) {
+            System.out.println("Chưa chọn sản phẩm để xóa!");
+            return;
+        }
+
+        // Xác nhận và gọi BUS xóa sản phẩm
+        boolean success = ProductBUS.getInstance().deleteProduct(selectedProduct.getProductId());
+        if (success) {
+            System.out.println("Xóa sản phẩm thành công");
+            selectedProduct = null;
+            loadProducts();
+        } else {
+            System.out.println("Xóa sản phẩm thất bại");
+        }
     }
 
     @FXML
     private void handleViewProduct(ActionEvent event) {
+        if (selectedProduct == null) {
+            System.out.println("Chưa chọn sản phẩm để xem!");
+            return;
+        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ViewProductDialog.fxml")); // sửa lại đường dẫn nếu cần
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ViewProductDialog.fxml"));
             Parent root = loader.load();
+
+            GUI.CONTROLLER.DIALOG.ViewProductDialogController controller = loader.getController();
+            controller.setProduct(selectedProduct);
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -96,12 +155,8 @@ public class ProductPanelController {
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
 
-            // Sau khi dialog đóng, có thể refresh danh sách sản phẩm nếu cần
-            // loadProducts();
-
         } catch (IOException e) {
             e.printStackTrace();
-            // Có thể show Alert thay vì chỉ in lỗi
         }
     }
 }

@@ -86,7 +86,9 @@ public class ViewEmployeeDialogController {
         emailLabel.setText(userBUS.getCurrentUser().getEmail());
         roleLabel.setText(employee.getPosition() != null ? employee.getPosition().getPositionName() : "");
         fullnameLabel.setText(employee.getFullName() != null ? employee.getFullName() : "");
-        genderLabel.setText(employee.getGender() != null ? (employee.getGender().toString().equals("MALE") ? "Nam" : "Nữ") : "");
+        genderLabel.setText(employee.getGender() != null
+                ? (employee.getGender() == Employee.Gender.MALE ? "Nam" : "Nữ")
+                : "");
         cccdLabel.setText(employee.getCccd() != null ? employee.getCccd() : "");
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -116,8 +118,8 @@ public class ViewEmployeeDialogController {
 
     @FXML
     private void handleClose() {
-        if (dialogStage != null) {
-            dialogStage.close();
-        }
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
+
 }

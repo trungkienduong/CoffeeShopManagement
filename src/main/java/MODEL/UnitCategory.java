@@ -31,9 +31,7 @@ public class UnitCategory {
 
     @Override
     public String toString() {
-        return "UnitCategory{" +
-                "unitId=" + unitId +
-                ", unitName='" + unitName + '\'' +
-                '}';
+        return unitName;
     }
+
 }

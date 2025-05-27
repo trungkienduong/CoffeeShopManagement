@@ -2,6 +2,7 @@ package BUS;
 
 import DAO.ProductDAO;
 import DAO.ProductRecipeDAO;
+import DAO.CategoryDAO;
 import MODEL.Category;
 import MODEL.Product;
 
@@ -10,13 +11,14 @@ import java.util.List;
 public class ProductBUS {
     private final ProductDAO productDAO;
     private final ProductRecipeDAO productRecipeDAO;
+    private final CategoryDAO categoryDAO;
 
-    // Singleton pattern (nếu bạn muốn dùng)
     private static ProductBUS instance;
 
     private ProductBUS() {
         productDAO = ProductDAO.getInstance();
         productRecipeDAO = ProductRecipeDAO.getInstance();
+        categoryDAO = CategoryDAO.getInstance();
     }
 
     public static ProductBUS getInstance() {
@@ -54,11 +56,19 @@ public class ProductBUS {
     }
 
     /**
-     * Xóa sản phẩm theo ID, đồng thời xóa luôn các công thức liên quan.
+     * Xóa sản phẩm theo ID, đồng thời xóa luôn các công thức liên quan theo categoryId của sản phẩm.
      */
     public boolean deleteProduct(int productId) {
-        // Xóa công thức sản phẩm trước
-        productRecipeDAO.deleteByProduct(productId);
+        // Lấy sản phẩm để biết categoryId
+        Product product = productDAO.findById(productId);
+        if (product == null) {
+            System.out.println("Sản phẩm không tồn tại!");
+            return false;
+        }
+
+        // Xóa công thức liên quan theo categoryId
+        int categoryId = product.getCategoryId();
+        productRecipeDAO.deleteByCategory(categoryId);
 
         // Xóa sản phẩm
         return productDAO.delete(productId);
@@ -79,10 +89,10 @@ public class ProductBUS {
     }
 
     /**
-     * Lấy danh sách sản phẩm theo danh mục.
+     * Lấy danh sách sản phẩm theo categoryId.
      */
-    public List<Product> getProductsByCategory(Category category) {
-        return productDAO.findByCategory(category);
+    public List<Product> getProductsByCategoryId(int categoryId) {
+        return productDAO.findByCategoryId(categoryId);
     }
 
     /**
@@ -90,5 +100,13 @@ public class ProductBUS {
      */
     public List<Product> searchProductsByName(String keyword) {
         return productDAO.searchByName(keyword);
+    }
+
+    /**
+     * Lấy tên category từ categoryId (tiện để hiển thị ở UI).
+     */
+    public String getCategoryNameById(int categoryId) {
+        Category category = categoryDAO.findById(categoryId);
+        return category != null ? category.getCategoryName() : "Unknown";
     }
 }

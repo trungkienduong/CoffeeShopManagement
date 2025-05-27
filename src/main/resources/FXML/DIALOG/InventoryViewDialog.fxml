@@ -69,7 +69,7 @@
         </GridPane>
 
         <HBox alignment="CENTER" spacing="25">
-            <Button fx:id="closeButton" text="Đóng" styleClass="custom-button, close-button"/>
+            <Button fx:id="closeButton" onAction="#handleClose" text="Đóng" styleClass="custom-button, close-button"/>
         </HBox>
     </VBox>
 </AnchorPane>

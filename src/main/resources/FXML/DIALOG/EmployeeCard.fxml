@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="8" styleClass="product-card"
+      stylesheets="@../../ASSETS/STYLES/DIALOG/ProductCard.css"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="GUI.CONTROLLER.DIALOG.EmployeeCardDialogController">
+
+    <ImageView fx:id="employeeImage" fitWidth="120.0" fitHeight="120.0"
+               preserveRatio="true" styleClass="product-image" />
+
+    <VBox alignment="CENTER_LEFT" spacing="6" styleClass="product-info">
+        <HBox alignment="CENTER_LEFT" spacing="4">
+            <Label text="Họ tên:" styleClass="label-title" />
+            <Label fx:id="employeeName" styleClass="product-name" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="4">
+            <Label text="Chức vụ:" styleClass="label-title" />
+            <Label fx:id="employeeRole" styleClass="product-price" />
+        </HBox>
+    </VBox>
+</VBox>

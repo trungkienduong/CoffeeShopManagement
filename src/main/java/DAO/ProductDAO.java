@@ -1,6 +1,5 @@
 package DAO;
 
-import MODEL.Category;
 import MODEL.Product;
 
 import java.math.BigDecimal;
@@ -10,10 +9,8 @@ import java.util.List;
 
 public class ProductDAO {
     private static ProductDAO instance;
-    private final CategoryDAO categoryDAO;
 
     private ProductDAO() {
-        categoryDAO = CategoryDAO.getInstance();
     }
 
     public static ProductDAO getInstance() {
@@ -25,15 +22,16 @@ public class ProductDAO {
 
     // ---------------------- INSERT ----------------------
     public boolean insert(Product product) {
-        String sql = "INSERT INTO PRODUCT (PRODUCT_NAME, CATEGORY_ID, SELL_PRICE, IMAGE_PATH) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO PRODUCT (PRODUCT_NAME, CATEGORY_ID, SELL_PRICE, IMAGE_PATH, DESCRIPTION) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, product.getProductName());
-            pst.setInt(2, product.getCategory().getCategoryId());
+            pst.setInt(2, product.getCategoryId());
             pst.setBigDecimal(3, product.getSellPrice());
             pst.setString(4, product.getImagePath());
+            pst.setString(5, product.getDescription());  // thêm mô tả
 
             int affectedRows = pst.executeUpdate();
 
@@ -41,7 +39,6 @@ public class ProductDAO {
                 return false;
             }
 
-            // Lấy ID tự sinh gán lại cho product
             try (ResultSet generatedKeys = pst.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     product.setProductId(generatedKeys.getInt(1));
@@ -58,16 +55,17 @@ public class ProductDAO {
 
     // ---------------------- UPDATE ----------------------
     public boolean update(Product product) {
-        String sql = "UPDATE PRODUCT SET PRODUCT_NAME = ?, CATEGORY_ID = ?, SELL_PRICE = ?, IMAGE_PATH = ? WHERE PRODUCT_ID = ?";
+        String sql = "UPDATE PRODUCT SET PRODUCT_NAME = ?, CATEGORY_ID = ?, SELL_PRICE = ?, IMAGE_PATH = ?, DESCRIPTION = ? WHERE PRODUCT_ID = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, product.getProductName());
-            pst.setInt(2, product.getCategory().getCategoryId());
+            pst.setInt(2, product.getCategoryId());
             pst.setBigDecimal(3, product.getSellPrice());
             pst.setString(4, product.getImagePath());
-            pst.setInt(5, product.getProductId());
+            pst.setString(5, product.getDescription());  // cập nhật mô tả
+            pst.setInt(6, product.getProductId());
 
             int affectedRows = pst.executeUpdate();
             return affectedRows > 0;
@@ -138,8 +136,8 @@ public class ProductDAO {
         return null;
     }
 
-    // ---------------------- FIND BY CATEGORY ----------------------
-    public List<Product> findByCategory(Category category) {
+    // ---------------------- FIND BY CATEGORY_ID ----------------------
+    public List<Product> findByCategoryId(int categoryId) {
         String sql = "SELECT * FROM PRODUCT WHERE CATEGORY_ID = ?";
 
         List<Product> list = new ArrayList<>();
@@ -147,13 +145,11 @@ public class ProductDAO {
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, category.getCategoryId());
+            pst.setInt(1, categoryId);
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     Product product = extractProduct(rs);
-                    // Gán lại category để tránh gọi thêm DB
-                    product.setCategory(category);
                     list.add(product);
                 }
             }
@@ -196,13 +192,10 @@ public class ProductDAO {
 
         product.setProductId(rs.getInt("PRODUCT_ID"));
         product.setProductName(rs.getString("PRODUCT_NAME"));
-
-        int categoryId = rs.getInt("CATEGORY_ID");
-        Category category = categoryDAO.findById(categoryId);
-        product.setCategory(category);
-
+        product.setCategoryId(rs.getInt("CATEGORY_ID"));
         product.setSellPrice(rs.getBigDecimal("SELL_PRICE"));
         product.setImagePath(rs.getString("IMAGE_PATH"));
+        product.setDescription(rs.getString("DESCRIPTION"));  // đọc mô tả
 
         return product;
     }

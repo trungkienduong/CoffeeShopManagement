@@ -4,27 +4,30 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ProductRecipe {
-    // Khóa chính composite: productId + itemName được biểu diễn qua product và item
-    private Product product;    // Liên kết đến Product (chứa productId)
-    private Inventory item;     // Liên kết đến Inventory (chứa itemName)
+    // CATEGORY_ID trong bảng PRODUCT_RECIPE
+    private Category category;
 
+    // ITEM_NAME trong bảng PRODUCT_RECIPE
+    private Inventory item;
+
+    // Số lượng nguyên liệu dùng cho một đơn vị sản phẩm
     private BigDecimal quantityUsed;
 
     public ProductRecipe() {
     }
 
-    public ProductRecipe(Product product, Inventory item, BigDecimal quantityUsed) {
-        this.product = product;
+    public ProductRecipe(Category category, Inventory item, BigDecimal quantityUsed) {
+        this.category = category;
         this.item = item;
         this.quantityUsed = quantityUsed;
     }
 
-    public Product getProduct() {
-        return product;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Inventory getItem() {
@@ -46,25 +49,30 @@ public class ProductRecipe {
     @Override
     public String toString() {
         return "ProductRecipe{" +
-                "productId=" + (product != null ? product.getProductId() : "null") +
+                "categoryId=" + (category != null ? category.getCategoryId() : "null") +
                 ", itemName=" + (item != null ? item.getItemName() : "null") +
                 ", quantityUsed=" + quantityUsed +
                 '}';
     }
-
-    // Override equals và hashCode theo khóa chính để dễ quản lý collection
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductRecipe)) return false;
         ProductRecipe that = (ProductRecipe) o;
-        return Objects.equals(product != null ? product.getProductId() : null, that.product != null ? that.product.getProductId() : null)
-                && Objects.equals(item != null ? item.getItemName() : null, that.item != null ? that.item.getItemName() : null);
+        return Objects.equals(
+                category != null ? category.getCategoryId() : null,
+                that.category != null ? that.category.getCategoryId() : null)
+                &&
+                Objects.equals(
+                        item != null ? item.getItemName() : null,
+                        that.item != null ? that.item.getItemName() : null);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(product != null ? product.getProductId() : null, item != null ? item.getItemName() : null);
+        return Objects.hash(
+                category != null ? category.getCategoryId() : null,
+                item != null ? item.getItemName() : null);
     }
 }

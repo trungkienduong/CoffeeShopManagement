@@ -41,4 +41,10 @@ public class InventoryViewDialogController {
         noteLabel.setText("Nhập bổ sung do tồn kho dưới mức quy định.");
         totalPriceLabel.setText("1,200,000");
     }
+
+    @FXML
+    private void handleClose() {
+        itemLabel.getScene().getWindow().hide();
+    }
+
 }

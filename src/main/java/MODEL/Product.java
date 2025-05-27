@@ -5,19 +5,21 @@ import java.math.BigDecimal;
 public class Product {
     private int productId;
     private String productName;
-    private Category category;  // giữ đối tượng Category
+    private int categoryId;        // Dùng categoryId thay vì Category object
     private BigDecimal sellPrice;
     private String imagePath;
+    private String description;   // Thêm trường mô tả sản phẩm
 
     public Product() {
     }
 
-    public Product(int productId, String productName, Category category, BigDecimal sellPrice, String imagePath) {
+    public Product(int productId, String productName, int categoryId, BigDecimal sellPrice, String imagePath, String description) {
         this.productId = productId;
         this.productName = productName;
-        this.category = category;
+        this.categoryId = categoryId;
         this.sellPrice = sellPrice;
         this.imagePath = imagePath;
+        this.description = description;
     }
 
     public int getProductId() {
@@ -36,12 +38,12 @@ public class Product {
         this.productName = productName;
     }
 
-    public Category getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public BigDecimal getSellPrice() {
@@ -60,14 +62,23 @@ public class Product {
         this.imagePath = imagePath;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
-                ", category=" + (category != null ? category.getCategoryName() : "null") +
+                ", categoryId=" + categoryId +
                 ", sellPrice=" + sellPrice +
                 ", imagePath='" + imagePath + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

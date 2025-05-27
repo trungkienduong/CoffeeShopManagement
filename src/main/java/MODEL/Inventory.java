@@ -3,24 +3,22 @@ package MODEL;
 import java.math.BigDecimal;
 
 public class Inventory {
-
     private String itemName;
     private BigDecimal quantity;
     private BigDecimal costPrice;
 
-    // Đối tượng liên kết
-    private Category category;
+    // Liên kết đúng với bảng INVENTORY
+    private IngredientCategory ingredientCategory;
     private UnitCategory unit;
 
-    // Default constructor
-    public Inventory() {
-    }
+    public Inventory() {}
 
-    public Inventory(String itemName, BigDecimal quantity, BigDecimal costPrice, Category category, UnitCategory unit) {
+    public Inventory(String itemName, BigDecimal quantity, BigDecimal costPrice,
+                     IngredientCategory ingredientCategory, UnitCategory unit) {
         this.itemName = itemName;
         this.quantity = quantity;
         this.costPrice = costPrice;
-        this.category = category;
+        this.ingredientCategory = ingredientCategory;
         this.unit = unit;
     }
 
@@ -48,12 +46,12 @@ public class Inventory {
         this.costPrice = costPrice;
     }
 
-    public Category getCategory() {
-        return category;
+    public IngredientCategory getIngredientCategory() {
+        return ingredientCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setIngredientCategory(IngredientCategory ingredientCategory) {
+        this.ingredientCategory = ingredientCategory;
     }
 
     public UnitCategory getUnit() {
@@ -66,12 +64,7 @@ public class Inventory {
 
     @Override
     public String toString() {
-        return "Inventory{" +
-                "itemName='" + itemName + '\'' +
-                ", quantity=" + quantity +
-                ", costPrice=" + costPrice +
-                ", category=" + category +
-                ", unit=" + unit +
-                '}';
+        return this.getItemName();  // hoặc tên thuộc tính bạn muốn hiển thị
     }
+
 }
