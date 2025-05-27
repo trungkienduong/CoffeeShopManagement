@@ -3,9 +3,9 @@
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../../ASSETS/STYLES/PANEL/CoffeShopGUI.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.PANEL.CoffeeShopGUIController">
     <children>
@@ -99,7 +99,7 @@
                     </children>
                 </Pane>
 
-                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="278.0" prefWidth="319.0" title="Sales Overview">
+                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="278.0" prefWidth="319.0" title="Nhập Kho">
                     <xAxis>
                         <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -108,7 +108,7 @@
                     </yAxis>
                 </AreaChart>
 
-                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="271.0" prefWidth="298.0" title="Product Distribution" />
+                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="271.0" prefWidth="298.0" title="Thêm SP" />
             </children>
         </AnchorPane>
     </children>

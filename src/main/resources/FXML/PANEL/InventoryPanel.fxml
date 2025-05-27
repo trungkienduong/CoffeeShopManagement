@@ -14,19 +14,9 @@
                     <FontAwesomeIconView glyphName="PLUS" size="16" styleClass="button-icon" />
                 </graphic>
             </Button>
-            <Button fx:id="editBtn" onAction="#handleEditInventory" styleClass="action-button">
-                <graphic>
-                    <FontAwesomeIconView glyphName="EDIT" size="16" styleClass="button-icon" />
-                </graphic>
-            </Button>
             <Button fx:id="deleteBtn" onAction="#handleDeleteInventory" styleClass="action-button">
                 <graphic>
                     <FontAwesomeIconView glyphName="TRASH" size="16" styleClass="button-icon" />
-                </graphic>
-            </Button>
-            <Button fx:id="viewBtn" onAction="#handleViewinventory" styleClass="action-button">
-                <graphic>
-                    <FontAwesomeIconView glyphName="EYE" size="16" styleClass="button-icon" />
                 </graphic>
             </Button>
         </HBox>
@@ -35,11 +25,10 @@
             <content>
                 <TableView fx:id="inventoryTable" prefHeight="402.0" prefWidth="606.0" styleClass="inventory-table">
                     <columns>
-                        <TableColumn fx:id="idColumn" minWidth="50" prefWidth="81.0" text="ID" />
                         <TableColumn fx:id="nameColumn" minWidth="117.0" prefWidth="181.0" text="Item Name" />
                         <TableColumn fx:id="quantityColumn" minWidth="65.0" prefWidth="114.0" text="Quantity" />
-                        <TableColumn fx:id="unitColumn" minWidth="0.0" prefWidth="103.0" text="Unit" />
-                        <TableColumn fx:id="priceColumn" minWidth="40.0" prefWidth="126.0" text="Cost Price" />
+                        <TableColumn fx:id="unitColumn" minWidth="0.0" prefWidth="153.0" text="Unit" />
+                        <TableColumn fx:id="priceColumn" minWidth="40.0" prefWidth="157.0" text="Cost Price" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />

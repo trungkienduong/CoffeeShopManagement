@@ -122,4 +122,6 @@ public class ViewEmployeeDialogController {
         stage.close();
     }
 
+    public void setEmployee(Employee selectedEmployee) {
+    }
 }

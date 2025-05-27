@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
@@ -55,10 +56,14 @@ public class ProductPanelController {
                 GUI.CONTROLLER.DIALOG.ProductCardDialogController cardController = loader.getController();
                 cardController.setProduct(product);
 
-                // Nếu muốn bắt sự kiện click chọn card (ví dụ để edit/delete)
+                // Xử lý chọn card, highlight và gán selectedProduct
                 productCard.setOnMouseClicked(e -> {
                     selectedProduct = product;
-                    // Bạn có thể thêm logic highlight card khi chọn
+
+                    // Remove highlight các card khác
+                    productContainer.getChildren().forEach(node -> node.getStyleClass().remove("selected-card"));
+                    // Highlight card được chọn
+                    productCard.getStyleClass().add("selected-card");
                 });
 
                 productContainer.getChildren().add(productCard);
@@ -67,6 +72,7 @@ public class ProductPanelController {
             }
         }
     }
+
 
     @FXML
     private void handleAddProduct(ActionEvent event) {
@@ -120,18 +126,30 @@ public class ProductPanelController {
     @FXML
     private void handleDeleteProduct(ActionEvent event) {
         if (selectedProduct == null) {
-            System.out.println("Chưa chọn sản phẩm để xóa!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cảnh báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Chưa chọn sản phẩm để xóa!");
+            alert.showAndWait();
             return;
         }
 
-        // Xác nhận và gọi BUS xóa sản phẩm
         boolean success = ProductBUS.getInstance().deleteProduct(selectedProduct.getProductId());
         if (success) {
-            System.out.println("Xóa sản phẩm thành công");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thành công");
+            alert.setHeaderText(null);
+            alert.setContentText("Xóa sản phẩm thành công.");
+            alert.showAndWait();
+
             selectedProduct = null;
             loadProducts();
         } else {
-            System.out.println("Xóa sản phẩm thất bại");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Xóa sản phẩm thất bại. Có thể sản phẩm đang được sử dụng.");
+            alert.showAndWait();
         }
     }
 

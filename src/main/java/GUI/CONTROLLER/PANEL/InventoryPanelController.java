@@ -25,8 +25,6 @@ public class InventoryPanelController {
     @FXML
     private TableView<Inventory> inventoryTable;
 
-    @FXML
-    private TableColumn<Inventory, Integer> idColumn;
 
     @FXML
     private TableColumn<Inventory, String> nameColumn;
@@ -44,13 +42,7 @@ public class InventoryPanelController {
     private Button addBtn;
 
     @FXML
-    private Button editBtn;
-
-    @FXML
     private Button deleteBtn;
-
-    @FXML
-    private Button viewBtn;
 
     private InventoryBUS inventoryBUS;
 
@@ -59,7 +51,6 @@ public class InventoryPanelController {
         inventoryBUS = InventoryBUS.getInstance();
 
         // Set cell value factory cho từng cột dựa trên tên getter trong Inventory
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
@@ -97,36 +88,6 @@ public class InventoryPanelController {
         }
     }
 
-    @FXML
-    private void handleEditInventory(ActionEvent event) {
-        Inventory selected = inventoryTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            System.out.println("No item selected for editing");
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));
-            Parent root = loader.load();
-
-            // Nếu muốn truyền dữ liệu sang dialog edit:
-            GUI.CONTROLLER.DIALOG.InventoryUpdateDialogController controller = loader.getController();
-            controller.setInventory(selected);
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Edit Product");
-            dialogStage.setScene(new Scene(root));
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
-
-            // Sau khi dialog đóng, refresh bảng
-            loadInventoryData();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void handleDeleteInventory(ActionEvent event) {
@@ -145,34 +106,5 @@ public class InventoryPanelController {
         }
     }
 
-    @FXML
-    private void handleViewinventory(ActionEvent event) {
-        Inventory selected = inventoryTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            System.out.println("No item selected for viewing");
-            return;
-        }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryViewDialog.fxml"));
-            Parent root = loader.load();
-
-            // Truyền dữ liệu sang dialog view nếu có controller
-            GUI.CONTROLLER.DIALOG.InventoryViewDialogController controller = loader.getController();
-            controller.setInventory(selected);
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("View Product");
-            dialogStage.setScene(new Scene(root));
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
-
-            // Sau khi dialog đóng, có thể refresh dữ liệu nếu cần
-            loadInventoryData();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

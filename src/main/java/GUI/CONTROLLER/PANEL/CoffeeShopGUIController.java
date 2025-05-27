@@ -1,9 +1,11 @@
 package GUI.CONTROLLER.PANEL;
 
+import MODEL.Inventory;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,6 +13,14 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
+import BUS.EmployeeBUS;
+import BUS.ProductBUS;
+import BUS.InventoryBUS;
+import javafx.scene.chart.PieChart.Data;
+import MODEL.Product;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CoffeeShopGUIController {
 
@@ -100,7 +110,48 @@ public class CoffeeShopGUIController {
     }
 
     private void updateDashboard() {
-        // Update statistics from database
-        // Update charts
+        // Số lượng nhân viên
+        int employeeTotal = EmployeeBUS.getInstance().getAllEmployees().size();
+        employeeCount.setText(String.valueOf(employeeTotal));
+
+        // Số lượng sản phẩm
+        int productTotal = ProductBUS.getInstance().getAllProducts().size();
+        productCount.setText(String.valueOf(productTotal));
+
+        // Số lượng nguyên liệu tồn kho
+        int inventoryTotal = InventoryBUS.getInstance().getAll().size();
+        inventoryCount.setText(String.valueOf(inventoryTotal));
+
+        updateProductChart();     // Pie chart sản phẩm theo loại
+        updateInventoryChart();   // Area chart tồn kho nguyên liệu
+    }
+
+    private void updateProductChart() {
+        List<Product> productList = ProductBUS.getInstance().getAllProducts();
+
+        Map<String, Integer> categoryCountMap = new HashMap<>();
+        for (Product p : productList) {
+            String categoryName = ProductBUS.getInstance().getCategoryNameById(p.getCategoryId());
+            categoryCountMap.put(categoryName, categoryCountMap.getOrDefault(categoryName, 0) + 1);
+        }
+
+        productChart.getData().clear();
+        for (Map.Entry<String, Integer> entry : categoryCountMap.entrySet()) {
+            productChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+    }
+
+    private void updateInventoryChart() {
+        List<Inventory> inventoryList = InventoryBUS.getInstance().getAll();
+
+        XYChart.Series<String, Number> quantitySeries = new XYChart.Series<>();
+        quantitySeries.setName("Tồn kho");
+
+        for (Inventory item : inventoryList) {
+            quantitySeries.getData().add(new XYChart.Data<>(item.getItemName(), item.getQuantity()));
+        }
+
+        salesChart.getData().clear();
+        salesChart.getData().add(quantitySeries);
     }
 }

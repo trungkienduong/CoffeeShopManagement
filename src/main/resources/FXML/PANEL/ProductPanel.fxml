@@ -29,7 +29,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deleteBtn" mnemonicParsing="false" styleClass="action-button" text="Delete">
+                <Button fx:id="deleteBtn" onAction="#handleDeleteProduct" mnemonicParsing="false" styleClass="action-button" text="Delete">
                     <graphic>
                         <FontAwesomeIconView glyphName="TRASH" size="18"/>
                     </graphic>

@@ -11,6 +11,7 @@ import MODEL.IngredientCategory;
 import MODEL.Supplier;
 import MODEL.UnitCategory;
 import MODEL.Employee;
+import MODEL.Inventory;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,6 +69,9 @@ public class InventoryUpdateDialogController {
 
     @FXML
     private AnchorPane rootPane;
+
+    // Lưu Inventory hiện tại (nếu có) để biết là sửa hay thêm mới
+    private Inventory currentInventory = null;
 
     @FXML
     public void initialize() {
@@ -242,6 +246,50 @@ public class InventoryUpdateDialogController {
         }
     }
 
+    // Method mới để load Inventory hiện tại lên form khi sửa
+    public void setInventory(Inventory inventory) {
+        this.currentInventory = inventory;
+
+        if (inventory != null) {
+            // Chọn mặt hàng (IngredientCategory)
+            if (inventory.getIngredientCategory() != null) {
+                itemComboBox.getSelectionModel().select(inventory.getIngredientCategory());
+            } else {
+                itemComboBox.getSelectionModel().clearSelection();
+            }
+
+            // Chọn đơn vị
+            if (inventory.getUnit() != null) {
+                unitComboBox.getSelectionModel().select(inventory.getUnit());
+            } else {
+                unitComboBox.getSelectionModel().clearSelection();
+            }
+
+            // Gán số lượng
+            if (inventory.getQuantity() != null) {
+                quantityField.setText(inventory.getQuantity().toPlainString());
+            } else {
+                quantityField.clear();
+            }
+
+            // Gán đơn giá
+            if (inventory.getCostPrice() != null) {
+                unitPriceField.setText(inventory.getCostPrice().toPlainString());
+            } else {
+                unitPriceField.clear();
+            }
+
+            // Những phần supplier, employee, importDate, note tạm thời chưa có trong Inventory, có thể clear hoặc để mặc định
+            supplierComboBox.getSelectionModel().clearSelection();
+            employeeComboBox.getSelectionModel().clearSelection();
+            importDatePicker.setValue(LocalDate.now());
+            noteArea.clear();
+
+            // Cập nhật lại tổng tiền
+            calculateTotal();
+        }
+    }
+
     @FXML
     private void handleConfirm() {
         try {
@@ -305,7 +353,15 @@ public class InventoryUpdateDialogController {
             log.setNote(noteArea.getText());
 
             ImportLogBUS importLogBUS = ImportLogBUS.getInstance();
-            boolean success = importLogBUS.addImportLog(log);
+            boolean success;
+
+            if (currentInventory == null) {
+                // Thêm mới phiếu nhập kho
+                success = importLogBUS.addImportLog(log);
+            } else {
+                // Cập nhật phiếu nhập kho - bạn cần bổ sung thêm logic update nếu có ID hoặc cách nhận biết
+                success = importLogBUS.updateImportLog(log);
+            }
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", null, "Phiếu nhập kho đã được lưu.");
@@ -328,6 +384,7 @@ public class InventoryUpdateDialogController {
         stage.close();
     }
 
+    // Hàm tiện ích hiện cảnh báo
     private void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

@@ -50,3 +50,13 @@
     -fx-text-fill: #2E7D32;
     -fx-font-size: 11px;
 }
+
+.selected-card {
+    -fx-border-color: #8B4513;      /* màu nâu SaddleBrown */
+    -fx-border-width: 2;
+    -fx-background-color: #D2B48C;  /* màu nâu nhạt Tan */
+}
+
+.selected-card .label-title {
+    -fx-text-fill: #8B4513;         /* màu nâu SaddleBrown */
+}

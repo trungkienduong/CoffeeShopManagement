@@ -41,6 +41,36 @@ public class EditEmployeeDialogController {
     private String imagePath;
     private Employee currentEmployee;
 
+    public void setEmployee(Employee employee) {
+        this.currentEmployee = employee;
+
+        if (employee == null) return;
+
+        // Gán dữ liệu từ employee vào các field
+        fullNameField.setText(employee.getFullName());
+        genderComboBox.setValue(employee.getGender() == Employee.Gender.MALE ? "Nam" : "Nữ");
+        cccdField.setText(employee.getCccd());
+        birthDatePicker.setValue(employee.getDateOfBirth());
+        phoneField.setText(employee.getPhone());
+        addressField.setText(employee.getAddress());
+        positionComboBox.setValue(employee.getPosition());
+        salaryField.setText(String.valueOf(employee.getSalary()));
+        imagePath = employee.getImagePath();
+
+        if (imagePath != null) {
+            File file = new File(imagePath);
+            if (file.exists()) {
+                employeeImageView.setImage(new Image(file.toURI().toString()));
+            }
+        }
+
+        // Email sẽ lấy từ User (nếu có), bạn có thể set thêm nếu cần
+        if (employee.getUser() != null) {
+            emailField.setText(employee.getUser().getEmail());
+        }
+    }
+
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
@@ -211,6 +241,7 @@ public class EditEmployeeDialogController {
             dialogStage.close();
         }
     }
+
 
 
 }
