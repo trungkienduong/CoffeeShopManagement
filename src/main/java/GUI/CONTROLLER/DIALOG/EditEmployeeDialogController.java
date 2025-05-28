@@ -43,10 +43,8 @@ public class EditEmployeeDialogController {
 
     public void setEmployee(Employee employee) {
         this.currentEmployee = employee;
-
         if (employee == null) return;
 
-        // Gán dữ liệu từ employee vào các field
         fullNameField.setText(employee.getFullName());
         genderComboBox.setValue(employee.getGender() == Employee.Gender.MALE ? "Nam" : "Nữ");
         cccdField.setText(employee.getCccd());
@@ -64,11 +62,16 @@ public class EditEmployeeDialogController {
             }
         }
 
-        // Email sẽ lấy từ User (nếu có), bạn có thể set thêm nếu cần
-        if (employee.getUser() != null) {
-            emailField.setText(employee.getUser().getEmail());
+        // Lấy email ưu tiên từ employee.getUser(), nếu null thì dùng UserBUS lấy theo username
+        String email = "";
+        if (employee.getUser() != null && employee.getUser().getEmail() != null && !employee.getUser().getEmail().isEmpty()) {
+            email = employee.getUser().getEmail();
+        } else if (employee.getUsername() != null && !employee.getUsername().isEmpty()) {
+            email = userBUS.getEmailByUsername(employee.getUsername());
         }
+        emailField.setText(email);
     }
+
 
 
     public void setDialogStage(Stage dialogStage) {
@@ -77,36 +80,28 @@ public class EditEmployeeDialogController {
 
     @FXML
     private void initialize() {
-        try {
-            genderComboBox.getItems().addAll("Nam", "Nữ");
+        genderComboBox.getItems().addAll("Nam", "Nữ");
 
-            // Load danh sách chức vụ
-            List<EmployeePosition> positions = positionBUS.getAllPositions();
-            positionComboBox.getItems().addAll(positions);
-            positionComboBox.setConverter(new StringConverter<EmployeePosition>() {
-                @Override
-                public String toString(EmployeePosition position) {
-                    return position != null ? position.getPositionName() : "";
-                }
+        List<EmployeePosition> positions = positionBUS.getAllPositions();
+        positionComboBox.getItems().addAll(positions);
+        positionComboBox.setConverter(new StringConverter<EmployeePosition>() {
+            @Override
+            public String toString(EmployeePosition position) {
+                return position != null ? position.getPositionName() : "";
+            }
+            @Override
+            public EmployeePosition fromString(String string) {
+                return null; // Không cần xử lý
+            }
+        });
 
-                @Override
-                public EmployeePosition fromString(String string) {
-                    return null; // không cần thiết
-                }
-            });
-
-            // Thiết lập nút
-            browseButton.setOnAction(event -> handleBrowse());
-            saveButton.setOnAction(event -> handleSave());
-            cancelButton.setOnAction(event -> {
-                if (dialogStage != null) dialogStage.close();
-            });
-
+        // Nếu muốn load employee tự động khi mở dialog (nếu chưa set employee từ bên ngoài)
+        // bạn có thể bỏ comment đoạn dưới
+        /*
+        if (currentEmployee == null) {
             loadCurrentEmployee();
-
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể khởi tạo form: " + e.getMessage());
         }
+        */
     }
 
     private void loadCurrentEmployee() {
@@ -122,25 +117,10 @@ public class EditEmployeeDialogController {
             return;
         }
 
-        emailField.setText(userBUS.getCurrentUser().getEmail());
-        fullNameField.setText(currentEmployee.getFullName());
-        genderComboBox.setValue(currentEmployee.getGender() == Employee.Gender.MALE ? "Nam" : "Nữ");
-        cccdField.setText(currentEmployee.getCccd());
-        birthDatePicker.setValue(currentEmployee.getDateOfBirth());
-        phoneField.setText(currentEmployee.getPhone());
-        addressField.setText(currentEmployee.getAddress());
-        positionComboBox.setValue(currentEmployee.getPosition());
-        salaryField.setText(String.valueOf(currentEmployee.getSalary()));
-        imagePath = currentEmployee.getImagePath();
-
-        if (imagePath != null) {
-            File file = new File(imagePath);
-            if (file.exists()) {
-                employeeImageView.setImage(new Image(file.toURI().toString()));
-            }
-        }
+        setEmployee(currentEmployee);  // Gọi lại để đồng bộ dữ liệu lên form
     }
 
+    @FXML
     private void handleBrowse() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -153,6 +133,7 @@ public class EditEmployeeDialogController {
         }
     }
 
+    @FXML
     private void handleSave() {
         if (!validateInput()) return;
 
@@ -169,7 +150,7 @@ public class EditEmployeeDialogController {
 
             if (employeeBUS.updateEmployee(currentEmployee)) {
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật thông tin thành công!");
-                dialogStage.close();
+                if (dialogStage != null) dialogStage.close();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể cập nhật nhân viên.");
             }
@@ -241,7 +222,4 @@ public class EditEmployeeDialogController {
             dialogStage.close();
         }
     }
-
-
-
 }

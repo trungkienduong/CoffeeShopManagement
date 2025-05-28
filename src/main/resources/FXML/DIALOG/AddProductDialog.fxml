@@ -22,36 +22,36 @@
         <!-- Right Section - Form -->
         <VBox spacing="20" styleClass="form-section" HBox.hgrow="ALWAYS">
             <HBox spacing="15" styleClass="input-group">
-                <Label styleClass="label-text" text="Loại sản phẩm:" />
+                <Label styleClass="label-text" text="Category:" />
                 <Pane styleClass="type-input-container">
                     <ComboBox fx:id="recipeComboBox" styleClass="combo-box" />
                     <Button fx:id="addTypeButton" styleClass="custom-button, add-type-button">
                         <graphic>
-                            <FontAwesomeIconView glyphName="PLUS" size="14" styleClass="button-icon"/>
+                            <FontAwesomeIconView glyphName="PLUS" size="14" styleClass="button-icon" />
                         </graphic>
                     </Button>
                 </Pane>
             </HBox>
 
             <HBox spacing="15" styleClass="input-group">
-                <Label styleClass="label-text" text="Tên sản phẩm:" />
+                <Label styleClass="label-text" text="Product Name:" />
                 <TextField fx:id="productNameField" styleClass="text-input" />
             </HBox>
 
             <HBox spacing="15" styleClass="input-group">
-                <Label styleClass="label-text" text="Giá:" />
+                <Label styleClass="label-text" text="Price:" />
                 <TextField fx:id="priceField" styleClass="text-input, price-field" />
                 <Label styleClass="currency-label" text="VND" />
             </HBox>
 
             <VBox spacing="10" styleClass="description-group">
-                <Label styleClass="label-text" text="Mô tả:" />
+                <Label styleClass="label-text" text="Description:" />
                 <TextArea fx:id="descriptionArea" prefHeight="35.0" styleClass="text-input" wrapText="true" />
             </VBox>
 
             <HBox spacing="15" styleClass="button-container">
-                <Button fx:id="confirmButton" onAction="#onConfirm" styleClass="custom-button, confirm-button" text="Xác nhận" />
-                <Button fx:id="cancelButton" onAction="#onCancel" styleClass="custom-button, cancel-button" text="Hủy" />
+                <Button fx:id="confirmButton" onAction="#onConfirm" styleClass="custom-button, confirm-button" text="Confirm" />
+                <Button fx:id="cancelButton" onAction="#onCancel" styleClass="custom-button, cancel-button" text="Cancel" />
             </HBox>
         </VBox>
     </HBox>

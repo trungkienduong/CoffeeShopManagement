@@ -187,12 +187,12 @@
 }
 
 .confirm-button {
-    -fx-border-color: #2E7D32;
-    -fx-text-fill: #2E7D32;
+    -fx-border-color: #6f4e37;
+    -fx-text-fill: #6f4e37;
 }
 
 .confirm-button:hover {
-    -fx-background-color: #2E7D32;
+    -fx-background-color: #6f4e37;
     -fx-text-fill: white;
 }
 

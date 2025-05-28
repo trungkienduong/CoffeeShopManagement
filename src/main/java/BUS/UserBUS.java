@@ -128,4 +128,16 @@ public class UserBUS {
                 .filter(email -> email != null && !email.isEmpty())
                 .collect(Collectors.toList());
     }
+
+    public String getEmailByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            return "";
+        }
+        User user = findByName(username);
+        if (user != null && user.getEmail() != null) {
+            return user.getEmail();
+        }
+        return "";
+    }
+
 }

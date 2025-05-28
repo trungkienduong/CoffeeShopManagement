@@ -53,9 +53,8 @@ public class AddEmployeeDialogController {
 
     public AddEmployeeDialogController() {
         employeeBUS = EmployeeBUS.getInstance();
-        positionBUS = EmployeePositionBUS.getInstance(); // nếu EmployeePositionBUS có getInstance()
+        positionBUS = EmployeePositionBUS.getInstance();
         userBUS = UserBUS.getInstance();
-
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -91,13 +90,6 @@ public class AddEmployeeDialogController {
                 }
             });
 
-            // Buttons
-            browseButton.setOnAction(event -> handleBrowse());
-            saveButton.setOnAction(event -> handleSave());
-            cancelButton.setOnAction(event -> {
-                if (dialogStage != null) dialogStage.close();
-            });
-
             // DatePicker mặc định là 18 tuổi
             birthDatePicker.setValue(LocalDate.now().minusYears(18));
             birthDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -109,6 +101,7 @@ public class AddEmployeeDialogController {
         }
     }
 
+    @FXML
     private void handleBrowse() {
         try {
             FileChooser fileChooser = new FileChooser();
@@ -126,6 +119,7 @@ public class AddEmployeeDialogController {
         }
     }
 
+    @FXML
     private void handleSave() {
         if (!validateInput()) return;
         try {
@@ -146,7 +140,7 @@ public class AddEmployeeDialogController {
 
             if (employeeBUS.addEmployee(employee)) {
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm nhân viên thành công!");
-                dialogStage.close();
+                if (dialogStage != null) dialogStage.close();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm nhân viên. Vui lòng thử lại!");
             }
@@ -157,6 +151,10 @@ public class AddEmployeeDialogController {
         }
     }
 
+    @FXML
+    private void handleCancel() {
+        if (dialogStage != null) dialogStage.close();
+    }
 
     private boolean validateInput() {
         StringBuilder errorMessage = new StringBuilder();

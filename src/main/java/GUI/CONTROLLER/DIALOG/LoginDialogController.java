@@ -138,6 +138,8 @@ public class LoginDialogController {
         String password = passwordLogin.getText();
 
         if (userBUS.checkLogin(username, password)) {
+            UTIL.Session.currentUsername = username;  // ✅ Gán username vào session
+
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
                 AnchorPane mainPane = loader.load();

@@ -1,7 +1,10 @@
 package GUI.CONTROLLER.PANEL;
 
 import BUS.EmployeeBUS;
+import BUS.UserBUS;
 import MODEL.Employee;
+import MODEL.User;
+import UTIL.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,10 +37,26 @@ public class EmployeePanelController {
     private Button viewBtn;
 
     private Employee selectedEmployee = null;
+    private Employee currentAccountEmployee = null; // Nhân viên tương ứng tài khoản đăng nhập
+    private User currentUser = null;                // Người dùng đang đăng nhập (để kiểm tra role)
 
     @FXML
     private void initialize() {
+        // Lấy user hiện tại (đã đăng nhập)
+        currentUser = UserBUS.getInstance().getCurrentUser();
+
         loadEmployees();
+
+        // Lấy lại nhân viên ứng với tài khoản đăng nhập (nếu có)
+        currentAccountEmployee = EmployeeBUS.getInstance().getEmployeeByUsername(Session.currentUsername);
+
+        // Phân quyền nút add, delete dựa trên role
+        applyRolePermissions();
+
+        // Nếu muốn có thêm logic disable nút edit/view khi chưa chọn nhân viên thì cũng có thể làm ở đây
+
+        checkAddButtonVisibility();
+
     }
 
     private void loadEmployees() {
@@ -53,7 +72,7 @@ public class EmployeePanelController {
                 GUI.CONTROLLER.DIALOG.EmployeeCardDialogController controller = loader.getController();
                 controller.setEmployee(emp);
 
-                // Gán xử lý khi click card
+                // Xử lý click chọn card
                 card.setOnMouseClicked(e -> {
                     selectedEmployee = emp;
 
@@ -64,56 +83,94 @@ public class EmployeePanelController {
                 });
 
                 employeeContainer.getChildren().add(card);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private void applyRolePermissions() {
+        if (currentUser == null) {
+            // Không đăng nhập thì tắt hết
+            addBtn.setDisable(true);
+            editBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+            viewBtn.setDisable(true);
+            return;
+        }
+
+        if (currentUser.hasRole("STAFF")) {
+            // STAFF được phép add, delete
+            addBtn.setDisable(false);
+            deleteBtn.setDisable(false);
+        } else if (currentUser.hasRole("EMPLOYEE")) {
+            // EMPLOYEE không được add, không được delete
+            addBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+        } else {
+            // Các role khác (vd ADMIN) mặc định bật hết
+            addBtn.setDisable(false);
+            deleteBtn.setDisable(false);
+        }
+    }
+
+    private void checkAddButtonVisibility() {
+        // Nếu đã có employee gắn với tài khoản này thì disable nút Add
+        currentAccountEmployee = EmployeeBUS.getInstance().getEmployeeByUsername(Session.currentUsername);
+        addBtn.setDisable(currentAccountEmployee != null);
+    }
+
     @FXML
     private void handleAddEmployee(ActionEvent event) {
+        if (currentAccountEmployee != null) {
+            showWarning("Bạn đã thêm thông tin cá nhân rồi.");
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddEmployeeDialog.fxml"));
             Parent root = loader.load();
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Thêm Nhân Viên");
+            dialogStage.setTitle("Thêm Thông Tin Cá Nhân");
             dialogStage.setScene(new Scene(root));
             dialogStage.setResizable(false);
+
+            // Lấy controller
+            GUI.CONTROLLER.DIALOG.AddEmployeeDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            // Mở dialog
             dialogStage.showAndWait();
 
-            loadEmployees();
+            // Cập nhật danh sách nhân viên và trạng thái
+            loadEmployees(); // sẽ gán lại currentAccountEmployee trong đó
+            checkAddButtonVisibility();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
     @FXML
     private void handleEditEmployee(ActionEvent event) {
         if (selectedEmployee == null) {
-            showWarning("Chưa chọn nhân viên để sửa!");
+            showWarning("Bạn chưa chọn nhân viên để sửa.");
             return;
         }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditEmployeeDialog.fxml"));
-            Parent root = loader.load();
-
-            GUI.CONTROLLER.DIALOG.EditEmployeeDialogController controller = loader.getController();
-            controller.setEmployee(selectedEmployee);
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.setTitle("Sửa Nhân Viên");
-            dialogStage.setScene(new Scene(root));
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
-
-            loadEmployees();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Phân quyền edit: EMPLOYEE chỉ được sửa chính mình
+        if (currentUser.hasRole("EMPLOYEE")) {
+            if (!selectedEmployee.getUsername().equals(Session.currentUsername)) {
+                showWarning("Bạn chỉ được sửa thông tin của chính mình.");
+                return;
+            }
         }
+        // STAFF được sửa tất cả
+
+        openEditEmployeeDialog(selectedEmployee);
     }
 
     @FXML
@@ -123,12 +180,18 @@ public class EmployeePanelController {
             return;
         }
 
+        if (!currentUser.hasRole("STAFF")) {
+            showWarning("Bạn không có quyền xoá nhân viên.");
+            return;
+        }
+
         boolean success = EmployeeBUS.getInstance().deleteEmployee(selectedEmployee.getEmployeeId());
 
         if (success) {
             showInfo("Xoá nhân viên thành công.");
             selectedEmployee = null;
             loadEmployees();
+            applyRolePermissions();
         } else {
             showError("Xoá nhân viên thất bại. Có thể nhân viên đang được sử dụng.");
         }
@@ -141,12 +204,49 @@ public class EmployeePanelController {
             return;
         }
 
+        // EMPLOYEE chỉ xem được chính mình
+        if (currentUser.hasRole("EMPLOYEE")) {
+            if (!selectedEmployee.getUsername().equals(Session.currentUsername)) {
+                showWarning("Bạn chỉ được xem thông tin của chính mình.");
+                return;
+            }
+        }
+        // STAFF được xem tất cả
+
+        openViewEmployeeDialog(selectedEmployee);
+    }
+
+    private void openEditEmployeeDialog(Employee emp) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditEmployeeDialog.fxml"));
+            Parent root = loader.load();
+
+            GUI.CONTROLLER.DIALOG.EditEmployeeDialogController controller = loader.getController();
+            controller.setEmployee(emp);
+
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Sửa Thông Tin Nhân Viên");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            loadEmployees();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openViewEmployeeDialog(Employee emp) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ViewEmployeeDialog.fxml"));
             Parent root = loader.load();
 
             GUI.CONTROLLER.DIALOG.ViewEmployeeDialogController controller = loader.getController();
-            controller.setEmployee(selectedEmployee);
+            controller.setEmployee(emp);
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
