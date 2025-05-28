@@ -5,6 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +19,8 @@ import BUS.ProductBUS;
 import BUS.InventoryBUS;
 import javafx.scene.chart.PieChart.Data;
 import MODEL.Product;
+import javafx.stage.Stage;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,8 +109,22 @@ public class CoffeeShopGUIController {
 
     @FXML
     private void handleLogout() {
-        // Implement logout functionality
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/LoginDialog.fxml"));
+            Parent loginRoot = loader.load();
+
+            // Lấy stage hiện tại từ 1 node trên scene, ví dụ logoutBtn
+            Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
+
+            currentStage.setScene(new Scene(loginRoot));
+            currentStage.setTitle("Login");
+            currentStage.setResizable(false);
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     private void updateDashboard() {
         // Số lượng nhân viên

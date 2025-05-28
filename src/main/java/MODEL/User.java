@@ -4,13 +4,9 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private RoleList role; // chứa ROLE_ID và ROLE_NAME
 
-    // đối tượng list quyen
-    private RoleList role; // Đối tượng RoleList để lưu thông tin quyền
-
-    // Default constructor
-    public User() {
-    }
+    public User() {}
 
     public User(String username, String password, String email, RoleList role) {
         this.username = username;
@@ -19,6 +15,7 @@ public class User {
         this.role = role;
     }
 
+    // Getter/Setter
     public String getUsername() {
         return username;
     }
@@ -51,11 +48,15 @@ public class User {
         this.role = role;
     }
 
+    // Helper method để so sánh quyền tiện lợi
+    public boolean hasRole(String roleName) {
+        return role != null && role.getRoleName().equalsIgnoreCase(roleName);
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 '}';

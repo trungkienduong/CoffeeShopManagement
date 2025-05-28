@@ -1,7 +1,9 @@
 package GUI.CONTROLLER.PANEL;
 
 import BUS.ProductBUS;
+import BUS.UserBUS;
 import MODEL.Product;
+import MODEL.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,16 +35,36 @@ public class ProductPanelController {
     @FXML
     private Button viewBtn;
 
-    private Product selectedProduct = null; // giữ sản phẩm đang chọn (bạn cần bổ sung xử lý chọn)
+    private Product selectedProduct = null; // sản phẩm đang chọn
+    private User currentUser;               // user hiện tại
 
     @FXML
     private void initialize() {
+        currentUser = UserBUS.getInstance().getCurrentUser(); // lấy user hiện tại 1 lần
         loadProducts();
+        handleRolePermission();
     }
 
-    /**
-     * Load danh sách sản phẩm, tạo card và thêm vào container
-     */
+    private void handleRolePermission() {
+        if (currentUser == null) {
+            disableAllButtons();
+            return;
+        }
+
+        if (currentUser.hasRole("EMPLOYEE")) {
+            addBtn.setDisable(true);
+            editBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+        }
+    }
+
+    private void disableAllButtons() {
+        addBtn.setDisable(true);
+        editBtn.setDisable(true);
+        deleteBtn.setDisable(true);
+        viewBtn.setDisable(true);
+    }
+
     private void loadProducts() {
         productContainer.getChildren().clear();
 
@@ -56,13 +78,10 @@ public class ProductPanelController {
                 GUI.CONTROLLER.DIALOG.ProductCardDialogController cardController = loader.getController();
                 cardController.setProduct(product);
 
-                // Xử lý chọn card, highlight và gán selectedProduct
                 productCard.setOnMouseClicked(e -> {
                     selectedProduct = product;
 
-                    // Remove highlight các card khác
                     productContainer.getChildren().forEach(node -> node.getStyleClass().remove("selected-card"));
-                    // Highlight card được chọn
                     productCard.getStyleClass().add("selected-card");
                 });
 
@@ -73,9 +92,10 @@ public class ProductPanelController {
         }
     }
 
-
     @FXML
     private void handleAddProduct(ActionEvent event) {
+        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) return;
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddProductDialog.fxml"));
             Parent root = loader.load();
@@ -87,7 +107,6 @@ public class ProductPanelController {
             dialogStage.setResizable(false);
             dialogStage.showAndWait();
 
-            // Sau khi dialog đóng, refresh lại danh sách
             loadProducts();
 
         } catch (IOException e) {
@@ -97,15 +116,17 @@ public class ProductPanelController {
 
     @FXML
     private void handleEditProduct(ActionEvent event) {
+        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) return;
+
         if (selectedProduct == null) {
             System.out.println("Chưa chọn sản phẩm để sửa!");
             return;
         }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/EditProductDialog.fxml"));
             Parent root = loader.load();
 
-            // Truyền sản phẩm đã chọn sang dialog sửa (nếu cần)
             GUI.CONTROLLER.DIALOG.EditProductDialogController controller = loader.getController();
             controller.setProduct(selectedProduct);
 
@@ -125,6 +146,8 @@ public class ProductPanelController {
 
     @FXML
     private void handleDeleteProduct(ActionEvent event) {
+        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) return;
+
         if (selectedProduct == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cảnh báo");
@@ -159,6 +182,7 @@ public class ProductPanelController {
             System.out.println("Chưa chọn sản phẩm để xem!");
             return;
         }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/ViewProductDialog.fxml"));
             Parent root = loader.load();
