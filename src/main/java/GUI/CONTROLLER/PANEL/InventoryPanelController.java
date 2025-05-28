@@ -49,6 +49,18 @@ public class InventoryPanelController {
     private InventoryBUS inventoryBUS;
     private User currentUser;
 
+    private Parent root; // Thêm biến này
+
+    // Setter để gán root từ bên ngoài khi load
+    public void setRoot(Parent root) {
+        this.root = root;
+    }
+
+    // Getter để lấy root từ bên ngoài
+    public Parent getRoot() {
+        return root;
+    }
+
     @FXML
     private void initialize() {
         inventoryBUS = InventoryBUS.getInstance();
@@ -70,22 +82,17 @@ public class InventoryPanelController {
 
     private void handleRolePermission() {
         if (currentUser == null) {
-            // Nếu không có user thì disable hết
             addBtn.setDisable(true);
             deleteBtn.setDisable(true);
             return;
         }
-
         if (currentUser.hasRole("EMPLOYEE")) {
-            // EMPLOYEE ẩn add, delete
             addBtn.setDisable(true);
             deleteBtn.setDisable(true);
         } else if (currentUser.hasRole("STAFF")) {
-            // STAFF được thao tác bình thường, không disable nút
             addBtn.setDisable(false);
             deleteBtn.setDisable(false);
         } else {
-            // Các role khác nếu có, có thể disable luôn cho an toàn
             addBtn.setDisable(true);
             deleteBtn.setDisable(true);
         }
@@ -97,10 +104,27 @@ public class InventoryPanelController {
         inventoryTable.setItems(observableList);
     }
 
+    public void handleSearch(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            loadInventoryData();
+            return;
+        }
+
+        String lowerKeyword = keyword.trim().toLowerCase();
+
+        List<Inventory> allItems = inventoryBUS.getAll();
+
+        List<Inventory> filtered = allItems.stream()
+                .filter(item -> item.getItemName() != null && item.getItemName().toLowerCase().contains(lowerKeyword))
+                .toList();
+
+        ObservableList<Inventory> filteredList = FXCollections.observableArrayList(filtered);
+        inventoryTable.setItems(filteredList);
+    }
+
     @FXML
     private void handleAddInventory(ActionEvent event) {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            // EMPLOYEE không được thêm
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Không đủ quyền");
             alert.setHeaderText(null);
@@ -130,7 +154,6 @@ public class InventoryPanelController {
     @FXML
     private void handleDeleteInventory(ActionEvent event) {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            // EMPLOYEE không được xóa
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Không đủ quyền");
             alert.setHeaderText(null);

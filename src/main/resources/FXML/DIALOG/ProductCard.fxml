@@ -4,25 +4,20 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="8" styleClass="product-card"
-      stylesheets="@../../ASSETS/STYLES/DIALOG/ProductCard.css"
-      xmlns="http://javafx.com/javafx/17.0.12"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="GUI.CONTROLLER.DIALOG.ProductCardDialogController">
+<VBox alignment="CENTER" spacing="8" styleClass="product-card" stylesheets="@../../ASSETS/STYLES/DIALOG/ProductCard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.ProductCardDialogController">
 
-    <ImageView fx:id="productImage" fitWidth="120.0" fitHeight="120.0"
-               preserveRatio="true" styleClass="product-image" />
+    <ImageView fx:id="productImage" fitHeight="120.0" fitWidth="120.0" preserveRatio="true" styleClass="product-image" />
 
     <VBox alignment="CENTER_LEFT" spacing="6" styleClass="product-info">
         <HBox alignment="CENTER_LEFT" spacing="4">
-            <Label text="Tên:" styleClass="label-title" />
+            <Label styleClass="label-title" text="Name:" />
             <Label fx:id="productName" styleClass="product-name" />
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="4">
-            <Label text="Giá:" styleClass="label-title" />
+            <Label styleClass="label-title" text="Price:" />
             <Label fx:id="productPrice" styleClass="product-price" />
-            <Label text="₫" styleClass="product-currency" />
+            <Label styleClass="product-currency" text="₫" />
         </HBox>
     </VBox>
 </VBox>

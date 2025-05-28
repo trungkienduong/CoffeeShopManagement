@@ -7,6 +7,7 @@ import MODEL.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -65,10 +66,27 @@ public class ProductPanelController {
         viewBtn.setDisable(true);
     }
 
-    private void loadProducts() {
+    /**
+     * Load tất cả sản phẩm (không lọc)
+     */
+    public void loadProducts() {
+        loadProducts(null);
+    }
+
+    /**
+     * Load sản phẩm và hiển thị trong productContainer
+     * Nếu keyword == null hoặc empty thì load tất cả sản phẩm
+     * Ngược lại thì lọc theo tên sản phẩm chứa keyword (không phân biệt hoa thường)
+     */
+    public void loadProducts(String keyword) {
         productContainer.getChildren().clear();
 
-        List<Product> products = ProductBUS.getInstance().getAllProducts();
+        List<Product> products;
+        if (keyword == null || keyword.isEmpty()) {
+            products = ProductBUS.getInstance().getAllProducts();
+        } else {
+            products = ProductBUS.getInstance().searchProductsByName(keyword);
+        }
 
         for (Product product : products) {
             try {
@@ -90,6 +108,14 @@ public class ProductPanelController {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Hàm này được gọi để tìm kiếm sản phẩm theo tên (từ CoffeeShopGUI hay UI khác gọi)
+     */
+    public void handleSearch(String keyword) {
+        loadProducts(keyword);
+        selectedProduct = null; // reset chọn sản phẩm khi tìm kiếm
     }
 
     @FXML
@@ -201,4 +227,6 @@ public class ProductPanelController {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -81,18 +81,23 @@ public class CoffeeShopGUIController {
             else if (clickedButton == productBtn) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/ProductPanel.fxml"));
                 Parent productView = loader.load();
+                productPanelController = loader.getController();
                 mainContent.getChildren().setAll(productView);
             }
             else if (clickedButton == employeeBtn) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/EmployeePanel.fxml"));
-                Parent productView = loader.load();
-                mainContent.getChildren().setAll(productView);
+                Parent employeeView = loader.load();
+                employeePanelController = loader.getController(); // Lưu lại controller
+                mainContent.getChildren().setAll(employeeView);
             }
+
             else if (clickedButton == inventoryBtn) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/InventoryPanel.fxml"));
-                Parent productView = loader.load();
-                mainContent.getChildren().setAll(productView);
+                Parent inventoryView = loader.load();
+                inventoryPanelController = loader.getController();  // Lưu lại controller
+                mainContent.getChildren().setAll(inventoryView);
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,10 +107,32 @@ public class CoffeeShopGUIController {
     @FXML
     private void handleSearch() {
         String searchQuery = searchField.getText().trim();
+
         if (!searchQuery.isEmpty()) {
-            // Implement search functionality
+            if (employeePanelController != null) {
+                employeePanelController.handleSearch(searchQuery);
+            }
+            else if (productPanelController != null) {
+                productPanelController.handleSearch(searchQuery);
+            }
+            else if (inventoryPanelController != null) {
+                inventoryPanelController.handleSearch(searchQuery);
+            }
+        } else {
+            // Nếu search query rỗng, load lại toàn bộ
+            if (employeePanelController != null) {
+                employeePanelController.handleSearch("");
+            }
+            else if (productPanelController != null) {
+                productPanelController.handleSearch("");
+            }
+            else if (inventoryPanelController != null) {
+                inventoryPanelController.handleSearch("");
+            }
         }
     }
+
+
 
     @FXML
     private void handleLogout() {
@@ -171,4 +198,10 @@ public class CoffeeShopGUIController {
         salesChart.getData().clear();
         salesChart.getData().add(quantitySeries);
     }
+
+    private EmployeePanelController employeePanelController;
+    private InventoryPanelController inventoryPanelController;
+    private ProductPanelController productPanelController;
+
+
 }

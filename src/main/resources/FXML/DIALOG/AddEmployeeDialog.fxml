@@ -48,7 +48,7 @@
             </HBox>
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label styleClass="label-text" text="ID Number:" />
+                <Label styleClass="label-text" text="Citizen ID:" />
                 <TextField fx:id="cccdField" promptText="Enter Citizen ID Number" styleClass="text-input" />
             </HBox>
 

@@ -13,7 +13,7 @@
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <Label styleClass="dialog-title" text="Thêm nhà cung cấp mới" />
+        <Label styleClass="dialog-title" text="Add New Supplier" />
 
         <GridPane hgap="15" vgap="15" styleClass="form-grid">
             <columnConstraints>
@@ -21,33 +21,33 @@
             </columnConstraints>
 
             <Pane styleClass="input-group" GridPane.rowIndex="0">
-                <Label styleClass="label-text" text="Tên nhà cung cấp:" />
-                <TextField fx:id="supplierNameField" layoutX="140" promptText="Nhập tên nhà cung cấp"
+                <Label styleClass="label-text" text="Supplier Name:" />
+                <TextField fx:id="supplierNameField" layoutX="140" promptText="Enter supplier name"
                            styleClass="text-input" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.rowIndex="1">
-                <Label styleClass="label-text" text="Số điện thoại:" />
-                <TextField fx:id="phoneField" layoutX="140" promptText="Nhập số điện thoại"
+                <Label styleClass="label-text" text="Phone Number:" />
+                <TextField fx:id="phoneField" layoutX="140" promptText="Enter phone number"
                            styleClass="text-input" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.rowIndex="2">
                 <Label styleClass="label-text" text="Email:" />
-                <TextField fx:id="emailField" layoutX="140" promptText="Nhập email"
+                <TextField fx:id="emailField" layoutX="140" promptText="Enter email"
                            styleClass="text-input" />
             </Pane>
 
             <Pane styleClass="input-group, address-group" GridPane.rowIndex="3">
-                <Label styleClass="label-text" text="Địa chỉ:" />
-                <TextArea fx:id="addressArea" layoutX="140" promptText="Nhập địa chỉ"
+                <Label styleClass="label-text" text="Address:" />
+                <TextArea fx:id="addressArea" layoutX="140" promptText="Enter address"
                           styleClass="text-area" wrapText="true" />
             </Pane>
         </GridPane>
 
         <HBox alignment="CENTER" spacing="25" styleClass="button-group">
-            <Button fx:id="confirmButton" styleClass="custom-button, confirm-button" text="Xác nhận" />
-            <Button fx:id="cancelButton" styleClass="custom-button, cancel-button" text="Hủy" />
+            <Button fx:id="confirmButton" styleClass="custom-button, confirm-button" text="Confirm" />
+            <Button fx:id="cancelButton" styleClass="custom-button, cancel-button" text="Cancel" />
         </HBox>
     </VBox>
 </AnchorPane>

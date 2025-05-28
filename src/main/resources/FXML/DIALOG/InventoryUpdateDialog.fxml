@@ -8,7 +8,7 @@
 
     <VBox alignment="CENTER" spacing="15" styleClass="content-box" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <Label styleClass="dialog-title" text="Thêm phiếu nhập kho" />
+        <Label styleClass="dialog-title" text="Add Inventory Import" />
 
         <GridPane hgap="25" vgap="15">
             <columnConstraints>
@@ -17,8 +17,8 @@
             </columnConstraints>
 
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label styleClass="label-text" text="Mặt hàng:" />
-                <ComboBox fx:id="itemComboBox" layoutX="100" promptText="Chọn mặt hàng" styleClass="combo-box, item-combo" />
+                <Label styleClass="label-text" text="Item:" />
+                <ComboBox fx:id="itemComboBox" layoutX="100" promptText="Select item" styleClass="combo-box, item-combo" />
                 <Button fx:id="addItemButton" layoutX="320" layoutY="0" onAction="#handleIconButtonClick" styleClass="icon-button">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon" />
@@ -27,18 +27,13 @@
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label styleClass="label-text" text="Đơn vị:" />
-                <ComboBox fx:id="unitComboBox" layoutX="100" promptText="Chọn đơn vị" styleClass="combo-box, unit-combo" />
-                <Button fx:id="addUnitButton" layoutX="320" layoutY="0" onAction="#handleIconButtonClick" styleClass="icon-button">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon" />
-                    </graphic>
-                </Button>
+                <Label styleClass="label-text" text="Unit:" />
+                <ComboBox fx:id="unitComboBox" layoutX="100" promptText="Select unit" styleClass="combo-box, unit-combo" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label styleClass="label-text" text="Nhà cung cấp:" />
-                <ComboBox fx:id="supplierComboBox" layoutX="100" promptText="Chọn nhà cung cấp" styleClass="combo-box, supplier-combo" />
+                <Label styleClass="label-text" text="Supplier:" />
+                <ComboBox fx:id="supplierComboBox" layoutX="100" promptText="Select supplier" styleClass="combo-box, supplier-combo" />
                 <Button fx:id="addSupplierButton" layoutX="320" layoutY="0" onAction="#handleIconButtonClick" styleClass="icon-button">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="12" styleClass="button-icon" />
@@ -47,48 +42,48 @@
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Label styleClass="label-text" text="Số lượng:" />
-                <TextField fx:id="quantityField" layoutX="100" promptText="Nhập số lượng" styleClass="text-input" />
+                <Label styleClass="label-text" text="Quantity:" />
+                <TextField fx:id="quantityField" layoutX="100" promptText="Enter quantity" styleClass="text-input" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Label styleClass="label-text" text="Đơn giá:" />
-                <TextField fx:id="unitPriceField" layoutX="100" promptText="Nhập đơn giá" styleClass="text-input, price-field" />
+                <Label styleClass="label-text" text="Unit Price:" />
+                <TextField fx:id="unitPriceField" layoutX="100" promptText="Enter unit price" styleClass="text-input, price-field" />
                 <Label layoutX="270" styleClass="currency-label" text="VND" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                <Label styleClass="label-text" text="Ngày nhập:" />
-                <DatePicker fx:id="importDatePicker" layoutX="100" promptText="Chọn ngày nhập" styleClass="date-picker" />
+                <Label styleClass="label-text" text="Import Date:" />
+                <DatePicker fx:id="importDatePicker" layoutX="100" promptText="Select import date" styleClass="date-picker" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                <Label styleClass="label-text" text="Nhân viên:" />
-                <ComboBox fx:id="employeeComboBox" layoutX="100" promptText="Chọn nhân viên" styleClass="combo-box" />
+                <Label styleClass="label-text" text="Employee:" />
+                <ComboBox fx:id="employeeComboBox" layoutX="100" promptText="Select employee" styleClass="combo-box" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnSpan="2" GridPane.rowIndex="4">
-                <Label styleClass="label-text" text="Ghi chú:" />
-                <TextArea fx:id="noteArea" layoutX="100" prefHeight="20.0" promptText="Nhập ghi chú" styleClass="text-area" wrapText="true" />
+                <Label styleClass="label-text" text="Note:" />
+                <TextArea fx:id="noteArea" layoutX="100" prefHeight="20.0" promptText="Enter note" styleClass="text-area" wrapText="true" />
             </Pane>
 
             <Pane styleClass="input-group" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                <Label layoutY="12.0" styleClass="label-text" text="Tổng tiền:" />
+                <Label layoutY="12.0" styleClass="label-text" text="Total Price:" />
                 <Label fx:id="totalPriceLabel" layoutX="91.0" layoutY="12.0" styleClass="total-price-label" />
             </Pane>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
 
         <HBox alignment="CENTER" spacing="25">
-            <Button fx:id="confirmButton" onAction="#handleConfirm" styleClass="custom-button, confirm-button" text="Xác nhận" />
-            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="custom-button, cancel-button" text="Hủy" />
+            <Button fx:id="confirmButton" onAction="#handleConfirm" styleClass="custom-button, confirm-button" text="Confirm" />
+            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="custom-button, cancel-button" text="Cancel" />
         </HBox>
     </VBox>
 </AnchorPane>

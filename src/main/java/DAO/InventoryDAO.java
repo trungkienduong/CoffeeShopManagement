@@ -192,4 +192,45 @@ public class InventoryDAO {
         }
         return false;
     }
+
+    public List<Inventory> searchByNameAndUnit(String itemNameKeyword, Integer unitId) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM INVENTORY WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        if (itemNameKeyword != null && !itemNameKeyword.trim().isEmpty()) {
+            sql.append("AND ITEM_NAME LIKE ? ");
+            params.add("%" + itemNameKeyword + "%");
+        }
+        if (unitId != null) {
+            sql.append("AND UNIT_ID = ? ");
+            params.add(unitId);
+        }
+
+        List<Inventory> list = new ArrayList<>();
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                pst.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Inventory item = new Inventory();
+                item.setItemName(rs.getString("ITEM_NAME"));
+                item.setQuantity(rs.getBigDecimal("QUANTITY"));
+                item.setCostPrice(rs.getBigDecimal("COST_PRICE"));
+                item.setIngredientCategory(ingredientCategoryDAO.findById(rs.getInt("INGREDIENT_CATEGORY_ID")));
+                item.setUnit(unitCategoryDAO.findById(rs.getInt("UNIT_ID")));
+                list.add(item);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
