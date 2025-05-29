@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class AddIngredientCategoryDialogController {
 
     @FXML
@@ -66,9 +68,8 @@ public class AddIngredientCategoryDialogController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();

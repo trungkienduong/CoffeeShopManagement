@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class InventoryUpdateDialogController {
 
@@ -370,9 +371,8 @@ public class InventoryUpdateDialogController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();

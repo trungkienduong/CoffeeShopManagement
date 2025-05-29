@@ -4,7 +4,6 @@ public class UnitCategory {
     private int unitId;
     private String unitName;
 
-    // Default constructor
     public UnitCategory() {
     }
 

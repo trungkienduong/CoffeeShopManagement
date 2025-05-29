@@ -16,6 +16,7 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class AddEmployeeDialogController {
     @FXML
@@ -155,21 +156,18 @@ public class AddEmployeeDialogController {
 
         clearErrorStyles();
 
-        // Full name
         if (fullNameField.getText() == null || fullNameField.getText().trim().isEmpty()) {
             errorMessage.append("- Full name cannot be empty!\n");
             fullNameField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             valid = false;
         }
 
-        // Gender
         if (genderComboBox.getValue() == null) {
             errorMessage.append("- Please select gender!\n");
             genderComboBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             valid = false;
         }
 
-        // CCCD - đúng 12 số
         String cccd = cccdField.getText();
         if (cccd == null || !cccd.matches("\\d{12}")) {
             errorMessage.append("- Citizen ID must be exactly 12 digits!\n");
@@ -177,7 +175,6 @@ public class AddEmployeeDialogController {
             valid = false;
         }
 
-        // Birthdate - ít nhất 18 tuổi
         LocalDate birthDate = birthDatePicker.getValue();
         LocalDate minDate = LocalDate.now().minusYears(18);
         if (birthDate == null || birthDate.isAfter(minDate)) {
@@ -186,7 +183,6 @@ public class AddEmployeeDialogController {
             valid = false;
         }
 
-        // Phone - đúng 10 số
         String phone = phoneField.getText();
         if (phone == null || !phone.matches("\\d{10}")) {
             errorMessage.append("- Phone number must be exactly 10 digits!\n");
@@ -194,21 +190,18 @@ public class AddEmployeeDialogController {
             valid = false;
         }
 
-        // Address
         if (addressField.getText() == null || addressField.getText().trim().isEmpty()) {
             errorMessage.append("- Address cannot be empty!\n");
             addressField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             valid = false;
         }
 
-        // Position
         if (positionComboBox.getValue() == null) {
             errorMessage.append("- Please select a position!\n");
             positionComboBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             valid = false;
         }
 
-        // Salary - số hợp lệ > 0
         String salaryText = salaryField.getText();
         if (salaryText == null || salaryText.trim().isEmpty()) {
             errorMessage.append("- Salary cannot be empty!\n");
@@ -254,9 +247,8 @@ public class AddEmployeeDialogController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();

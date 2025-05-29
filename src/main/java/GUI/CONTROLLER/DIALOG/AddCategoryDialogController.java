@@ -77,13 +77,11 @@ public class AddCategoryDialogController implements Initializable {
             return;
         }
 
-        // Lấy danh sách các công thức nhập
         List<ProductRecipe> recipeList = new ArrayList<>();
         recipeList.add(getRecipeFromRow(categoryName, item1ComboBox, quantity1Field, unit1ComboBox));
         recipeList.add(getRecipeFromRow(categoryName, item2ComboBox, quantity2Field, unit2ComboBox));
         recipeList.add(getRecipeFromRow(categoryName, item3ComboBox, quantity3Field, unit3ComboBox));
 
-        // Lọc ra các recipe hợp lệ (khác null)
         List<ProductRecipe> validRecipes = new ArrayList<>();
         for (ProductRecipe r : recipeList) {
             if (r != null) validRecipes.add(r);
@@ -94,7 +92,6 @@ public class AddCategoryDialogController implements Initializable {
             return;
         }
 
-        // Kiểm tra tồn kho cho từng nguyên liệu
         for (ProductRecipe recipe : validRecipes) {
             Inventory inventory = inventoryBUS.findByItemName(recipe.getItem().getItemName());
             if (inventory == null) {
@@ -102,14 +99,12 @@ public class AddCategoryDialogController implements Initializable {
                 return;
             }
 
-            // Kiểm tra đơn vị (unit) có trùng với trong kho không
             UnitCategory inventoryUnit = inventory.getUnit();
             if (!inventoryUnit.getUnitName().equalsIgnoreCase(recipe.getUnit().getUnitName())) {
                 showAlert(Alert.AlertType.ERROR, "Unit mismatch for ingredient: " + recipe.getItem().getItemName());
                 return;
             }
 
-            // So sánh số lượng nhập với tồn kho
             if (recipe.getQuantityUsed().compareTo(inventory.getQuantity()) > 0) {
                 showAlert(Alert.AlertType.ERROR, String.format("Quantity for ingredient '%s' exceeds inventory. Available: %s %s",
                         recipe.getItem().getItemName(), inventory.getQuantity().toPlainString(), inventoryUnit.getUnitName()));
@@ -117,7 +112,6 @@ public class AddCategoryDialogController implements Initializable {
             }
         }
 
-        // Nếu tất cả ok thì thêm category và recipe
         Category category = new Category();
         category.setCategoryName(categoryName);
         if (!categoryBUS.insertCategory(category)) {
@@ -132,7 +126,6 @@ public class AddCategoryDialogController implements Initializable {
         }
 
         for (ProductRecipe recipe : validRecipes) {
-            // gán category mới
             recipe.setCategory(inserted);
             if (!productRecipeBUS.addProductRecipe(recipe)) {
                 showAlert(Alert.AlertType.ERROR, "Error adding ingredient recipe: " + recipe.getItem().getItemName());
@@ -174,9 +167,8 @@ public class AddCategoryDialogController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();

@@ -15,7 +15,6 @@ public class SupplierDAO {
         return instance;
     }
 
-    // ---------------------- INSERT ----------------------
     public boolean insert(Supplier supplier) {
         String sql = "INSERT INTO SUPPLIER (SUPPLIER_NAME, PHONE, ADDRESS, EMAIL) VALUES (?, ?, ?, ?)";
 

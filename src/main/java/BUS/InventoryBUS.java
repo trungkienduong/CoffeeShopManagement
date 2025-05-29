@@ -117,7 +117,8 @@ public class InventoryBUS {
                 return inv;
             }
         }
-        return null; // không tìm thấy
+        return null;
     }
+
 
 }

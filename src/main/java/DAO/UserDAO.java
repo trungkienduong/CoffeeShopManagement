@@ -34,7 +34,6 @@ public class UserDAO {
             pst.setString(3, user.getEmail());
             pst.setInt(4, user.getRole().getRoleId());
 
-            // thực thi câu lệnh
             int result = pst.executeUpdate();
             return result > 0;
         } catch (SQLException e) {

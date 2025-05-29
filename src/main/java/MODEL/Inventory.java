@@ -7,7 +7,6 @@ public class Inventory {
     private BigDecimal quantity;
     private BigDecimal costPrice;
 
-    // Liên kết đúng với bảng INVENTORY
     private IngredientCategory ingredientCategory;
     private UnitCategory unit;
 

@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class AddSupplierDialogController {
 
     @FXML
@@ -64,22 +66,20 @@ public class AddSupplierDialogController {
             valid = false;
         }
 
-        // Phone: exactly 10 digits
         if (!phone.matches("\\d{10}")) {
             phoneField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             showAlert(Alert.AlertType.WARNING, "Invalid Data", "Phone number must be exactly 10 digits.");
             valid = false;
         } else {
-            phoneField.setStyle(""); // reset style if valid
+            phoneField.setStyle("");
         }
 
-        // Simple email validation
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
             emailField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             showAlert(Alert.AlertType.WARNING, "Invalid Data", "Email is invalid.");
             valid = false;
         } else {
-            emailField.setStyle(""); // reset style if valid
+            emailField.setStyle("");
         }
 
         return valid;
@@ -91,9 +91,8 @@ public class AddSupplierDialogController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();
