@@ -248,11 +248,17 @@ public class AddEmployeeDialogController {
         salaryField.setStyle("");
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
+    private void showAlert(Alert.AlertType type, String message, String string) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

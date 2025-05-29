@@ -165,11 +165,17 @@ public class LoginDialogController {
         }
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
+    private void showAlert(Alert.AlertType type, String message, String s) {
         Alert alert = new Alert(type);
-        alert.setTitle(title);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

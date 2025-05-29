@@ -1,0 +1,69 @@
+.employee-card {
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 69, 19, 0.15), 6, 0, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-min-width: 140px;
+    -fx-max-width: 140px;
+    -fx-min-height: 180px;
+    -fx-max-height: 180px;
+    -fx-cursor: hand;
+}
+
+.employee-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 69, 19, 0.25), 10, 0, 0, 2);
+    -fx-translate-y: -1px;
+    -fx-background-color: #FDF5E6;
+}
+
+.image-container {
+    -fx-background-color: #8B4513;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-min-height: 120px;
+    -fx-max-height: 120px;
+    -fx-alignment: center;
+    -fx-padding: 0;
+}
+
+.employee-image {
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
+}
+
+.employee-info {
+    -fx-padding: 10px;
+    -fx-spacing: 2px;
+    -fx-alignment: center;
+    -fx-background-color: #FDF5E6;
+}
+
+.employee-name {
+    -fx-text-fill: #8B4513;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-max-width: 120px;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 2px;
+}
+
+.employee-role {
+    -fx-text-fill: #A0522D;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-alignment: center;
+    -fx-padding: 2px 0 0 0;
+}
+
+.selected-card {
+    -fx-border-color: #8B4513;
+    -fx-border-width: 2;
+    -fx-border-radius: 8px;
+    -fx-background-color: #DEB887;
+}
+
+.selected-card .image-container {
+    -fx-background-color: #A0522D;
+}
+
+.selected-card .employee-info {
+    -fx-background-color: #DEB887;
+}

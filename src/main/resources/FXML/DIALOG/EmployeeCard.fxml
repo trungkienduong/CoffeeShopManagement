@@ -4,19 +4,27 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="8" styleClass="product-card" stylesheets="@../../ASSETS/STYLES/DIALOG/ProductCard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CONTROLLER.DIALOG.EmployeeCardDialogController">
+<VBox styleClass="employee-card"
+      stylesheets="@../../ASSETS/STYLES/DIALOG/EmployeeCard.css"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="GUI.CONTROLLER.DIALOG.EmployeeCardDialogController">
 
-    <ImageView fx:id="employeeImage" fitHeight="120.0" fitWidth="120.0" preserveRatio="true" styleClass="product-image" />
+    <StackPane styleClass="image-container">
+        <ImageView fx:id="employeeImage"
+                   fitHeight="120.0" fitWidth="140.0"
+                   preserveRatio="true"
+                   styleClass="employee-image" />
+    </StackPane>
 
-    <VBox alignment="CENTER_LEFT" spacing="6" styleClass="product-info">
-        <HBox alignment="CENTER_LEFT" spacing="4">
-            <Label styleClass="label-title" text="Full Name:" />
-            <Label fx:id="employeeName" styleClass="product-name" />
-        </HBox>
+    <VBox styleClass="employee-info">
+        <Label fx:id="employeeName"
+               styleClass="employee-name"
+               wrapText="true"
+               textAlignment="CENTER" />
 
-        <HBox alignment="CENTER_LEFT" spacing="4">
-            <Label styleClass="label-title" text="Position:" />
-            <Label fx:id="employeeRole" styleClass="product-price" />
-        </HBox>
+        <Label fx:id="employeeRole"
+               styleClass="employee-role"
+               textAlignment="CENTER" />
     </VBox>
 </VBox>

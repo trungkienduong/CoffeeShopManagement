@@ -85,11 +85,17 @@ public class AddSupplierDialogController {
         return valid;
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
+    private void showAlert(Alert.AlertType type, String message, String s) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 

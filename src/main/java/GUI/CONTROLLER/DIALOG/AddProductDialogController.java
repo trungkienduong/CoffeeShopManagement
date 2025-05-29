@@ -174,17 +174,26 @@ public class AddProductDialogController {
         }
     }
 
+    private void showErrorAlert(String error, String cannotOpenWindow, String message) {
+    }
+
     private void updateRecipeComboBox() {
         List<Category> categoryList = CategoryBUS.getInstance().getAllCategories();
         ObservableList<Category> observableList = FXCollections.observableArrayList(categoryList);
         recipeComboBox.setItems(observableList);
     }
 
-    private void showErrorAlert(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

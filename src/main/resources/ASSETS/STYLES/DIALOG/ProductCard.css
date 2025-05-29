@@ -1,62 +1,67 @@
 .product-card {
     -fx-background-color: #ffffff;
-    -fx-padding: 12px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 8, 0, 0, 2);
-    -fx-background-radius: 10px;
-    -fx-min-width: 160px;
-    -fx-max-width: 160px;
-    -fx-min-height: 220px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 6, 0, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-min-width: 140px;
+    -fx-max-width: 140px;
+    -fx-min-height: 180px;
+    -fx-max-height: 180px;
     -fx-cursor: hand;
-    -fx-spacing: 8px;
-    -fx-alignment: center;
 }
 
 .product-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(111, 78, 55, 0.2), 12, 0, 0, 2);
-    -fx-translate-y: -2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(111, 78, 55, 0.2), 10, 0, 0, 2);
+    -fx-translate-y: -1px;
     -fx-background-color: #fcfcfc;
 }
 
+.image-container {
+    -fx-background-color: #6F4E37;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-min-height: 120px;
+    -fx-max-height: 120px;
+}
+
 .product-image {
-    -fx-border-color: #6F4E37;
-    -fx-border-width: 1.5px;
-    -fx-border-radius: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 4, 0, 0, 1);
+    -fx-background-radius: 8px 8px 0 0;
 }
 
 .product-info {
-    -fx-padding: 4px;
+    -fx-padding: 8px;
+    -fx-spacing: 4px;
 }
 
 .label-title {
     -fx-text-fill: #6F4E37;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
+    -fx-min-width: 35px;
 }
 
 .product-name {
     -fx-text-fill: #333333;
-    -fx-font-size: 12px;
-    -fx-wrap-text: true;
+    -fx-font-size: 13px;
+    -fx-max-width: 95px;
 }
 
 .product-price {
     -fx-text-fill: #2E7D32;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
 
 .product-currency {
     -fx-text-fill: #2E7D32;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 .selected-card {
-    -fx-border-color: #8B4513;      /* màu nâu SaddleBrown */
+    -fx-border-color: #8B4513;
     -fx-border-width: 2;
-    -fx-background-color: #D2B48C;  /* màu nâu nhạt Tan */
+    -fx-border-radius: 8px;
+    -fx-background-color: #FFF8DC;
 }
 
-.selected-card .label-title {
-    -fx-text-fill: #8B4513;         /* màu nâu SaddleBrown */
+.selected-card .image-container {
+    -fx-background-color: #8B4513;
 }

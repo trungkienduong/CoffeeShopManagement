@@ -39,7 +39,7 @@
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label styleClass="label-text" text="Full Name:" />
-                <TextField fx:id="fullNameField" promptText="Nhập họ và Enter Full Nametên" styleClass="text-input" />
+                <TextField fx:id="fullNameField" promptText="Enter Full Name" styleClass="text-input" />
             </HBox>
 
             <HBox spacing="10" styleClass="input-container" GridPane.columnIndex="1" GridPane.rowIndex="0">

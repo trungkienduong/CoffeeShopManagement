@@ -72,4 +72,15 @@ public class ProductRecipe {
                 category != null ? category.getCategoryId() : null,
                 item != null ? item.getItemName() : null);
     }
+
+    private UnitCategory unit;
+
+    public UnitCategory getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitCategory unit) {
+        this.unit = unit;
+    }
+
 }

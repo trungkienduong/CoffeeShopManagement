@@ -1,8 +1,6 @@
 package GUI.CONTROLLER.DIALOG;
 
-import BUS.ProductBUS;
 import MODEL.Product;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,21 +12,35 @@ public class ProductCardDialogController {
     @FXML private Label productName;
     @FXML private Label productPrice;
 
-    private ProductBUS productBUS = ProductBUS.getInstance();
-
     public void setProduct(Product product) {
         if (product == null) return;
 
         productName.setText(product.getProductName());
-        productPrice.setText(String.format("%,.0f VND", product.getSellPrice().doubleValue()));
+        productPrice.setText(String.format("%,.0f", product.getSellPrice().doubleValue()));
 
+        loadProductImage(product.getImagePath());
+    }
+
+    private void loadProductImage(String imagePath) {
         try {
-            if (product.getImagePath() != null && !product.getImagePath().isEmpty()) {
-                Image img = new Image("file:" + product.getImagePath(), true);
+            if (imagePath != null && !imagePath.isEmpty()) {
+                Image img = new Image("file:" + imagePath, true);
                 productImage.setImage(img);
+            } else {
+                setDefaultImage();
             }
         } catch (Exception e) {
-            System.out.println("Failed to load product image: " + e.getMessage());
+            System.out.println("⚠ Failed to load image: " + e.getMessage());
+            setDefaultImage();
+        }
+    }
+
+    private void setDefaultImage() {
+        try {
+            Image defaultImg = new Image(getClass().getResource("/assets/default_product.png").toExternalForm());
+            productImage.setImage(defaultImg);
+        } catch (Exception e) {
+            System.out.println("⚠ Failed to load default image: " + e.getMessage());
         }
     }
 }

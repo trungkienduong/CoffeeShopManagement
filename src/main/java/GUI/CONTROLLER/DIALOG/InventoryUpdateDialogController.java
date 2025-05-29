@@ -364,11 +364,17 @@ public class InventoryUpdateDialogController {
         stage.close();
     }
 
-    private void showAlert(Alert.AlertType type, String title, String header, String content) {
+    private void showAlert(Alert.AlertType type, String message, Object o, String s) {
         Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

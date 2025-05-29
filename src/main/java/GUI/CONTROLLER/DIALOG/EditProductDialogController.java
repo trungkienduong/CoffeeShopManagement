@@ -107,7 +107,7 @@ public class EditProductDialogController {
     @FXML
     private void onConfirm() {
         if (currentProduct == null) {
-            showAlert("Error", "Invalid product.");
+            showAlert(Alert.AlertType.valueOf("Error"), "Invalid product.");
             return;
         }
 
@@ -117,22 +117,22 @@ public class EditProductDialogController {
         Category selectedCategory = recipeComboBox.getValue();
 
         if (selectedImageFile == null) {
-            showAlert("Notice", "Please select a product image.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Please select a product image.");
             return;
         }
 
         if (selectedCategory == null) {
-            showAlert("Notice", "Please select a product category.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Please select a product category.");
             return;
         }
 
         if (name.isEmpty()) {
-            showAlert("Notice", "Product name cannot be empty.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Product name cannot be empty.");
             return;
         }
 
         if (!name.equalsIgnoreCase(currentProduct.getProductName()) && ProductBUS.getInstance().isProductNameExists(name)) {
-            showAlert("Notice", "Product name already exists.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Product name already exists.");
             return;
         }
 
@@ -141,7 +141,7 @@ public class EditProductDialogController {
             price = Double.parseDouble(priceText);
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert("Notice", "Invalid product price.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Invalid product price.");
             return;
         }
 
@@ -155,7 +155,7 @@ public class EditProductDialogController {
         if (success) {
             closeDialog();
         } else {
-            showAlert("Notice", "Failed to update product.");
+            showAlert(Alert.AlertType.valueOf("Notice"), "Failed to update product.");
         }
     }
 
@@ -169,11 +169,17 @@ public class EditProductDialogController {
         stage.close();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 
@@ -193,7 +199,7 @@ public class EditProductDialogController {
 
             loadCategoriesToComboBox();
         } catch (IOException e) {
-            showAlert("Error", "Unable to open category dialog.");
+            showAlert(Alert.AlertType.valueOf("Error"), "Unable to open category dialog.");
         }
     }
 }

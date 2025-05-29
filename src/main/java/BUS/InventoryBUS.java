@@ -110,4 +110,14 @@ public class InventoryBUS {
         if (item.getUnit() == null) return false;
         return true;
     }
+
+    public Inventory findByItemName(String itemName) {
+        for (Inventory inv : getAll()) {
+            if (inv.getItemName().equalsIgnoreCase(itemName)) {
+                return inv;
+            }
+        }
+        return null; // không tìm thấy
+    }
+
 }

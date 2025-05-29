@@ -11,7 +11,7 @@
 
         <Pane styleClass="input-group">
             <Label styleClass="label-text" text="Ingredient Name:" />
-            <TextField fx:id="unitNameField" layoutX="120" promptText="Enter Ingredient Name (e.g., milk, coffee powder, sugar)" styleClass="text-input" />
+            <TextField fx:id="IngredientCategoryNameField" layoutX="120" promptText="Enter Ingredient Name (e.g., milk, coffee powder, sugar)" styleClass="text-input" />
         </Pane>
 
         <HBox alignment="CENTER" spacing="25" styleClass="button-group">

@@ -4,6 +4,7 @@ import BUS.IngredientCategoryBUS;
 import MODEL.IngredientCategory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -11,7 +12,7 @@ import javafx.stage.Stage;
 public class AddIngredientCategoryDialogController {
 
     @FXML
-    private TextField categoryNameField;
+    private TextField IngredientCategoryNameField;
 
     @FXML
     private Button confirmButton;
@@ -30,10 +31,10 @@ public class AddIngredientCategoryDialogController {
     }
 
     private void onConfirm() {
-        String categoryName = categoryNameField.getText();
+        String categoryName = IngredientCategoryNameField.getText();
 
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            showAlert("Error", "Ingredient category name cannot be empty.");
+            showAlert(Alert.AlertType.valueOf("Error"), "Ingredient category name cannot be empty.");
             return;
         }
 
@@ -43,10 +44,10 @@ public class AddIngredientCategoryDialogController {
         boolean success = categoryBUS.addCategory(category);
 
         if (success) {
-            showAlert("Success", "New ingredient category added successfully!");
+            showAlert(Alert.AlertType.valueOf("Success"), "New ingredient category added successfully!");
             closeDialog();
         } else {
-            showAlert("Error", "Ingredient category name already exists or an error occurred.");
+            showAlert(Alert.AlertType.valueOf("Error"), "Ingredient category name already exists or an error occurred.");
         }
     }
 
@@ -59,11 +60,17 @@ public class AddIngredientCategoryDialogController {
         stage.close();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Gán CSS style cho Alert dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

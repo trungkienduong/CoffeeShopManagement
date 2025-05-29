@@ -99,7 +99,7 @@
                     </children>
                 </Pane>
 
-                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="278.0" prefWidth="319.0" title="Nhập Kho">
+                <AreaChart fx:id="salesChart" layoutY="163.0" prefHeight="278.0" prefWidth="319.0" title="INVENTORY">
                     <xAxis>
                         <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -108,7 +108,7 @@
                     </yAxis>
                 </AreaChart>
 
-                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="271.0" prefWidth="298.0" title="Thêm SP" />
+                <PieChart fx:id="productChart" layoutX="322.0" layoutY="171.0" prefHeight="271.0" prefWidth="298.0" title="PRODUCT" />
             </children>
         </AnchorPane>
     </children>
