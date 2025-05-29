@@ -9,31 +9,30 @@ import java.util.ArrayList; // Dùng để lưu danh sách các User
 import java.util.List; // Interface danh sách chung
 
 public class UserDAO {
-    private static UserDAO instance; // biến instance duy nhất của lớp
-    private RoleListDAO roleListDAO; // DAO dùng để lấy thông tin role
+    private static UserDAO instance;
+    private RoleListDAO roleListDAO;
 
     private UserDAO() {
-        roleListDAO = RoleListDAO.getInstance(); // lấy intance của RoleListDAO
+        roleListDAO = RoleListDAO.getInstance();
     }
 
-    public static UserDAO getInstance() { // trả về instance duy nhất của UserDAO
+    public static UserDAO getInstance() {
         if (instance == null) {
             instance = new UserDAO();
         }
         return instance;
     }
 
-    // ---------------------- INSERT ----------------------
     public boolean insert(User user) {
         String sql = "INSERT INTO [USERS] (USERNAME, PASSWORD, EMAIL, ROLE_ID) VALUES (?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, user.getUsername()); // gán giá trị cho ? thứ nhất
-            pst.setString(2, user.getPassword()); // gán giá trị cho ? thứ hai
-            pst.setString(3, user.getEmail()); // gán giá trị cho ? thứ ba
-            pst.setInt(4, user.getRole().getRoleId()); // gán giá trị cho ? thứ tư
+            pst.setString(1, user.getUsername());
+            pst.setString(2, user.getPassword());
+            pst.setString(3, user.getEmail());
+            pst.setInt(4, user.getRole().getRoleId());
 
             // thực thi câu lệnh
             int result = pst.executeUpdate();
@@ -44,19 +43,17 @@ public class UserDAO {
         }
     }
 
-    // ---------------------- UPDATE ----------------------
     public boolean update(User user) {
         String sql = "UPDATE [USERS] SET PASSWORD = ?, EMAIL = ?, ROLE_ID = ? WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, user.getPassword()); // gán giá trị cho ? thứ hai
-            pst.setString(2, user.getEmail()); // gán giá trị cho ? thứ ba
-            pst.setInt(3, user.getRole().getRoleId()); // gán giá trị cho ? thứ tư
-            pst.setString(4, user.getUsername()); // gán giá trị cho ? thứ nhất
+            pst.setString(1, user.getPassword());
+            pst.setString(2, user.getEmail());
+            pst.setInt(3, user.getRole().getRoleId());
+            pst.setString(4, user.getUsername());
 
-            // thực thi câu lệnh
             int result = pst.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
@@ -65,16 +62,14 @@ public class UserDAO {
         }
     }
 
-    // ---------------------- DELETE ----------------------
     public boolean delete(String username) {
         String sql = "DELETE FROM [USERS] WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, username); // gán giá trị cho ? thứ nhất
+            pst.setString(1, username);
 
-            // thực thi câu lệnh
             int result = pst.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
@@ -83,7 +78,6 @@ public class UserDAO {
         }
     }
 
-    // ---------------------- SELECT ALL ----------------------
     public List<User> selectAll() {
         String sql = "SELECT * FROM [USERS]";
 
@@ -110,16 +104,14 @@ public class UserDAO {
         }
     }
 
-    // ---------------------- SELECT BY NAME ----------------------
     public User findByName(String username) {
         String sql = "SELECT * FROM [USERS] WHERE USERNAME = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, username); // gán giá trị cho ? thứ nhất
+            pst.setString(1, username);
 
-            // thực thi câu lệnh
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 User user = new User();
@@ -138,16 +130,14 @@ public class UserDAO {
         return null;
     }
 
-    // ---------------------- SELECT BY EMAIL ----------------------
     public User findByEmail(String email) {
         String sql = "SELECT * FROM [USERS] WHERE EMAIL = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, email); // gán giá trị cho ? thứ nhất
+            pst.setString(1, email);
 
-            // thực thi câu lệnh
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 User user = new User();
@@ -166,15 +156,14 @@ public class UserDAO {
         return null;
     }
 
-    // ---------------------- CHECK LOGIN ----------------------
     public boolean checkLogin(String username, String password) {
         String sql = "SELECT * FROM [USERS] WHERE USERNAME = ? AND PASSWORD = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, username); // gán giá trị cho ? thứ nhất
-            pst.setString(2, password); // gán giá trị cho ? thứ hai
+            pst.setString(1, username);
+            pst.setString(2, password);
 
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {

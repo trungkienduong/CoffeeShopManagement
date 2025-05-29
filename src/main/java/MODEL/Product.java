@@ -5,10 +5,10 @@ import java.math.BigDecimal;
 public class Product {
     private int productId;
     private String productName;
-    private int categoryId;        // Dùng categoryId thay vì Category object
+    private int categoryId;
     private BigDecimal sellPrice;
     private String imagePath;
-    private String description;   // Thêm trường mô tả sản phẩm
+    private String description;
 
     public Product() {
     }

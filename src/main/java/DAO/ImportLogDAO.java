@@ -18,10 +18,7 @@ public class ImportLogDAO {
         return instance;
     }
 
-    /**
-     * Thêm mới một bản ghi import log.
-     * Sau khi insert thành công, gán lại importId cho đối tượng ImportLog.
-     */
+
     public boolean insert(ImportLog log) {
         String sql = "INSERT INTO IMPORT_LOG (ITEM_NAME, INGREDIENT_CATEGORY_ID, UNIT_ID, SUPPLIER_ID, IMPORT_DATE, " +
                 "QUANTITY, UNIT_PRICE, EMPLOYEE_ID, NOTE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -50,7 +47,6 @@ public class ImportLogDAO {
                 return false;
             }
 
-            // Lấy ID tự sinh
             try (ResultSet generatedKeys = pst.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     log.setImportId(generatedKeys.getInt(1));
@@ -149,9 +145,7 @@ public class ImportLogDAO {
         return null;
     }
 
-    /**
-     * Tạo đối tượng ImportLog từ ResultSet, dùng constructor đầy đủ.
-     */
+
     private ImportLog extractImportLog(ResultSet rs) throws SQLException {
         Integer empId = rs.getInt("EMPLOYEE_ID");
         if (rs.wasNull()) empId = null;

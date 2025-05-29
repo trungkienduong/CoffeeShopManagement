@@ -8,15 +8,12 @@ import java.util.List;
 public class EmployeeBUS {
     private final EmployeeDAO employeeDAO;
 
-    // 1. Tạo instance tĩnh duy nhất
     private static EmployeeBUS instance;
 
-    // 2. Constructor private để tránh tạo instance ngoài class
     public EmployeeBUS() {
         this.employeeDAO = EmployeeDAO.getInstance();
     }
 
-    // 3. Phương thức lấy instance duy nhất
     public static EmployeeBUS getInstance() {
         if (instance == null) {
             instance = new EmployeeBUS();

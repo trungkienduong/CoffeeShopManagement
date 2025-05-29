@@ -3,27 +3,21 @@ package MODEL;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Model đại diện cho bảng IMPORT_LOG trong cơ sở dữ liệu.
- */
 public class ImportLog {
-    private Integer importId;           // IMPORT_ID: Mã phiếu nhập (nullable, tự tăng từ DB)
-    private String itemName;            // ITEM_NAME: Tên nguyên liệu
-    private int ingredientCategoryId;  // INGREDIENT_CATEGORY_ID: Loại nguyên liệu
-    private int unitId;                // UNIT_ID: Đơn vị tính
-    private int supplierId;            // SUPPLIER_ID: Nhà cung cấp
-    private LocalDate importDate;      // IMPORT_DATE: Ngày nhập
-    private BigDecimal quantity;       // QUANTITY: Số lượng nhập
-    private BigDecimal unitPrice;      // UNIT_PRICE: Giá nhập trên đơn vị
-    private Integer employeeId;        // EMPLOYEE_ID: Mã nhân viên nhập (nullable)
-    private String note;               // NOTE: Ghi chú nhập hàng (nullable)
+    private Integer importId;
+    private String itemName;
+    private int ingredientCategoryId;
+    private int unitId;
+    private int supplierId;
+    private LocalDate importDate;
+    private BigDecimal quantity;
+    private BigDecimal unitPrice;
+    private Integer employeeId;
+    private String note;
 
     public ImportLog() {
-        // Constructor mặc định để sử dụng khi khởi tạo rỗng
     }
 
-
-    // Constructor dùng khi tạo mới ImportLog để insert (không có importId)
     public ImportLog(String itemName, int ingredientCategoryId, int unitId, int supplierId,
                      LocalDate importDate, BigDecimal quantity, BigDecimal unitPrice,
                      Integer employeeId, String note) {
@@ -38,7 +32,6 @@ public class ImportLog {
         this.note = note;
     }
 
-    // Constructor đầy đủ dùng khi lấy dữ liệu từ DB (có importId)
     public ImportLog(Integer importId, String itemName, int ingredientCategoryId, int unitId, int supplierId,
                      LocalDate importDate, BigDecimal quantity, BigDecimal unitPrice,
                      Integer employeeId, String note) {
@@ -53,8 +46,6 @@ public class ImportLog {
         this.employeeId = employeeId;
         this.note = note;
     }
-
-    // Getters và Setters
 
     public Integer getImportId() {
         return importId;
@@ -110,7 +101,7 @@ public class ImportLog {
 
     public void setQuantity(BigDecimal quantity) {
         if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Số lượng phải lớn hơn 0");
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
         this.quantity = quantity;
     }
@@ -121,7 +112,7 @@ public class ImportLog {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Đơn giá phải >= 0");
+            throw new IllegalArgumentException("Unit price must be >= 0");
         }
         this.unitPrice = unitPrice;
     }
@@ -142,9 +133,6 @@ public class ImportLog {
         this.note = note;
     }
 
-    /**
-     * Tổng tiền = quantity * unitPrice
-     */
     public BigDecimal getTotalPrice() {
         if (quantity != null && unitPrice != null) {
             return quantity.multiply(unitPrice);

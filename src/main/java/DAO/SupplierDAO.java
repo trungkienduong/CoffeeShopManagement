@@ -35,7 +35,6 @@ public class SupplierDAO {
         }
     }
 
-    // ---------------------- UPDATE ----------------------
     public boolean update(Supplier supplier) {
         String sql = "UPDATE SUPPLIER SET SUPPLIER_NAME = ?, PHONE = ?, ADDRESS = ?, EMAIL = ? WHERE SUPPLIER_ID = ?";
 
@@ -56,7 +55,6 @@ public class SupplierDAO {
         }
     }
 
-    // ---------------------- DELETE ----------------------
     public boolean delete(int supplierId) {
         String sql = "DELETE FROM SUPPLIER WHERE SUPPLIER_ID = ?";
 
@@ -73,7 +71,6 @@ public class SupplierDAO {
         }
     }
 
-    // ---------------------- SELECT BY ID ----------------------
     public Supplier findById(int supplierId) {
         String sql = "SELECT * FROM SUPPLIER WHERE SUPPLIER_ID = ?";
 
@@ -92,7 +89,6 @@ public class SupplierDAO {
         return null;
     }
 
-    // ---------------------- SELECT BY NAME ----------------------
     public Supplier findByName(String name) {
         String sql = "SELECT * FROM SUPPLIER WHERE SUPPLIER_NAME = ?";
 
@@ -111,7 +107,6 @@ public class SupplierDAO {
         return null;
     }
 
-    // ---------------------- GET ALL ----------------------
     public List<Supplier> getAll() {
         List<Supplier> list = new ArrayList<>();
         String sql = "SELECT * FROM SUPPLIER";
@@ -130,7 +125,6 @@ public class SupplierDAO {
         return list;
     }
 
-    // Trả về tất cả nhà cung cấp
     public List<Supplier> selectAll() {
         List<Supplier> list = new ArrayList<>();
         String sql = "SELECT * FROM [SUPPLIER]";
@@ -149,7 +143,6 @@ public class SupplierDAO {
     }
 
 
-    // ---------------------- UTIL: Extract Supplier from ResultSet ----------------------
     private Supplier extractSupplier(ResultSet rs) throws SQLException {
         Supplier supplier = new Supplier();
         supplier.setSupplierId(rs.getInt("SUPPLIER_ID"));

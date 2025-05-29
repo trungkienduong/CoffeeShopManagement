@@ -28,83 +28,55 @@ public class ProductBUS {
         return instance;
     }
 
-    /**
-     * Kiểm tra tên sản phẩm đã tồn tại chưa (để tránh trùng lặp).
-     */
     public boolean isProductNameExists(String productName) {
+        if (productName == null || productName.trim().isEmpty()) return false;
         List<Product> existingProducts = productDAO.searchByName(productName);
         return existingProducts.stream()
-                .anyMatch(p -> p.getProductName().equalsIgnoreCase(productName));
+                .anyMatch(p -> p.getProductName().equalsIgnoreCase(productName.trim()));
     }
 
-    /**
-     * Thêm sản phẩm mới nếu tên chưa tồn tại.
-     */
     public boolean addProduct(Product product) {
+        if (product == null || product.getProductName() == null) return false;
         if (isProductNameExists(product.getProductName())) {
-            System.out.println("Sản phẩm đã tồn tại!");
             return false;
         }
         return productDAO.insert(product);
     }
 
-    /**
-     * Cập nhật thông tin sản phẩm.
-     */
     public boolean updateProduct(Product product) {
+        if (product == null) return false;
         return productDAO.update(product);
     }
 
-    /**
-     * Xóa sản phẩm theo ID, đồng thời xóa luôn các công thức liên quan theo categoryId của sản phẩm.
-     */
     public boolean deleteProduct(int productId) {
-        // Lấy sản phẩm để biết categoryId
         Product product = productDAO.findById(productId);
         if (product == null) {
-            System.out.println("Sản phẩm không tồn tại!");
             return false;
         }
 
-        // Xóa công thức liên quan theo categoryId
         int categoryId = product.getCategoryId();
         productRecipeDAO.deleteByCategory(categoryId);
 
-        // Xóa sản phẩm
         return productDAO.delete(productId);
     }
 
-    /**
-     * Lấy tất cả sản phẩm.
-     */
     public List<Product> getAllProducts() {
         return productDAO.getAll();
     }
 
-    /**
-     * Lấy sản phẩm theo ID.
-     */
     public Product getProductById(int productId) {
         return productDAO.findById(productId);
     }
 
-    /**
-     * Lấy danh sách sản phẩm theo categoryId.
-     */
     public List<Product> getProductsByCategoryId(int categoryId) {
         return productDAO.findByCategoryId(categoryId);
     }
 
-    /**
-     * Tìm kiếm sản phẩm theo từ khóa tên.
-     */
     public List<Product> searchProductsByName(String keyword) {
-        return productDAO.searchByName(keyword);
+        if (keyword == null || keyword.trim().isEmpty()) return List.of();
+        return productDAO.searchByName(keyword.trim());
     }
 
-    /**
-     * Lấy tên category từ categoryId (tiện để hiển thị ở UI).
-     */
     public String getCategoryNameById(int categoryId) {
         Category category = categoryDAO.findById(categoryId);
         return category != null ? category.getCategoryName() : "Unknown";

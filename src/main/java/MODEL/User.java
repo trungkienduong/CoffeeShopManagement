@@ -4,7 +4,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private RoleList role; // chứa ROLE_ID và ROLE_NAME
+    private RoleList role;
 
     public User() {}
 
@@ -15,7 +15,6 @@ public class User {
         this.role = role;
     }
 
-    // Getter/Setter
     public String getUsername() {
         return username;
     }
@@ -48,7 +47,6 @@ public class User {
         this.role = role;
     }
 
-    // Helper method để so sánh quyền tiện lợi
     public boolean hasRole(String roleName) {
         return role != null && role.getRoleName().equalsIgnoreCase(roleName);
     }

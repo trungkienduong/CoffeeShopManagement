@@ -9,7 +9,6 @@ public class DatabaseConnection {
     private static final String DB_USER = "sa";
     private static final String DB_PASSWORD = "101001";
 
-    // phương thức mở kết nối
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -21,7 +20,6 @@ public class DatabaseConnection {
         return connection;
     }
 
-    // phương thức đóng kết nối
     public static void closeConnection(Connection connection) {
         if (connection != null) {
             try {
@@ -33,14 +31,4 @@ public class DatabaseConnection {
         }
     }
 
-    /*public static void main(String[] args) {
-        Connection connection = getConnection();
-        if (connection != null) {
-            System.out.println("Kết nối với CSDL thanh công!");
-        }
-        else {
-            System.out.println("Lỗi kết nối với CSDL!");
-        }
-        closeConnection(connection);
-    }*/
 }

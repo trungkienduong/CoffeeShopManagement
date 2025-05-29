@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class AddIngredientCategoryDialogController {
 
     @FXML
-    private TextField unitNameField;
+    private TextField categoryNameField;
 
     @FXML
     private Button confirmButton;
@@ -30,10 +30,10 @@ public class AddIngredientCategoryDialogController {
     }
 
     private void onConfirm() {
-        String categoryName = unitNameField.getText();
+        String categoryName = categoryNameField.getText();
 
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            showAlert("Lỗi", "Tên loại nguyên liệu không được để trống.");
+            showAlert("Error", "Ingredient category name cannot be empty.");
             return;
         }
 
@@ -43,10 +43,10 @@ public class AddIngredientCategoryDialogController {
         boolean success = categoryBUS.addCategory(category);
 
         if (success) {
-            showAlert("Thành công", "Thêm loại nguyên liệu mới thành công!");
+            showAlert("Success", "New ingredient category added successfully!");
             closeDialog();
         } else {
-            showAlert("Lỗi", "Tên loại nguyên liệu đã tồn tại hoặc có lỗi xảy ra.");
+            showAlert("Error", "Ingredient category name already exists or an error occurred.");
         }
     }
 

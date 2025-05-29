@@ -28,7 +28,6 @@ public class ProductRecipeDAO {
         return instance;
     }
 
-    //---------------------- INSERT ----------------------
     public boolean insert(ProductRecipe recipe) {
         String sql = "INSERT INTO PRODUCT_RECIPE (CATEGORY_ID, ITEM_NAME, QUANTITY_USED) VALUES (?, ?, ?)";
 
@@ -46,7 +45,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- UPDATE ----------------------
     public boolean update(ProductRecipe recipe) {
         String sql = "UPDATE PRODUCT_RECIPE SET QUANTITY_USED = ? WHERE CATEGORY_ID = ? AND ITEM_NAME = ?";
 
@@ -64,7 +62,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- DELETE ----------------------
     public boolean delete(int categoryId, String itemName) {
         String sql = "DELETE FROM PRODUCT_RECIPE WHERE CATEGORY_ID = ? AND ITEM_NAME = ?";
 
@@ -81,7 +78,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- DELETE BY CATEGORY ----------------------
     public boolean deleteByCategory(int categoryId) {
         String sql = "DELETE FROM PRODUCT_RECIPE WHERE CATEGORY_ID = ?";
 
@@ -96,7 +92,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- GET ALL ----------------------
     public List<ProductRecipe> getAll() {
         String sql = "SELECT * FROM PRODUCT_RECIPE";
 
@@ -126,7 +121,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- GET BY CATEGORY ----------------------
     public List<ProductRecipe> findByCategory(int categoryId) {
         String sql = "SELECT * FROM PRODUCT_RECIPE WHERE CATEGORY_ID = ?";
 
@@ -157,7 +151,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- GET BY ITEM ----------------------
     public List<ProductRecipe> findByItem(String itemName) {
         String sql = "SELECT * FROM PRODUCT_RECIPE WHERE ITEM_NAME = ?";
 
@@ -188,7 +181,6 @@ public class ProductRecipeDAO {
         }
     }
 
-    //---------------------- CHECK ----------------------
     public boolean checkHasIngredients(int categoryId) {
         String sql = "SELECT 1 FROM PRODUCT_RECIPE WHERE CATEGORY_ID = ?";
 

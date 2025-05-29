@@ -59,7 +59,6 @@ public class ViewEmployeeDialogController {
             return;
         }
 
-        // Lấy Employee từ username của currentUser
         Employee currentEmployee = employeeBUS.getEmployeeByUsername(currentUser.getUsername());
 
         if (currentEmployee == null) {
@@ -71,7 +70,6 @@ public class ViewEmployeeDialogController {
     }
 
     private void loadEmployeeInfo(Employee employee) {
-        // Ảnh
         if (employee.getImagePath() != null && !employee.getImagePath().isEmpty()) {
             try {
                 Image image = new Image("file:" + employee.getImagePath());
@@ -87,7 +85,7 @@ public class ViewEmployeeDialogController {
         roleLabel.setText(employee.getPosition() != null ? employee.getPosition().getPositionName() : "");
         fullnameLabel.setText(employee.getFullName() != null ? employee.getFullName() : "");
         genderLabel.setText(employee.getGender() != null
-                ? (employee.getGender() == Employee.Gender.MALE ? "Nam" : "Nữ")
+                ? (employee.getGender() == Employee.Gender.MALE ? "Male" : "Female")
                 : "");
         cccdLabel.setText(employee.getCccd() != null ? employee.getCccd() : "");
 
@@ -104,7 +102,7 @@ public class ViewEmployeeDialogController {
     }
 
     private void showEmptyData() {
-        emailLabel.setText("Không có dữ liệu");
+        emailLabel.setText("No data available");
         roleLabel.setText("-");
         fullnameLabel.setText("-");
         genderLabel.setText("-");

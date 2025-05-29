@@ -4,7 +4,6 @@ public class RoleList {
     private int roleId;
     private String roleName;
     
-    // Default constructor
     public RoleList() {
     }
 

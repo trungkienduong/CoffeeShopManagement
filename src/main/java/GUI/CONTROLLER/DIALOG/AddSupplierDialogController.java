@@ -30,7 +30,6 @@ public class AddSupplierDialogController {
 
     @FXML
     public void initialize() {
-        // Xử lý sự kiện cho nút xác nhận
         confirmButton.setOnAction(event -> {
             if (validateInput()) {
                 Supplier supplier = new Supplier();
@@ -42,45 +41,50 @@ public class AddSupplierDialogController {
                 boolean success = supplierBUS.addSupplier(supplier);
 
                 if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã thêm nhà cung cấp mới.");
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "New supplier has been added.");
                     closeDialog();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Thêm nhà cung cấp thất bại. Vui lòng kiểm tra lại.");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add supplier. Please check again.");
                 }
             }
         });
 
-        // Xử lý sự kiện cho nút hủy
         cancelButton.setOnAction(event -> closeDialog());
     }
 
-    // Kiểm tra dữ liệu đầu vào cơ bản
     private boolean validateInput() {
         String name = supplierNameField.getText().trim();
         String phone = phoneField.getText().trim();
         String email = emailField.getText().trim();
 
+        boolean valid = true;
+
         if (name.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Thiếu dữ liệu", "Vui lòng nhập tên nhà cung cấp.");
-            return false;
+            showAlert(Alert.AlertType.WARNING, "Missing Data", "Please enter the supplier name.");
+            valid = false;
         }
 
-        if (!phone.matches("\\d{9,15}")) {  // Ví dụ kiểm tra số điện thoại: 9-15 số
-            showAlert(Alert.AlertType.WARNING, "Dữ liệu không hợp lệ", "Số điện thoại không hợp lệ (chỉ chứa 9-15 chữ số).");
-            return false;
+        // Phone: exactly 10 digits
+        if (!phone.matches("\\d{10}")) {
+            phoneField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            showAlert(Alert.AlertType.WARNING, "Invalid Data", "Phone number must be exactly 10 digits.");
+            valid = false;
+        } else {
+            phoneField.setStyle(""); // reset style if valid
         }
 
+        // Simple email validation
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
-            showAlert(Alert.AlertType.WARNING, "Dữ liệu không hợp lệ", "Email không hợp lệ.");
-            return false;
+            emailField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            showAlert(Alert.AlertType.WARNING, "Invalid Data", "Email is invalid.");
+            valid = false;
+        } else {
+            emailField.setStyle(""); // reset style if valid
         }
 
-        // Có thể thêm kiểm tra cho địa chỉ nếu cần
-
-        return true;
+        return valid;
     }
 
-    // Hiện hộp thoại thông báo
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -89,7 +93,6 @@ public class AddSupplierDialogController {
         alert.showAndWait();
     }
 
-    // Đóng dialog hiện tại
     private void closeDialog() {
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();

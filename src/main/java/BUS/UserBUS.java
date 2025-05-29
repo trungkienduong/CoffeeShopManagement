@@ -45,7 +45,6 @@ public class UserBUS {
             }
             return false;
         } catch (Exception e) {
-            System.err.println("Error checking login: " + e.getMessage());
             return false;
         }
     }
@@ -60,29 +59,24 @@ public class UserBUS {
 
     public boolean insertUser(User user) {
         if (user == null) {
-            System.out.println("User is null.");
             return false;
         }
 
         if (!isValidEmail(user.getEmail())) {
-            System.out.println("Invalid email format.");
             return false;
         }
 
         if (!isEmailUnique(user.getEmail())) {
-            System.out.println("Email already exists.");
             return false;
         }
 
         if (!isUsernameUnique(user.getUsername())) {
-            System.out.println("Username already exists.");
             return false;
         }
 
         try {
             return userDAO.insert(user);
         } catch (Exception e) {
-            System.err.println("Error inserting user: " + e.getMessage());
             return false;
         }
     }
@@ -91,7 +85,6 @@ public class UserBUS {
         try {
             return userDAO.update(user);
         } catch (Exception e) {
-            System.err.println("Error updating user: " + e.getMessage());
             return false;
         }
     }
@@ -100,7 +93,6 @@ public class UserBUS {
         try {
             return userDAO.delete(username);
         } catch (Exception e) {
-            System.err.println("Error deleting user: " + e.getMessage());
             return false;
         }
     }
@@ -139,5 +131,4 @@ public class UserBUS {
         }
         return "";
     }
-
 }

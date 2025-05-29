@@ -16,17 +16,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-
 public class LoginDialogController {
 
-    // Login Form UI Elements
     @FXML private TextField usernameLogin;
     @FXML private PasswordField passwordLogin;
     @FXML private TextField passwordLoginText;
     @FXML private FontAwesomeIconView eyeIconLogin;
     @FXML private Button loginButton;
 
-    // Register Form UI Elements
     @FXML private TextField usernameRegister;
     @FXML private TextField emailRegister;
     @FXML private PasswordField passwordRegister;
@@ -35,17 +32,14 @@ public class LoginDialogController {
     @FXML private ComboBox<String> roleComboBox;
     @FXML private Button registerButton;
 
-    // Slider UI Elements
     @FXML private AnchorPane slider;
     @FXML private Label sliderLabel;
     @FXML private Label sliderText;
     @FXML private Button sliderButton;
 
     private UserBUS userBUS = UserBUS.getInstance();
-
     private boolean isLoginForm = true;
 
-    // Initialize method to set up the events and components
     @FXML
     public void initialize() {
         setupPasswordVisibilityToggles();
@@ -53,12 +47,10 @@ public class LoginDialogController {
         setupEmailValidation();
         setupRoleComboBox();
 
-        // Thêm sự kiện cho các trường usernameLogin và passwordLogin để gọi handleLogin khi nhấn Enter
-        usernameLogin.setOnAction(event -> handleLogin());  // Nhấn Enter trong usernameLogin
-        passwordLogin.setOnAction(event -> handleLogin());  // Nhấn Enter trong passwordLogin
+        usernameLogin.setOnAction(event -> handleLogin());
+        passwordLogin.setOnAction(event -> handleLogin());
     }
 
-    // Toggle between Login and Register form on slider
     @FXML
     private void sliding() {
         TranslateTransition slide = new TranslateTransition(Duration.seconds(0.7), slider);
@@ -79,41 +71,35 @@ public class LoginDialogController {
         isLoginForm = !isLoginForm;
     }
 
-    // Set up password visibility toggle events
     private void setupPasswordVisibilityToggles() {
         eyeIconLogin.setOnMouseClicked(this::toggleLoginPassword);
         eyeIconRegister.setOnMouseClicked(this::toggleRegisterPassword);
     }
 
-    // Bind password fields to show text in TextField as well
     private void syncPasswordFields() {
         passwordLogin.textProperty().bindBidirectional(passwordLoginText.textProperty());
         passwordRegister.textProperty().bindBidirectional(passwordRegisterText.textProperty());
     }
 
-    // Setup email validation on the register form
     private void setupEmailValidation() {
         emailRegister.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!UserBUS.isValidEmail(newValue)) {  // Sử dụng isValidEmail từ UserBUS
+            if (!UserBUS.isValidEmail(newValue)) {
                 emailRegister.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             } else {
-                emailRegister.setStyle("");  // Nếu email hợp lệ, xóa viền đỏ
+                emailRegister.setStyle("");
             }
         });
     }
 
-    // Toggle login password visibility
     @FXML
     private void toggleLoginPassword(MouseEvent event) {
         togglePasswordVisibility(passwordLogin, passwordLoginText, eyeIconLogin);
     }
 
-    // Toggle register password visibility
     private void toggleRegisterPassword(MouseEvent event) {
         togglePasswordVisibility(passwordRegister, passwordRegisterText, eyeIconRegister);
     }
 
-    // Helper method to toggle password visibility between PasswordField and TextField
     private void togglePasswordVisibility(PasswordField passwordField, TextField textField, FontAwesomeIconView eyeIcon) {
         if (passwordField.isVisible()) {
             passwordField.setVisible(false);
@@ -126,19 +112,17 @@ public class LoginDialogController {
         }
     }
 
-    // Set up role ComboBox for selecting user role
     private void setupRoleComboBox() {
         roleComboBox.getItems().addAll(RoleListBUS.getInstance().getRoleNamesForComboBox());
     }
 
-    // -------------------- Handle Login --------------------
     @FXML
     private void handleLogin() {
         String username = usernameLogin.getText();
         String password = passwordLogin.getText();
 
         if (userBUS.checkLogin(username, password)) {
-            UTIL.Session.currentUsername = username;  // ✅ Gán username vào session
+            UTIL.Session.currentUsername = username;
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/CoffeeShopGUI.fxml"));
@@ -149,48 +133,43 @@ public class LoginDialogController {
                 currentStage.setTitle("Coffee Manager");
             } catch (IOException e) {
                 e.printStackTrace();
-//                showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
             }
         } else {
-            // Chỉ khi đăng nhập sai mới đổi màu viền của ô nhập
             usernameLogin.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             passwordLogin.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-//            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
+            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
     }
 
-    // -------------------- Handle Register --------------------
     @FXML
     private void handleRegister() {
         String username = usernameRegister.getText();
         String email = emailRegister.getText();
         String password = passwordRegister.getText();
-        String roleName = roleComboBox.getValue(); // giả sử là "Admin", "Nhân viên",...
+        String roleName = roleComboBox.getValue();
 
         if (UserBUS.isValidEmail(email)) {
-            int roleId = RoleListBUS.getInstance().getRoleIdByName(roleName); // 🔄 String ➜ int
-            RoleList roleObj = RoleListBUS.getInstance().getRoleById(roleId); // ✅ dùng int đúng kiểu
+            int roleId = RoleListBUS.getInstance().getRoleIdByName(roleName);
+            RoleList roleObj = RoleListBUS.getInstance().getRoleById(roleId);
 
             User newUser = new User(username, password, email, roleObj);
 
             if (userBUS.insertUser(newUser)) {
-//                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "Account successfully created for " + username);
-                sliding(); // Trượt về màn hình đăng nhập
+                sliding();
             } else {
-//                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
+                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
             }
         } else {
-//            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
         }
     }
 
-  /*  // -------------------- Show Alert --------------------
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }*/
-
+    }
 }

@@ -35,7 +35,6 @@ public class ViewProductDialogController {
 
     private Product currentProduct;
 
-    // Hàm này sẽ được gọi từ bên ngoài (controller gọi dialog) để truyền sản phẩm cần xem
     public void setProduct(Product product) {
         this.currentProduct = product;
         if (product != null) {
@@ -44,26 +43,22 @@ public class ViewProductDialogController {
     }
 
     private void loadProductDetails() {
-        // Hiển thị tên loại sản phẩm
         Category category = CategoryBUS.getInstance().getCategoryById(currentProduct.getCategoryId());
         if (category != null) {
             productTypeLabel.setText(category.getCategoryName());
         } else {
-            productTypeLabel.setText("Không rõ");
+            productTypeLabel.setText("Unknown");
         }
 
-        // Hiển thị tên, giá, mô tả
         productNameLabel.setText(currentProduct.getProductName());
         priceLabel.setText(currentProduct.getSellPrice().toPlainString());
         descriptionLabel.setText(currentProduct.getDescription() != null ? currentProduct.getDescription() : "");
 
-        // Hiển thị ảnh (nếu có)
         if (currentProduct.getImagePath() != null && !currentProduct.getImagePath().isEmpty()) {
             File imageFile = new File(currentProduct.getImagePath());
             if (imageFile.exists()) {
                 productImageView.setImage(new Image(imageFile.toURI().toString()));
             } else {
-                // Xử lý trường hợp file ảnh không tồn tại (để trống hoặc ảnh mặc định)
                 productImageView.setImage(null);
             }
         } else {
@@ -73,7 +68,6 @@ public class ViewProductDialogController {
 
     @FXML
     private void handleClose() {
-        // Đóng dialog
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }

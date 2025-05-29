@@ -4,7 +4,6 @@ public class EmployeePosition {
     private int positionId;
     private String positionName;
 
-    // Default constructor
     public EmployeePosition() {
     }
 

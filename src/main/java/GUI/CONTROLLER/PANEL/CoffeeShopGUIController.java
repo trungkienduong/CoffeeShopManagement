@@ -7,7 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.chart.AreaChart;
@@ -24,6 +26,7 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CoffeeShopGUIController {
 
@@ -87,18 +90,15 @@ public class CoffeeShopGUIController {
             else if (clickedButton == employeeBtn) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/EmployeePanel.fxml"));
                 Parent employeeView = loader.load();
-                employeePanelController = loader.getController(); // Lưu lại controller
+                employeePanelController = loader.getController();
                 mainContent.getChildren().setAll(employeeView);
             }
-
             else if (clickedButton == inventoryBtn) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/PANEL/InventoryPanel.fxml"));
                 Parent inventoryView = loader.load();
-                inventoryPanelController = loader.getController();  // Lưu lại controller
+                inventoryPanelController = loader.getController();
                 mainContent.getChildren().setAll(inventoryView);
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +119,6 @@ public class CoffeeShopGUIController {
                 inventoryPanelController.handleSearch(searchQuery);
             }
         } else {
-            // Nếu search query rỗng, load lại toàn bộ
             if (employeePanelController != null) {
                 employeePanelController.handleSearch("");
             }
@@ -132,42 +131,43 @@ public class CoffeeShopGUIController {
         }
     }
 
-
-
     @FXML
     private void handleLogout() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/LoginDialog.fxml"));
-            Parent loginRoot = loader.load();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to logout?");
 
-            // Lấy stage hiện tại từ 1 node trên scene, ví dụ logoutBtn
-            Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/LoginDialog.fxml"));
+                Parent loginRoot = loader.load();
 
-            currentStage.setScene(new Scene(loginRoot));
-            currentStage.setTitle("Login");
-            currentStage.setResizable(false);
-            currentStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+                Stage currentStage = (Stage) logoutBtn.getScene().getWindow();
+
+                currentStage.setScene(new Scene(loginRoot));
+                currentStage.setTitle("Login");
+                currentStage.setResizable(false);
+                currentStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-
     private void updateDashboard() {
-        // Số lượng nhân viên
         int employeeTotal = EmployeeBUS.getInstance().getAllEmployees().size();
         employeeCount.setText(String.valueOf(employeeTotal));
 
-        // Số lượng sản phẩm
         int productTotal = ProductBUS.getInstance().getAllProducts().size();
         productCount.setText(String.valueOf(productTotal));
 
-        // Số lượng nguyên liệu tồn kho
         int inventoryTotal = InventoryBUS.getInstance().getAll().size();
         inventoryCount.setText(String.valueOf(inventoryTotal));
 
-        updateProductChart();     // Pie chart sản phẩm theo loại
-        updateInventoryChart();   // Area chart tồn kho nguyên liệu
+        updateProductChart();
+        updateInventoryChart();
     }
 
     private void updateProductChart() {
@@ -189,7 +189,7 @@ public class CoffeeShopGUIController {
         List<Inventory> inventoryList = InventoryBUS.getInstance().getAll();
 
         XYChart.Series<String, Number> quantitySeries = new XYChart.Series<>();
-        quantitySeries.setName("Tồn kho");
+        quantitySeries.setName("Inventory Quantity");
 
         for (Inventory item : inventoryList) {
             quantitySeries.getData().add(new XYChart.Data<>(item.getItemName(), item.getQuantity()));
@@ -202,6 +202,4 @@ public class CoffeeShopGUIController {
     private EmployeePanelController employeePanelController;
     private InventoryPanelController inventoryPanelController;
     private ProductPanelController productPanelController;
-
-
 }

@@ -17,7 +17,6 @@ public class EmployeePositionDAO {
         return instance;
     }
 
-    // ---------------------- SELECT ALL ----------------------
     public List<EmployeePosition> selectAll() {
         List<EmployeePosition> list = new ArrayList<>();
         String query = "SELECT * FROM EMPLOYEE_POSITION";
@@ -41,7 +40,6 @@ public class EmployeePositionDAO {
         return list;
     }
 
-    // ---------------------- INSERT ----------------------
     public boolean insert(EmployeePosition position) {
         String query = "INSERT INTO EMPLOYEE_POSITION (POSITION_NAME) VALUES (?)";
 
@@ -58,7 +56,6 @@ public class EmployeePositionDAO {
         return false;
     }
 
-    // ---------------------- UPDATE ----------------------
     public boolean update(EmployeePosition position) {
         String query = "UPDATE EMPLOYEE_POSITION SET POSITION_NAME = ? WHERE POSITION_ID = ?";
 
@@ -76,7 +73,6 @@ public class EmployeePositionDAO {
         return false;
     }
 
-    // ---------------------- DELETE ----------------------
     public boolean delete(int positionId) {
         String query = "DELETE FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
 
@@ -93,7 +89,6 @@ public class EmployeePositionDAO {
         return false;
     }
 
-    // ---------------------- FIND BY ID ----------------------
     public EmployeePosition findById(int positionId) {
         String query = "SELECT * FROM EMPLOYEE_POSITION WHERE POSITION_ID = ?";
 

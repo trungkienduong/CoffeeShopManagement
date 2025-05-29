@@ -64,18 +64,15 @@ public class AddEmployeeDialogController {
     @FXML
     private void initialize() {
         try {
-            // Set email
             if (userBUS.getCurrentUser() != null) {
                 emailField.setText(userBUS.getCurrentUser().getEmail());
             } else {
-                emailField.setText("Không xác định");
+                emailField.setText("Unknown");
             }
             emailField.setDisable(true);
 
-            // Gender
-            genderComboBox.getItems().addAll("Nam", "Nữ");
+            genderComboBox.getItems().addAll("Male", "Female");
 
-            // Position
             List<EmployeePosition> positions = positionBUS.getAllPositions();
             positionComboBox.getItems().addAll(positions);
             positionComboBox.setConverter(new StringConverter<EmployeePosition>() {
@@ -83,21 +80,19 @@ public class AddEmployeeDialogController {
                 public String toString(EmployeePosition position) {
                     return position != null ? position.getPositionName() : "";
                 }
-
                 @Override
                 public EmployeePosition fromString(String string) {
                     return null;
                 }
             });
 
-            // DatePicker mặc định là 18 tuổi
             birthDatePicker.setValue(LocalDate.now().minusYears(18));
             birthDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
                 if (newVal == null) birthDatePicker.setValue(LocalDate.now().minusYears(18));
             });
 
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể khởi tạo form: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot initialize form: " + e.getMessage());
         }
     }
 
@@ -115,7 +110,7 @@ public class AddEmployeeDialogController {
                 employeeImageView.setImage(image);
             }
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải ảnh: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot load image: " + e.getMessage());
         }
     }
 
@@ -126,7 +121,7 @@ public class AddEmployeeDialogController {
             Employee employee = new Employee();
             employee.setUsername(userBUS.getCurrentUser().getUsername());
             employee.setFullName(fullNameField.getText().trim());
-            employee.setGender(Employee.Gender.fromCode(genderComboBox.getValue().equals("Nam") ? 'M' : 'F'));
+            employee.setGender(Employee.Gender.fromCode(genderComboBox.getValue().equals("Male") ? 'M' : 'F'));
             employee.setCccd(cccdField.getText().trim());
             employee.setDateOfBirth(birthDatePicker.getValue());
             employee.setPhone(phoneField.getText().trim());
@@ -134,20 +129,18 @@ public class AddEmployeeDialogController {
             employee.setPosition(positionComboBox.getValue());
             employee.setSalary(Double.parseDouble(salaryField.getText().trim()));
             employee.setImagePath(imagePath);
-
-            // Gán joinDate bằng ngày hiện tại
             employee.setJoinDate(LocalDate.now());
 
             if (employeeBUS.addEmployee(employee)) {
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm nhân viên thành công!");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Employee added successfully!");
                 if (dialogStage != null) dialogStage.close();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm nhân viên. Vui lòng thử lại!");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to add employee. Please try again!");
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Lương phải là số hợp lệ!");
+            showAlert(Alert.AlertType.ERROR, "Error", "Salary must be a valid number!");
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Đã xảy ra lỗi: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred: " + e.getMessage());
         }
     }
 
@@ -157,51 +150,102 @@ public class AddEmployeeDialogController {
     }
 
     private boolean validateInput() {
+        boolean valid = true;
         StringBuilder errorMessage = new StringBuilder();
 
+        clearErrorStyles();
+
+        // Full name
         if (fullNameField.getText() == null || fullNameField.getText().trim().isEmpty()) {
-            errorMessage.append("Họ tên không được trống!\n");
-        }
-        if (genderComboBox.getValue() == null) {
-            errorMessage.append("Vui lòng chọn giới tính!\n");
-        }
-        if (cccdField.getText() == null || cccdField.getText().trim().isEmpty()) {
-            errorMessage.append("CCCD không được trống!\n");
+            errorMessage.append("- Full name cannot be empty!\n");
+            fullNameField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         }
 
+        // Gender
+        if (genderComboBox.getValue() == null) {
+            errorMessage.append("- Please select gender!\n");
+            genderComboBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
+        }
+
+        // CCCD - đúng 12 số
+        String cccd = cccdField.getText();
+        if (cccd == null || !cccd.matches("\\d{12}")) {
+            errorMessage.append("- Citizen ID must be exactly 12 digits!\n");
+            cccdField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
+        }
+
+        // Birthdate - ít nhất 18 tuổi
         LocalDate birthDate = birthDatePicker.getValue();
         LocalDate minDate = LocalDate.now().minusYears(18);
         if (birthDate == null || birthDate.isAfter(minDate)) {
-            errorMessage.append("Nhân viên phải đủ 18 tuổi!\n");
+            errorMessage.append("- Employee must be at least 18 years old!\n");
+            birthDatePicker.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         }
 
-        if (phoneField.getText() == null || phoneField.getText().trim().isEmpty()) {
-            errorMessage.append("Số điện thoại không được trống!\n");
+        // Phone - đúng 10 số
+        String phone = phoneField.getText();
+        if (phone == null || !phone.matches("\\d{10}")) {
+            errorMessage.append("- Phone number must be exactly 10 digits!\n");
+            phoneField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         }
+
+        // Address
         if (addressField.getText() == null || addressField.getText().trim().isEmpty()) {
-            errorMessage.append("Địa chỉ không được trống!\n");
+            errorMessage.append("- Address cannot be empty!\n");
+            addressField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         }
+
+        // Position
         if (positionComboBox.getValue() == null) {
-            errorMessage.append("Vui lòng chọn chức vụ!\n");
+            errorMessage.append("- Please select a position!\n");
+            positionComboBox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         }
-        if (salaryField.getText() == null || salaryField.getText().trim().isEmpty()) {
-            errorMessage.append("Lương không được trống!\n");
+
+        // Salary - số hợp lệ > 0
+        String salaryText = salaryField.getText();
+        if (salaryText == null || salaryText.trim().isEmpty()) {
+            errorMessage.append("- Salary cannot be empty!\n");
+            salaryField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            valid = false;
         } else {
             try {
-                double salary = Double.parseDouble(salaryField.getText().trim());
+                double salary = Double.parseDouble(salaryText.trim());
                 if (salary <= 0) {
-                    errorMessage.append("Lương phải lớn hơn 0!\n");
+                    errorMessage.append("- Salary must be greater than 0!\n");
+                    salaryField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+                    valid = false;
                 }
             } catch (NumberFormatException e) {
-                errorMessage.append("Lương phải là số hợp lệ!\n");
+                errorMessage.append("- Salary must be a valid number!\n");
+                salaryField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+                valid = false;
             }
         }
 
-        if (errorMessage.length() > 0) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", errorMessage.toString());
-            return false;
+        if (!valid) {
+            showAlert(Alert.AlertType.ERROR, "Validation Errors", errorMessage.toString());
         }
-        return true;
+
+        return valid;
+    }
+
+
+    private void clearErrorStyles() {
+        fullNameField.setStyle("");
+        genderComboBox.setStyle("");
+        cccdField.setStyle("");
+        birthDatePicker.setStyle("");
+        phoneField.setStyle("");
+        addressField.setStyle("");
+        positionComboBox.setStyle("");
+        salaryField.setStyle("");
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {

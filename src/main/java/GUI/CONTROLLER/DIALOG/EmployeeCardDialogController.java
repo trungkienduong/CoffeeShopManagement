@@ -17,30 +17,24 @@ public class EmployeeCardDialogController {
     @FXML
     private Label employeeRole;
 
-    /**
-     * Cập nhật UI hiển thị theo Employee truyền vào
-     */
     public void setEmployee(Employee employee) {
         if (employee == null) return;
 
-        // Hiển thị tên nhân viên
         employeeName.setText(employee.getFullName());
 
-        // Hiển thị chức vụ, nếu có
         if (employee.getPosition() != null) {
             employeeRole.setText(employee.getPosition().getPositionName());
         } else {
             employeeRole.setText("");
         }
 
-        // Hiển thị ảnh (nếu có)
         try {
             if (employee.getImagePath() != null && !employee.getImagePath().isEmpty()) {
                 Image img = new Image("file:" + employee.getImagePath(), true);
                 employeeImage.setImage(img);
             }
         } catch (Exception e) {
-            System.out.println("Không thể tải ảnh nhân viên: " + e.getMessage());
+            System.out.println("Unable to load employee image: " + e.getMessage());
         }
     }
 }

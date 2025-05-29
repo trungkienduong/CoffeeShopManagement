@@ -17,7 +17,6 @@ public class CategoryDAO {
         return instance;
     }
 
-    // INSERT
     public boolean insert(Category category) {
         String sql = "INSERT INTO CATEGORY (CATEGORY_NAME) VALUES (?)";
 
@@ -33,7 +32,6 @@ public class CategoryDAO {
         }
     }
 
-    // UPDATE
     public boolean update(Category category) {
         String sql = "UPDATE CATEGORY SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?";
 
@@ -50,7 +48,6 @@ public class CategoryDAO {
         }
     }
 
-    // DELETE
     public boolean delete(int categoryId) {
         String sql = "DELETE FROM CATEGORY WHERE CATEGORY_ID = ?";
 
@@ -66,7 +63,6 @@ public class CategoryDAO {
         }
     }
 
-    // GET ALL
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM CATEGORY";
@@ -89,7 +85,6 @@ public class CategoryDAO {
         return list;
     }
 
-    // FIND BY ID
     public Category findById(int id) {
         String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_ID = ?";
 
@@ -110,7 +105,6 @@ public class CategoryDAO {
         return null;
     }
 
-    // FIND BY NAME
     public Category findByName(String name) {
         String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_NAME = ?";
 
@@ -131,7 +125,6 @@ public class CategoryDAO {
         return null;
     }
 
-    // SEARCH BY NAME (LIKE)
     public List<Category> searchByName(String keyword) {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM CATEGORY WHERE CATEGORY_NAME LIKE ?";

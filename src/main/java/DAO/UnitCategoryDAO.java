@@ -20,11 +20,7 @@ public class UnitCategoryDAO {
         return instance;
     }
 
-    /**
-     * Thêm một đơn vị mới vào database
-     * @param unitCategory đối tượng đơn vị cần thêm
-     * @return true nếu thêm thành công, false nếu thất bại
-     */
+
     public boolean insert(UnitCategory unitCategory) {
         String sql = "INSERT INTO [UNIT_CATEGORY] (UNIT_NAME) VALUES (?)";
 
@@ -41,11 +37,7 @@ public class UnitCategoryDAO {
         }
     }
 
-    /**
-     * Cập nhật tên đơn vị theo ID
-     * @param unitCategory đối tượng đơn vị đã được chỉnh sửa
-     * @return true nếu cập nhật thành công, false nếu thất bại
-     */
+
     public boolean update(UnitCategory unitCategory) {
         String sql = "UPDATE [UNIT_CATEGORY] SET UNIT_NAME = ? WHERE UNIT_ID = ?";
 
@@ -63,11 +55,7 @@ public class UnitCategoryDAO {
         }
     }
 
-    /**
-     * Xóa đơn vị theo ID
-     * @param unitId mã đơn vị cần xóa
-     * @return true nếu xóa thành công, false nếu thất bại
-     */
+
     public boolean delete(int unitId) {
         String sql = "DELETE FROM [UNIT_CATEGORY] WHERE UNIT_ID = ?";
 
@@ -84,10 +72,7 @@ public class UnitCategoryDAO {
         }
     }
 
-    /**
-     * Lấy tất cả đơn vị có trong database
-     * @return danh sách đơn vị, trả về danh sách rỗng nếu không có hoặc lỗi
-     */
+
     public List<UnitCategory> getAll() {
         String sql = "SELECT * FROM [UNIT_CATEGORY]";
 
@@ -110,11 +95,7 @@ public class UnitCategoryDAO {
         return unitCategories;
     }
 
-    /**
-     * Tìm đơn vị theo tên
-     * @param unitName tên đơn vị cần tìm
-     * @return đối tượng đơn vị nếu tìm thấy, null nếu không có hoặc lỗi
-     */
+
     public UnitCategory findByName(String unitName) {
         String sql = "SELECT * FROM [UNIT_CATEGORY] WHERE UNIT_NAME = ?";
 
@@ -136,11 +117,7 @@ public class UnitCategoryDAO {
         return null;
     }
 
-    /**
-     * Tìm đơn vị theo ID
-     * @param unitId mã đơn vị cần tìm
-     * @return đối tượng đơn vị nếu tìm thấy, null nếu không có hoặc lỗi
-     */
+
     public UnitCategory findById(int unitId) {
         String sql = "SELECT * FROM [UNIT_CATEGORY] WHERE UNIT_ID = ?";
 

@@ -4,13 +4,10 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ProductRecipe {
-    // CATEGORY_ID trong bảng PRODUCT_RECIPE
     private Category category;
 
-    // ITEM_NAME trong bảng PRODUCT_RECIPE
     private Inventory item;
 
-    // Số lượng nguyên liệu dùng cho một đơn vị sản phẩm
     private BigDecimal quantityUsed;
 
     public ProductRecipe() {

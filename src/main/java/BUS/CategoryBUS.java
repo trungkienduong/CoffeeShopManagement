@@ -5,13 +5,10 @@ import MODEL.Category;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CategoryBUS {
     private static CategoryBUS instance;
     private final CategoryDAO categoryDAO;
-    private static final Logger LOGGER = Logger.getLogger(CategoryBUS.class.getName());
 
     private CategoryBUS() {
         categoryDAO = CategoryDAO.getInstance();
@@ -24,31 +21,24 @@ public class CategoryBUS {
         return instance;
     }
 
-    // ✅ Hàm dùng trực tiếp từ controller khi đã có đối tượng Category
     public boolean insertCategory(Category category) {
         if (category == null || category.getCategoryName() == null || category.getCategoryName().trim().isEmpty()) {
-            LOGGER.warning("Tên loại sản phẩm không hợp lệ.");
             return false;
         }
 
-        // Kiểm tra trùng tên
         if (categoryDAO.findByName(category.getCategoryName().trim()) != null) {
-            LOGGER.warning("Tên loại sản phẩm đã tồn tại.");
             return false;
         }
 
         return categoryDAO.insert(category);
     }
 
-    // ✅ Hàm cũ - tạo category từ chuỗi tên
     public boolean addCategory(String categoryName) {
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            LOGGER.warning("Tên loại sản phẩm không được để trống.");
             return false;
         }
 
         if (categoryDAO.findByName(categoryName.trim()) != null) {
-            LOGGER.warning("Tên loại sản phẩm đã tồn tại.");
             return false;
         }
 
@@ -58,19 +48,16 @@ public class CategoryBUS {
 
     public boolean updateCategory(int id, String newName) {
         if (newName == null || newName.trim().isEmpty()) {
-            LOGGER.warning("Tên loại sản phẩm không được để trống.");
             return false;
         }
 
         Category existing = categoryDAO.findById(id);
         if (existing == null) {
-            LOGGER.warning("Không tìm thấy loại sản phẩm để cập nhật.");
             return false;
         }
 
         Category byName = categoryDAO.findByName(newName.trim());
         if (byName != null && byName.getCategoryId() != id) {
-            LOGGER.warning("Tên loại mới đã tồn tại.");
             return false;
         }
 
@@ -81,7 +68,6 @@ public class CategoryBUS {
     public boolean deleteCategory(int id) {
         Category category = categoryDAO.findById(id);
         if (category == null) {
-            LOGGER.warning("Không tìm thấy loại sản phẩm để xóa.");
             return false;
         }
 

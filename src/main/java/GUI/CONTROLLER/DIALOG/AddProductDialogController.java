@@ -25,7 +25,6 @@ import java.util.List;
 
 public class AddProductDialogController {
 
-    // === FXML ELEMENTS ===
     @FXML private ImageView productImageView;
     @FXML private Button imageButton;
 
@@ -39,7 +38,6 @@ public class AddProductDialogController {
     @FXML private Button confirmButton;
     @FXML private Button cancelButton;
 
-    // === VARIABLES ===
     private File selectedImageFile;
 
     @FXML
@@ -53,7 +51,6 @@ public class AddProductDialogController {
         ObservableList<Category> observableList = FXCollections.observableArrayList(categoryList);
         recipeComboBox.setItems(observableList);
 
-        // Hiển thị tên category
         recipeComboBox.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Category item, boolean empty) {
@@ -74,7 +71,7 @@ public class AddProductDialogController {
     @FXML
     private void onChooseImage() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Chọn ảnh sản phẩm");
+        fileChooser.setTitle("Select Product Image");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
@@ -94,22 +91,22 @@ public class AddProductDialogController {
         Category selectedCategory = recipeComboBox.getValue();
 
         if (selectedImageFile == null) {
-            showAlert("Vui lòng chọn ảnh sản phẩm.");
+            showAlert("Please select a product image.");
             return;
         }
 
         if (selectedCategory == null) {
-            showAlert("Vui lòng chọn loại sản phẩm.");
+            showAlert("Please select a product category.");
             return;
         }
 
         if (name.isEmpty()) {
-            showAlert("Tên sản phẩm không được để trống.");
+            showAlert("Product name cannot be empty.");
             return;
         }
 
         if (ProductBUS.getInstance().isProductNameExists(name)) {
-            showAlert("Tên sản phẩm đã tồn tại.");
+            showAlert("Product name already exists.");
             return;
         }
 
@@ -118,7 +115,7 @@ public class AddProductDialogController {
             price = Double.parseDouble(priceText);
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert("Giá sản phẩm không hợp lệ.");
+            showAlert("Invalid product price.");
             return;
         }
 
@@ -133,7 +130,7 @@ public class AddProductDialogController {
         if (success) {
             closeDialog();
         } else {
-            showAlert("Thêm sản phẩm thất bại.");
+            showAlert("Failed to add product.");
         }
     }
 
@@ -149,13 +146,11 @@ public class AddProductDialogController {
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    // ------------------------ PHẦN MỚI ------------------------
 
     @FXML
     private void handleAddType(ActionEvent event) {
@@ -166,17 +161,16 @@ public class AddProductDialogController {
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(addTypeButton.getScene().getWindow());
-            dialog.setTitle("Thêm loại sản phẩm mới");
+            dialog.setTitle("Add New Product Category");
 
             Scene scene = new Scene(root);
             dialog.setScene(scene);
             dialog.showAndWait();
 
-            // Sau khi dialog đóng, cập nhật lại dữ liệu cho ComboBox
             updateRecipeComboBox();
 
         } catch (IOException e) {
-            showErrorAlert("Lỗi", "Không thể mở cửa sổ", e.getMessage());
+            showErrorAlert("Error", "Cannot open window", e.getMessage());
         }
     }
 

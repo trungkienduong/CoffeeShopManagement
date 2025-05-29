@@ -44,17 +44,14 @@ public class EditProductDialogController {
     @FXML
     public void initialize() {
         loadCategoriesToComboBox();
-
         addTypeButton.setOnAction(this::handleAddType);
     }
 
-    // Load danh sách category vào combo box
     private void loadCategoriesToComboBox() {
         List<Category> categories = CategoryBUS.getInstance().getAllCategories();
         ObservableList<Category> list = FXCollections.observableArrayList(categories);
         recipeComboBox.setItems(list);
 
-        // Hiển thị tên category trong combo box
         recipeComboBox.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Category item, boolean empty) {
@@ -71,7 +68,6 @@ public class EditProductDialogController {
         });
     }
 
-    // Gán dữ liệu product hiện tại vào form (để sửa)
     public void setProduct(Product product) {
         this.currentProduct = product;
 
@@ -89,14 +85,14 @@ public class EditProductDialogController {
                 selectedImageFile = new File(product.getImagePath());
             }
         } catch (Exception e) {
-            System.out.println("Không thể tải ảnh: " + e.getMessage());
+            System.out.println("Unable to load image: " + e.getMessage());
         }
     }
 
     @FXML
     private void onChooseImage() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Chọn ảnh sản phẩm");
+        fileChooser.setTitle("Choose Product Image");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
@@ -111,7 +107,7 @@ public class EditProductDialogController {
     @FXML
     private void onConfirm() {
         if (currentProduct == null) {
-            showAlert("Lỗi", "Sản phẩm không hợp lệ.");
+            showAlert("Error", "Invalid product.");
             return;
         }
 
@@ -121,22 +117,22 @@ public class EditProductDialogController {
         Category selectedCategory = recipeComboBox.getValue();
 
         if (selectedImageFile == null) {
-            showAlert("Thông báo", "Vui lòng chọn ảnh sản phẩm.");
+            showAlert("Notice", "Please select a product image.");
             return;
         }
 
         if (selectedCategory == null) {
-            showAlert("Thông báo", "Vui lòng chọn loại sản phẩm.");
+            showAlert("Notice", "Please select a product category.");
             return;
         }
 
         if (name.isEmpty()) {
-            showAlert("Thông báo", "Tên sản phẩm không được để trống.");
+            showAlert("Notice", "Product name cannot be empty.");
             return;
         }
 
         if (!name.equalsIgnoreCase(currentProduct.getProductName()) && ProductBUS.getInstance().isProductNameExists(name)) {
-            showAlert("Thông báo", "Tên sản phẩm đã tồn tại.");
+            showAlert("Notice", "Product name already exists.");
             return;
         }
 
@@ -145,11 +141,10 @@ public class EditProductDialogController {
             price = Double.parseDouble(priceText);
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert("Thông báo", "Giá sản phẩm không hợp lệ.");
+            showAlert("Notice", "Invalid product price.");
             return;
         }
 
-        // Cập nhật product
         currentProduct.setProductName(name);
         currentProduct.setSellPrice(BigDecimal.valueOf(price));
         currentProduct.setDescription(description);
@@ -160,7 +155,7 @@ public class EditProductDialogController {
         if (success) {
             closeDialog();
         } else {
-            showAlert("Thông báo", "Cập nhật sản phẩm thất bại.");
+            showAlert("Notice", "Failed to update product.");
         }
     }
 
@@ -190,17 +185,15 @@ public class EditProductDialogController {
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(addTypeButton.getScene().getWindow());
-            dialog.setTitle("Thêm loại sản phẩm mới");
+            dialog.setTitle("Add New Product Category");
 
             Scene scene = new Scene(root);
             dialog.setScene(scene);
             dialog.showAndWait();
 
-            // Cập nhật lại danh sách category sau khi thêm
             loadCategoriesToComboBox();
-
         } catch (IOException e) {
-            showAlert("Lỗi", "Không thể mở cửa sổ thêm loại sản phẩm.");
+            showAlert("Error", "Unable to open category dialog.");
         }
     }
 }

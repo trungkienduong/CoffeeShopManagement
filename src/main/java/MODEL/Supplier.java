@@ -7,7 +7,6 @@ public class Supplier {
     private String address;
     private String email;
 
-    // Constructors
     public Supplier() {
     }
 
@@ -19,7 +18,6 @@ public class Supplier {
         this.email = email;
     }
 
-    // Getters and setters
     public int getSupplierId() {
         return supplierId;
     }

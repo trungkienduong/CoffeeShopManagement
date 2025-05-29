@@ -11,10 +11,8 @@ import java.util.List;
 
 
 public class RoleListDAO {
-    // Singleton pattern: Chỉ tạo 1 instance duy nhất
     private static RoleListDAO instance;
 
-    // lấy instance duy nhất (nếu chưa có thì tạo mới)
     public static RoleListDAO getInstance() {
         if (instance == null) {
             instance = new RoleListDAO();
@@ -22,29 +20,27 @@ public class RoleListDAO {
         return instance;
     }
 
-    // ---------------------- CREATE ----------------------
     public boolean insert(RoleList role) {
         // chèn dữ liệu ( thêm quyền mới)
         String sql = "INSERT INTO [ROLE_LIST] (ROLE_ID, ROLE_NAME) VALUES (?, ?)";
 
-        try (Connection con = DatabaseConnection.getConnection(); // mở kết nối
-             PreparedStatement pst = con.prepareStatement(sql)) { // tạo lệnh sql chuẩn bị
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, role.getRoleId()); // gán giá trị cho ? thứ nhất
-            pst.setString(2, role.getRoleName()); // gán giá trị cho ? thứ hai
+            pst.setInt(1, role.getRoleId());
+            pst.setString(2, role.getRoleName());
 
-            int result = pst.executeUpdate(); // thực thi câu lệnh ( trả về số dòng bị ảnh hưởng)
+            int result = pst.executeUpdate();
 
-            return result > 0; // nếu có ít nhất một dòng bị ảnh hưởng => thêm thành công
+            return result > 0;
 
         } catch (Exception e) {
-            e.printStackTrace(); // in lỗi nếu có
+            e.printStackTrace();
             return false;
         }
 
     }
 
-    // ---------------------- READ ALL ----------------------
     public List<RoleList> getAll() {
         List<RoleList> roles = new ArrayList<>();
         String sql = "SELECT * FROM [ROLE_LIST]";
@@ -55,9 +51,9 @@ public class RoleListDAO {
 
             while (rs.next()) {
                 RoleList role = new RoleList();
-                role.setRoleId(rs.getInt("ROLE_ID")); // lấy giá trị cột ROLE_ID
-                role.setRoleName(rs.getString("ROLE_NAME")); // lấy giá trị cót ROLE_NAME
-                roles.add(role); // thêm vào danh sách
+                role.setRoleId(rs.getInt("ROLE_ID"));
+                role.setRoleName(rs.getString("ROLE_NAME"));
+                roles.add(role);
             }
 
         } catch (SQLException e) {
@@ -67,7 +63,6 @@ public class RoleListDAO {
         return roles;
     }
 
-    // ---------------------- READ BY ID ----------------------
     public RoleList findById(int roleId) {
         String sql = "SELECT * FROM [ROLE_LIST] WHERE ROLE_ID = ?";
 
@@ -88,10 +83,9 @@ public class RoleListDAO {
             e.printStackTrace();
         }
 
-        return null; // không tìm thấy
+        return null;
     }
 
-    // ---------------------- READ BY NAME ----------------------
     public RoleList findByName(String roleName) {
         String sql = "SELECT * FROM [ROLE_LIST] WHERE ROLE_NAME = ?";
 
@@ -112,10 +106,9 @@ public class RoleListDAO {
             e.printStackTrace();
         }
 
-        return null; // không tìm thấy
+        return null;
     }
 
-    // ---------------------- UPDATE ----------------------
     public boolean update(RoleList role) {
         String sql = "UPDATE [ROLE_LIST] SET ROLE_NAME = ? WHERE ROLE_ID = ?";
 
@@ -134,7 +127,6 @@ public class RoleListDAO {
         }
     }
 
-    // ---------------------- DELETE ----------------------
     public boolean delete(int roleId) {
         String sql = "DELETE FROM [ROLE_LIST] WHERE ROLE_ID = ?";
 

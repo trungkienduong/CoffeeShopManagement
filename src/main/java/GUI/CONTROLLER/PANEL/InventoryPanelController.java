@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class InventoryPanelController {
 
@@ -49,14 +51,12 @@ public class InventoryPanelController {
     private InventoryBUS inventoryBUS;
     private User currentUser;
 
-    private Parent root; // Thêm biến này
+    private Parent root;
 
-    // Setter để gán root từ bên ngoài khi load
     public void setRoot(Parent root) {
         this.root = root;
     }
 
-    // Getter để lấy root từ bên ngoài
     public Parent getRoot() {
         return root;
     }
@@ -64,23 +64,18 @@ public class InventoryPanelController {
     @FXML
     private void initialize() {
         inventoryBUS = InventoryBUS.getInstance();
-
         currentUser = UserBUS.getInstance().getCurrentUser();
+        applyRolePermissions();
 
-        // Phân quyền nút
-        handleRolePermission();
-
-        // Set cell value factory cho từng cột dựa trên tên getter trong Inventory
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("costPrice"));
 
-        // Load dữ liệu lên bảng
         loadInventoryData();
     }
 
-    private void handleRolePermission() {
+    private void applyRolePermissions() {
         if (currentUser == null) {
             addBtn.setDisable(true);
             deleteBtn.setDisable(true);
@@ -111,7 +106,6 @@ public class InventoryPanelController {
         }
 
         String lowerKeyword = keyword.trim().toLowerCase();
-
         List<Inventory> allItems = inventoryBUS.getAll();
 
         List<Inventory> filtered = allItems.stream()
@@ -125,11 +119,7 @@ public class InventoryPanelController {
     @FXML
     private void handleAddInventory(ActionEvent event) {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Không đủ quyền");
-            alert.setHeaderText(null);
-            alert.setContentText("Bạn không có quyền thêm nguyên liệu.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to add inventory.");
             return;
         }
 
@@ -154,39 +144,40 @@ public class InventoryPanelController {
     @FXML
     private void handleDeleteInventory(ActionEvent event) {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Không đủ quyền");
-            alert.setHeaderText(null);
-            alert.setContentText("Bạn không có quyền xóa nguyên liệu.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to delete inventory.");
             return;
         }
 
         Inventory selected = inventoryTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Cảnh báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn nguyên liệu để xóa.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Warning", "Please select an inventory item to delete.");
+            return;
+        }
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirm Delete");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Are you sure you want to delete the selected inventory item?");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
 
         boolean success = inventoryBUS.deleteItem(selected.getItemName());
         if (success) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thành công");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa nguyên liệu thành công.");
-            alert.showAndWait();
-
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Inventory item deleted successfully.");
             loadInventoryData();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Xóa nguyên liệu thất bại. Có thể nguyên liệu đang được sử dụng.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete inventory item. It might be in use.");
         }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

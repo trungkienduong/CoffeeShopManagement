@@ -64,7 +64,7 @@ public class Inventory {
 
     @Override
     public String toString() {
-        return this.getItemName();  // hoặc tên thuộc tính bạn muốn hiển thị
+        return this.getItemName();
     }
 
 }

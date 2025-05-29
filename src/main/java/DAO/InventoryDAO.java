@@ -26,7 +26,6 @@ public class InventoryDAO {
         return instance;
     }
 
-    // INSERT
     public boolean insert(Inventory item) {
         String sql = "INSERT INTO INVENTORY (ITEM_NAME, INGREDIENT_CATEGORY_ID, UNIT_ID, QUANTITY, COST_PRICE) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = DatabaseConnection.getConnection();
@@ -45,7 +44,6 @@ public class InventoryDAO {
         }
     }
 
-    // UPDATE
     public boolean update(Inventory item) {
         String sql = "UPDATE INVENTORY SET INGREDIENT_CATEGORY_ID = ?, UNIT_ID = ?, QUANTITY = ?, COST_PRICE = ? WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
@@ -64,7 +62,6 @@ public class InventoryDAO {
         }
     }
 
-    // UPDATE QUANTITY
     public boolean updateQuantity(String itemName, BigDecimal newQuantity) {
         String sql = "UPDATE INVENTORY SET QUANTITY = ? WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
@@ -79,7 +76,6 @@ public class InventoryDAO {
         }
     }
 
-    // DELETE
     public boolean delete(String itemName) {
         String sql = "DELETE FROM INVENTORY WHERE ITEM_NAME = ?";
         try (Connection con = DatabaseConnection.getConnection();
@@ -93,7 +89,6 @@ public class InventoryDAO {
         }
     }
 
-    // GET ALL
     public List<Inventory> getAll() {
         String sql = "SELECT * FROM INVENTORY";
         List<Inventory> list = new ArrayList<>();
@@ -119,7 +114,6 @@ public class InventoryDAO {
         }
     }
 
-    // FIND BY NAME
     public Inventory findByName(String itemName) {
         String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME = ?";
 
@@ -145,7 +139,6 @@ public class InventoryDAO {
         return null;
     }
 
-    // SEARCH BY NAME
     public List<Inventory> searchByName(String keyword) {
         String sql = "SELECT * FROM INVENTORY WHERE ITEM_NAME LIKE ?";
         List<Inventory> list = new ArrayList<>();
@@ -173,7 +166,6 @@ public class InventoryDAO {
         }
     }
 
-    // CHECK QUANTITY
     public boolean checkQuantity(String itemName, BigDecimal quantity) {
         String sql = "SELECT QUANTITY FROM INVENTORY WHERE ITEM_NAME = ?";
 

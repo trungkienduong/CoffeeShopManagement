@@ -6,9 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO xử lý các thao tác với bảng INGREDIENT_CATEGORY.
- */
+
 public class IngredientCategoryDAO {
     private static IngredientCategoryDAO instance;
 
@@ -21,9 +19,7 @@ public class IngredientCategoryDAO {
         return instance;
     }
 
-    /**
-     * Thêm mới một loại nguyên liệu.
-     */
+
     public boolean insert(IngredientCategory category) {
         String sql = "INSERT INTO INGREDIENT_CATEGORY (INGREDIENT_CATEGORY_NAME) VALUES (?)";
 
@@ -47,9 +43,7 @@ public class IngredientCategoryDAO {
         }
     }
 
-    /**
-     * Cập nhật loại nguyên liệu.
-     */
+
     public boolean update(IngredientCategory category) {
         String sql = "UPDATE INGREDIENT_CATEGORY SET INGREDIENT_CATEGORY_NAME = ? WHERE INGREDIENT_CATEGORY_ID = ?";
 
@@ -66,9 +60,7 @@ public class IngredientCategoryDAO {
         }
     }
 
-    /**
-     * Xóa loại nguyên liệu theo ID.
-     */
+
     public boolean delete(int id) {
         String sql = "DELETE FROM INGREDIENT_CATEGORY WHERE INGREDIENT_CATEGORY_ID = ?";
 
@@ -83,9 +75,7 @@ public class IngredientCategoryDAO {
         }
     }
 
-    /**
-     * Lấy danh sách toàn bộ loại nguyên liệu.
-     */
+
     public List<IngredientCategory> selectAll() {
         List<IngredientCategory> list = new ArrayList<>();
         String sql = "SELECT * FROM INGREDIENT_CATEGORY";
@@ -107,9 +97,7 @@ public class IngredientCategoryDAO {
         return list;
     }
 
-    /**
-     * Tìm loại nguyên liệu theo ID.
-     */
+
     public IngredientCategory findById(int id) {
         String sql = "SELECT * FROM INGREDIENT_CATEGORY WHERE INGREDIENT_CATEGORY_ID = ?";
 

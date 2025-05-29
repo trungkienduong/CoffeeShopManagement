@@ -20,7 +20,6 @@ public class ProductDAO {
         return instance;
     }
 
-    // ---------------------- INSERT ----------------------
     public boolean insert(Product product) {
         String sql = "INSERT INTO PRODUCT (PRODUCT_NAME, CATEGORY_ID, SELL_PRICE, IMAGE_PATH, DESCRIPTION) VALUES (?, ?, ?, ?, ?)";
 
@@ -53,7 +52,6 @@ public class ProductDAO {
         }
     }
 
-    // ---------------------- UPDATE ----------------------
     public boolean update(Product product) {
         String sql = "UPDATE PRODUCT SET PRODUCT_NAME = ?, CATEGORY_ID = ?, SELL_PRICE = ?, IMAGE_PATH = ?, DESCRIPTION = ? WHERE PRODUCT_ID = ?";
 
@@ -76,7 +74,6 @@ public class ProductDAO {
         }
     }
 
-    // ---------------------- DELETE ----------------------
     public boolean delete(int productId) {
         String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
 
@@ -94,7 +91,6 @@ public class ProductDAO {
         }
     }
 
-    // ---------------------- GET ALL ----------------------
     public List<Product> getAll() {
         String sql = "SELECT * FROM PRODUCT";
 
@@ -115,7 +111,6 @@ public class ProductDAO {
         return list;
     }
 
-    // ---------------------- FIND BY ID ----------------------
     public Product findById(int productId) {
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
 
@@ -136,7 +131,6 @@ public class ProductDAO {
         return null;
     }
 
-    // ---------------------- FIND BY CATEGORY_ID ----------------------
     public List<Product> findByCategoryId(int categoryId) {
         String sql = "SELECT * FROM PRODUCT WHERE CATEGORY_ID = ?";
 
@@ -161,7 +155,6 @@ public class ProductDAO {
         return list;
     }
 
-    // ---------------------- SEARCH BY NAME ----------------------
     public List<Product> searchByName(String keyword) {
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE ?";
 
@@ -186,7 +179,6 @@ public class ProductDAO {
         return list;
     }
 
-    // ---------------------- HELPER ----------------------
     private Product extractProduct(ResultSet rs) throws SQLException {
         Product product = new Product();
 

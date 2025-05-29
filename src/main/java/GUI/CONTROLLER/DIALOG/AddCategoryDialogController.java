@@ -43,6 +43,7 @@ public class AddCategoryDialogController implements Initializable {
         loadInventoryItems();
         loadUnits();
         confirmButton.setOnAction(event -> handleConfirm());
+        cancelButton.setOnAction(event -> handleCancel());
     }
 
     private void loadInventoryItems() {
@@ -72,22 +73,20 @@ public class AddCategoryDialogController implements Initializable {
     private void handleConfirm() {
         String categoryName = categoryNameField.getText().trim();
         if (categoryName.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Tên loại sản phẩm không được để trống.");
+            showAlert(Alert.AlertType.WARNING, "Category name cannot be empty.");
             return;
         }
 
-        // Thêm loại sản phẩm mới
         Category category = new Category();
         category.setCategoryName(categoryName);
         if (!categoryBUS.insertCategory(category)) {
-            showAlert(Alert.AlertType.ERROR, "Không thể thêm loại sản phẩm. Có thể tên đã tồn tại.");
+            showAlert(Alert.AlertType.ERROR, "Failed to add category. The name might already exist.");
             return;
         }
 
-        // Lấy lại CATEGORY_ID vừa thêm
         Category inserted = categoryBUS.findByName(categoryName);
         if (inserted == null) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi khi lấy thông tin loại sản phẩm vừa thêm.");
+            showAlert(Alert.AlertType.ERROR, "Error retrieving newly added category info.");
             return;
         }
 
@@ -102,18 +101,18 @@ public class AddCategoryDialogController implements Initializable {
             if (recipe != null) {
                 hasValidRecipe = true;
                 if (!productRecipeBUS.addProductRecipe(recipe)) {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi khi thêm công thức nguyên liệu: " + recipe.getItem().getItemName());
+                    showAlert(Alert.AlertType.ERROR, "Error adding ingredient recipe: " + recipe.getItem().getItemName());
                     return;
                 }
             }
         }
 
         if (!hasValidRecipe) {
-            showAlert(Alert.AlertType.WARNING, "Phải có ít nhất một nguyên liệu trong công thức.");
+            showAlert(Alert.AlertType.WARNING, "At least one ingredient must be in the recipe.");
             return;
         }
 
-        showAlert(Alert.AlertType.INFORMATION, "Thêm loại sản phẩm và công thức thành công.");
+        showAlert(Alert.AlertType.INFORMATION, "Category and recipe added successfully.");
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();
     }
@@ -141,7 +140,7 @@ public class AddCategoryDialogController implements Initializable {
 
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Thông báo");
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

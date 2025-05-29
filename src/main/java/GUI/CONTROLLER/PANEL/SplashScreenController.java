@@ -64,32 +64,25 @@ public class SplashScreenController {
     }
 
     private void switchToLoginScreen(AnchorPane loginRoot) {
-        // Tạo Scene cho màn hình Login
         Scene loginScene = new Scene(loginRoot);
         Stage stage = (Stage) rootPane.getScene().getWindow();
 
-        // Đặt độ mờ cho các màn hình trước khi chuyển cảnh
         rootPane.setOpacity(1);
         loginRoot.setOpacity(0);
 
-        // Đặt Scene cho Stage
         stage.setScene(loginScene);
 
-        // Fade out từ Splash screen
         FadeTransition fadeOut = new FadeTransition(Duration.millis(400), rootPane);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
-        // Fade in cho Login screen
         FadeTransition fadeIn = new FadeTransition(Duration.millis(400), loginRoot);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
 
-        // Chạy các hiệu ứng Fade
         fadeOut.play();
         fadeIn.play();
 
-        // Sau khi fade out hoàn tất, cleanup Splash screen
         fadeOut.setOnFinished(e -> cleanupSplashScreen());
     }
 

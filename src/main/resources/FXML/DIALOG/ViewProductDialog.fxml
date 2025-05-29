@@ -11,14 +11,12 @@
         <Label styleClass="dialog-title" text="Product Details" />
 
         <HBox spacing="30">
-            <!-- Left Section - Image -->
             <VBox styleClass="image-section">
                 <StackPane styleClass="image-container">
                     <ImageView fx:id="productImageView" fitHeight="200" fitWidth="200" preserveRatio="false" />
                 </StackPane>
             </VBox>
 
-            <!-- Right Section - Info -->
             <VBox spacing="20" styleClass="form-section" HBox.hgrow="ALWAYS">
                 <HBox spacing="15" styleClass="info-group">
                     <Label styleClass="label-text" text="Product Category:" />

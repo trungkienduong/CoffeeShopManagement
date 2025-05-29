@@ -12,7 +12,6 @@ public class EmployeeDAO {
     private static EmployeeDAO instance;
 
     private EmployeeDAO() {
-        // Singleton constructor
     }
 
     public static EmployeeDAO getInstance() {
@@ -137,8 +136,6 @@ public class EmployeeDAO {
 
         return false;
     }
-
-    // ======= Helper Methods =======
 
     private Employee extractEmployee(ResultSet rs) throws SQLException {
         Employee emp = new Employee();

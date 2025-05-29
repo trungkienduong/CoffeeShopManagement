@@ -14,7 +14,7 @@ public class SupplierBUS {
     private SupplierBUS() {
         supplierDAO = SupplierDAO.getInstance();
         supplierList = new ArrayList<>();
-        loadSuppliers(); // nạp dữ liệu vào danh sách khi khởi tạo
+        loadSuppliers();
     }
 
     public static SupplierBUS getInstance() {
@@ -24,7 +24,6 @@ public class SupplierBUS {
         return instance;
     }
 
-    // ---------------------- Load toàn bộ danh sách ----------------------
     public void loadSuppliers() {
         supplierList = supplierDAO.selectAll();
     }
@@ -33,16 +32,14 @@ public class SupplierBUS {
         return supplierList;
     }
 
-    // ---------------------- Thêm nhà cung cấp ----------------------
     public boolean addSupplier(Supplier supplier) {
         boolean success = supplierDAO.insert(supplier);
         if (success) {
-            loadSuppliers(); // cập nhật lại danh sách
+            loadSuppliers();
         }
         return success;
     }
 
-    // ---------------------- Cập nhật nhà cung cấp ----------------------
     public boolean updateSupplier(Supplier supplier) {
         boolean success = supplierDAO.update(supplier);
         if (success) {
@@ -51,7 +48,6 @@ public class SupplierBUS {
         return success;
     }
 
-    // ---------------------- Xóa nhà cung cấp ----------------------
     public boolean deleteSupplier(int supplierId) {
         boolean success = supplierDAO.delete(supplierId);
         if (success) {
@@ -60,12 +56,10 @@ public class SupplierBUS {
         return success;
     }
 
-    // ---------------------- Tìm theo tên ----------------------
     public Supplier findByName(String name) {
         return supplierDAO.findByName(name);
     }
 
-    // ---------------------- Tìm theo ID ----------------------
     public Supplier findById(int id) {
         return supplierDAO.findById(id);
     }
