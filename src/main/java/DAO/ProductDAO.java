@@ -179,6 +179,34 @@ public class ProductDAO {
         return list;
     }
 
+    public List<Product> searchByProductNameOrCategoryName(String keyword) {
+        String sql = "SELECT p.* FROM PRODUCT p " +
+                "JOIN CATEGORY c ON p.CATEGORY_ID = c.CATEGORY_ID " +
+                "WHERE p.PRODUCT_NAME LIKE ? OR c.CATEGORY_NAME LIKE ?";
+
+        List<Product> list = new ArrayList<>();
+        String likeKeyword = "%" + keyword + "%";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, likeKeyword);
+            pst.setString(2, likeKeyword);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Product product = extractProduct(rs);
+                    list.add(product);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
     private Product extractProduct(ResultSet rs) throws SQLException {
         Product product = new Product();
 
@@ -191,4 +219,6 @@ public class ProductDAO {
 
         return product;
     }
+
+
 }

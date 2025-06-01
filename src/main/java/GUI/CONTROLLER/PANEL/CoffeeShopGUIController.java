@@ -7,11 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
@@ -138,6 +134,10 @@ public class CoffeeShopGUIController {
         alert.setHeaderText(null);
         alert.setContentText("Are you sure you want to logout?");
 
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
@@ -155,6 +155,7 @@ public class CoffeeShopGUIController {
             }
         }
     }
+
 
     private void updateDashboard() {
         int employeeTotal = EmployeeBUS.getInstance().getAllEmployees().size();

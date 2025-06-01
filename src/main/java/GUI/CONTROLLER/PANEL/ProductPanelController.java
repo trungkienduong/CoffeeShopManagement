@@ -77,7 +77,8 @@ public class ProductPanelController {
         if (keyword == null || keyword.isEmpty()) {
             products = ProductBUS.getInstance().getAllProducts();
         } else {
-            products = ProductBUS.getInstance().searchProductsByName(keyword);
+            // Thay đổi từ tìm kiếm chỉ theo tên sang tìm kiếm theo tên hoặc loại sản phẩm
+            products = ProductBUS.getInstance().searchProductsByNameOrCategory(keyword);
         }
 
         for (Product product : products) {
@@ -101,6 +102,8 @@ public class ProductPanelController {
             }
         }
     }
+
+
 
     public void handleSearch(String keyword) {
         loadProducts(keyword);

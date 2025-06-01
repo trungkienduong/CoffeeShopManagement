@@ -77,8 +77,14 @@ public class ProductBUS {
         return productDAO.searchByName(keyword.trim());
     }
 
+    public List<Product> searchProductsByNameOrCategory(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) return List.of();
+        return productDAO.searchByProductNameOrCategoryName(keyword.trim());
+    }
+
     public String getCategoryNameById(int categoryId) {
         Category category = categoryDAO.findById(categoryId);
         return category != null ? category.getCategoryName() : "Unknown";
     }
+
 }

@@ -4,6 +4,7 @@ import DAO.EmployeeDAO;
 import MODEL.Employee;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmployeeBUS {
     private final EmployeeDAO employeeDAO;
@@ -55,18 +56,25 @@ public class EmployeeBUS {
     }
 
     public List<Employee> searchEmployees(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllEmployees();
-        }
-        String lowerKeyword = keyword.toLowerCase();
-        return getAllEmployees().stream()
-                .filter(e ->
-                        e.getFullName().toLowerCase().contains(lowerKeyword) ||
-                                e.getUsername().toLowerCase().contains(lowerKeyword) ||
-                                (e.getPhone() != null && e.getPhone().contains(keyword)) ||
-                                (e.getCccd() != null && e.getCccd().contains(keyword))
-                )
-                .toList();
+        keyword = keyword.toLowerCase().trim();
+        String[] keywords = keyword.split("\\s+");
+
+        return getAllEmployees().stream().filter(emp -> {
+            String fullText = (
+                    emp.getFullName() + " " +
+                            (emp.getPosition() != null ? emp.getPosition().getPositionName() : "") + " " +
+                            (emp.getGender() != null ? emp.getGender() : "")
+            ).toLowerCase();
+
+            for (String kw : keywords) {
+                if (!fullText.contains(kw)) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
     }
+
+
 
 }

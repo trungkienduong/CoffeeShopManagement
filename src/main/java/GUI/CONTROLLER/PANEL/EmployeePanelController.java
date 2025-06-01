@@ -2,6 +2,8 @@ package GUI.CONTROLLER.PANEL;
 
 import BUS.EmployeeBUS;
 import BUS.UserBUS;
+import GUI.CONTROLLER.DIALOG.AddEmployeeDialogController;
+import GUI.CONTROLLER.DIALOG.EditEmployeeDialogController;
 import MODEL.Employee;
 import MODEL.User;
 import UTIL.Session;
@@ -88,12 +90,12 @@ public class EmployeePanelController {
         }
 
         openDialog("/FXML/DIALOG/AddEmployeeDialog.fxml", "Add Personal Information", controller -> {
-            ((GUI.CONTROLLER.DIALOG.AddEmployeeDialogController) controller).setDialogStage((Stage) addBtn.getScene().getWindow());
         });
 
         loadEmployees();
         updateAddButtonState();
     }
+
 
     @FXML
     private void handleEditEmployee(ActionEvent event) {
@@ -170,22 +172,15 @@ public class EmployeePanelController {
 
     public void handleSearch(String keyword) {
         employeeContainer.getChildren().clear();
-        String[] keywords = keyword.trim().toLowerCase().split("\\s+");
 
-        for (Employee emp : allEmployees) {
-            String fullText = (emp.getFullName() + " " + (emp.getPosition() != null ? emp.getPosition().getPositionName() : "")).toLowerCase();
-            boolean match = true;
-
-            for (String kw : keywords) {
-                if (!fullText.contains(kw)) {
-                    match = false;
-                    break;
-                }
-            }
-
-            if (match) addEmployeeCard(emp);
+        List<Employee> filtered = EmployeeBUS.getInstance().searchEmployees(keyword);
+        for (Employee emp : filtered) {
+            addEmployeeCard(emp);
         }
     }
+
+
+
 
     private void addEmployeeCard(Employee emp) {
         try {
@@ -211,19 +206,30 @@ public class EmployeePanelController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            Object controller = loader.getController();
-            handler.handle(controller);
-
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setTitle(title);
             dialogStage.setScene(new Scene(root));
             dialogStage.setResizable(false);
+
+            Object controller = loader.getController();
+
+            if (controller instanceof AddEmployeeDialogController) {
+                ((AddEmployeeDialogController) controller).setDialogStage(dialogStage);
+            } else if (controller instanceof EditEmployeeDialogController) {
+                ((EditEmployeeDialogController) controller).setDialogStage(dialogStage);
+            }
+
+
+            handler.handle(controller);
+
             dialogStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     private void showAlert(Alert.AlertType type, String message, Object o, String s) {
         Alert alert = new Alert(type);

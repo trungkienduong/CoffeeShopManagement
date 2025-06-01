@@ -142,7 +142,7 @@ public class InventoryPanelController {
     }
 
     @FXML
-    private void handleDeleteInventory(ActionEvent event) {
+    private void handleDeleteInventory(ActionEvent event) throws Exception {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
             showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to delete inventory.");
             return;
