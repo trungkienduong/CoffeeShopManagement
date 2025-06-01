@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -215,16 +214,11 @@ public class ProductPanelController {
         }
     }
 
-    private void showAlert(Alert.AlertType type, String message, String s) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
-        DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
-        dialogPane.getStylesheets().add(css);
-
         alert.showAndWait();
     }
 }

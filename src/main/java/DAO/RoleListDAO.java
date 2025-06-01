@@ -21,7 +21,6 @@ public class RoleListDAO {
     }
 
     public boolean insert(RoleList role) {
-        // chèn dữ liệu ( thêm quyền mới)
         String sql = "INSERT INTO [ROLE_LIST] (ROLE_ID, ROLE_NAME) VALUES (?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();

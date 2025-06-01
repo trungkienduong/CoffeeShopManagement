@@ -208,7 +208,6 @@ public class Employee {
         }
     }
 
-    // Optional toString
     @Override
     public String toString() {
         return fullName + " - " + (position != null ? position.getPositionName() : "Chưa rõ");

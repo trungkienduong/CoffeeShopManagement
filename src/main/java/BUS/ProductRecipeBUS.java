@@ -67,4 +67,6 @@ public class ProductRecipeBUS {
         if (recipe.getQuantityUsed() == null || recipe.getQuantityUsed().compareTo(BigDecimal.ZERO) <= 0) return false;
         return true;
     }
+
+
 }

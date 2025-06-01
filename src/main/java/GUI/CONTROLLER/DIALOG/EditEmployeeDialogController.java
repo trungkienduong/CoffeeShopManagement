@@ -16,6 +16,7 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class EditEmployeeDialogController {
 
@@ -151,7 +152,6 @@ public class EditEmployeeDialogController {
     private boolean validateInput() {
         boolean valid = true;
 
-        // Clear all borders first
         clearErrorBorder(fullNameField);
         clearErrorBorder(genderComboBox);
         clearErrorBorder(cccdField);
@@ -163,21 +163,18 @@ public class EditEmployeeDialogController {
 
         StringBuilder errorMessage = new StringBuilder();
 
-        // Full name
         if (fullNameField.getText() == null || fullNameField.getText().trim().isEmpty()) {
             errorMessage.append("Full name is required.\n");
             setErrorBorder(fullNameField);
             valid = false;
         }
 
-        // Gender
         if (genderComboBox.getValue() == null) {
             errorMessage.append("Please select a gender.\n");
             setErrorBorder(genderComboBox);
             valid = false;
         }
 
-        // CCCD - exactly 12 digits
         String cccd = cccdField.getText();
         if (cccd == null || cccd.trim().isEmpty()) {
             errorMessage.append("CCCD is required.\n");
@@ -189,7 +186,6 @@ public class EditEmployeeDialogController {
             valid = false;
         }
 
-        // Birthdate - at least 18 years old
         LocalDate birthDate = birthDatePicker.getValue();
         LocalDate minDate = LocalDate.now().minusYears(18);
         if (birthDate == null || birthDate.isAfter(minDate)) {
@@ -198,7 +194,6 @@ public class EditEmployeeDialogController {
             valid = false;
         }
 
-        // Phone - exactly 10 digits
         String phone = phoneField.getText();
         if (phone == null || phone.trim().isEmpty()) {
             errorMessage.append("Phone number is required.\n");
@@ -210,21 +205,18 @@ public class EditEmployeeDialogController {
             valid = false;
         }
 
-        // Address
         if (addressField.getText() == null || addressField.getText().trim().isEmpty()) {
             errorMessage.append("Address is required.\n");
             setErrorBorder(addressField);
             valid = false;
         }
 
-        // Position
         if (positionComboBox.getValue() == null) {
             errorMessage.append("Please select a position.\n");
             setErrorBorder(positionComboBox);
             valid = false;
         }
 
-        // Salary - positive number
         String salaryText = salaryField.getText();
         if (salaryText == null || salaryText.trim().isEmpty()) {
             errorMessage.append("Salary is required.\n");
@@ -267,9 +259,8 @@ public class EditEmployeeDialogController {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
-        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
 
         alert.showAndWait();
