@@ -225,4 +225,21 @@ public class InventoryDAO {
         }
     }
 
+    public boolean isInventoryItemInUse(String itemName) {
+        String sql = "SELECT COUNT(*) FROM PRODUCT_RECIPE WHERE ITEM_NAME = ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, itemName);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

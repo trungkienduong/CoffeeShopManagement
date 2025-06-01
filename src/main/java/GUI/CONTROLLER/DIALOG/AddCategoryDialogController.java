@@ -174,7 +174,6 @@ public class AddCategoryDialogController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Gán CSS style cho Alert dialog pane
         DialogPane dialogPane = alert.getDialogPane();
         String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
         dialogPane.getStylesheets().add(css);

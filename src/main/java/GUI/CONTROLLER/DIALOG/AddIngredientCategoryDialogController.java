@@ -44,8 +44,7 @@ public class AddIngredientCategoryDialogController {
         boolean success = categoryBUS.addCategory(category);
 
         if (success) {
-            showAlert(Alert.AlertType.valueOf("Success"), "New ingredient category added successfully!");
-            closeDialog();
+            showAlert(Alert.AlertType.INFORMATION, "New ingredient category added successfully!");            closeDialog();
         } else {
             showAlert(Alert.AlertType.valueOf("Error"), "Ingredient category name already exists or an error occurred.");
         }

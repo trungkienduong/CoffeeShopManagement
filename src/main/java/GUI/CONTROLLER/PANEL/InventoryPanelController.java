@@ -11,11 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -144,40 +140,55 @@ public class InventoryPanelController {
     @FXML
     private void handleDeleteInventory(ActionEvent event) {
         if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to delete inventory.");
+            showAlert(Alert.AlertType.WARNING, "No Permission", "You do not have permission to delete ingredients.");
             return;
         }
 
         Inventory selected = inventoryTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert(Alert.AlertType.WARNING, "Warning", "Please select an inventory item to delete.");
+            showAlert(Alert.AlertType.WARNING, "No Ingredient Selected", "Please select an ingredient to delete.");
             return;
         }
 
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Confirm Delete");
+        confirmAlert.setTitle("Delete Confirmation");
         confirmAlert.setHeaderText(null);
-        confirmAlert.setContentText("Are you sure you want to delete the selected inventory item?");
+        confirmAlert.setContentText("Are you sure you want to delete the ingredient \"" + selected.getItemName() + "\"?");
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
 
-        boolean success = inventoryBUS.deleteItem(selected.getItemName());
-        if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Inventory item deleted successfully.");
-            loadInventoryData();
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete inventory item. It might be in use.");
+        try {
+            boolean success = inventoryBUS.deleteItem(selected.getItemName());
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Ingredient deleted successfully.");
+                loadInventoryData();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Failure", "Could not delete the ingredient.");
+            }
+        } catch (IllegalStateException ex) {
+            showAlert(Alert.AlertType.WARNING, "Cannot Delete", ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", ex.getMessage());
+        } catch (Exception ex) {
+            showAlert(Alert.AlertType.ERROR, "System Error", "An error occurred while deleting the ingredient.");
+            ex.printStackTrace();
         }
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
+
+    private void showAlert(Alert.AlertType type, String message, String s) {
         Alert alert = new Alert(type);
-        alert.setTitle(title);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        String css = getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+
         alert.showAndWait();
     }
 }

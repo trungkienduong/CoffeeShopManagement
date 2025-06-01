@@ -51,15 +51,23 @@ public class InventoryBUS {
         }
     }
 
-    public boolean deleteItem(String itemName) {
-        if (itemName == null || itemName.trim().isEmpty()) return false;
-
-        try {
-            return inventoryDAO.delete(itemName);
-        } catch (Exception e) {
-            return false;
+    public boolean deleteItem(String itemName) throws Exception {
+        if (itemName == null || itemName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Item name must not be empty.");
         }
+
+        if (inventoryDAO.isInventoryItemInUse(itemName)) {
+            throw new IllegalStateException("Cannot delete: this item is currently used in a recipe.");
+        }
+
+        return inventoryDAO.delete(itemName);
     }
+
+
+
+
+
+
 
     public List<Inventory> getAll() {
         try {
@@ -117,7 +125,7 @@ public class InventoryBUS {
                 return inv;
             }
         }
-        return null; // không tìm thấy
+        return null;
     }
 
 }
