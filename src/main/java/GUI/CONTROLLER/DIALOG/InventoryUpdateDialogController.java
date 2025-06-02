@@ -125,7 +125,7 @@ public class InventoryUpdateDialogController {
             else if (clickedButton == addSupplierButton) loadSuppliers();
 
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open dialog", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error loading dialog.");
         }
     }
 
@@ -280,47 +280,68 @@ public class InventoryUpdateDialogController {
             UnitCategory selectedUnit = unitComboBox.getSelectionModel().getSelectedItem();
             Supplier selectedSupplier = supplierComboBox.getSelectionModel().getSelectedItem();
             Employee selectedEmployee = employeeComboBox.getSelectionModel().getSelectedItem();
+            LocalDate importDate = importDatePicker.getValue();
 
             if (selectedCategory == null) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Please select an ingredient category.");
+                showAlert(Alert.AlertType.ERROR, "Please select an ingredient.");
                 return;
             }
             if (selectedUnit == null) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Please select a unit.");
+                showAlert(Alert.AlertType.ERROR, "Please select a unit.");
                 return;
             }
             if (selectedSupplier == null) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Please select a supplier.");
+                showAlert(Alert.AlertType.ERROR, "Please select a supplier.");
                 return;
             }
             if (selectedEmployee == null) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Please select an employee.");
+                showAlert(Alert.AlertType.ERROR, "Please select an employee.");
                 return;
             }
 
             String quantityText = quantityField.getText().trim();
             String unitPriceText = unitPriceField.getText().trim();
-            LocalDate importDate = importDatePicker.getValue();
 
-            if (quantityText.isEmpty() || unitPriceText.isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Please enter quantity and unit price.");
+            if (quantityText.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Please enter quantity.");
                 return;
             }
 
-            BigDecimal quantity = new BigDecimal(quantityText);
-            if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Quantity must be greater than 0.");
+            BigDecimal quantity;
+            try {
+                quantity = new BigDecimal(quantityText);
+                if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
+                    showAlert(Alert.AlertType.ERROR, "Quantity must be greater than 0.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Quantity must be a valid number.");
                 return;
             }
 
-            BigDecimal unitPrice = new BigDecimal(unitPriceText);
-            if (unitPrice.compareTo(BigDecimal.ZERO) < 0) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Invalid unit price.");
+            if (unitPriceText.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Please enter unit price.");
                 return;
             }
 
-            if (importDate == null || importDate.isAfter(LocalDate.now())) {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Invalid import date.");
+            BigDecimal unitPrice;
+            try {
+                unitPrice = new BigDecimal(unitPriceText);
+                if (unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+                    showAlert(Alert.AlertType.ERROR, "Unit price cannot be negative.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Unit price must be a valid number.");
+                return;
+            }
+
+            if (importDate == null) {
+                showAlert(Alert.AlertType.ERROR, "Please select an import date.");
+                return;
+            }
+            if (importDate.isAfter(LocalDate.now())) {
+                showAlert(Alert.AlertType.ERROR, "Import date cannot be in the future.");
                 return;
             }
 
@@ -336,45 +357,35 @@ public class InventoryUpdateDialogController {
             log.setNote(noteArea.getText());
 
             ImportLogBUS importLogBUS = ImportLogBUS.getInstance();
-            boolean success;
-
-            if (currentInventory == null) {
-                success = importLogBUS.addImportLog(log);
-            } else {
-                success = importLogBUS.updateImportLog(log);
-            }
+            boolean success = (currentInventory == null)
+                    ? importLogBUS.addImportLog(log)
+                    : importLogBUS.updateImportLog(log);
 
             if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Success", null, "Import log saved successfully.");
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
+                showAlert(Alert.AlertType.INFORMATION, "Import log saved successfully.");
+                ((Stage) confirmButton.getScene().getWindow()).close();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", null, "Failed to save import log.");
+                showAlert(Alert.AlertType.ERROR, "Failed to save import log.");
             }
 
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", null, "Invalid quantity or unit price.");
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", null, "An error occurred: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "An unexpected error occurred: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleCancel() {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        ((Stage) cancelButton.getScene().getWindow()).close();
     }
 
-    private void showAlert(Alert.AlertType type, String message, Object o, String s) {
+    private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(message);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
         DialogPane dialogPane = alert.getDialogPane();
         String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
         dialogPane.getStylesheets().add(css);
-
         alert.showAndWait();
     }
 }

@@ -121,7 +121,27 @@ public class EmployeeDAO {
         return false;
     }
 
+    public boolean isEmployeeUsedInImportLog(int employeeId) {
+        String sql = "SELECT COUNT(*) FROM IMPORT_LOG WHERE EMPLOYEE_ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, employeeId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean deleteEmployee(int employeeId) {
+        if (isEmployeeUsedInImportLog(employeeId)) {
+            return false;
+        }
+
         String query = "DELETE FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -136,6 +156,7 @@ public class EmployeeDAO {
 
         return false;
     }
+
 
     private Employee extractEmployee(ResultSet rs) throws SQLException {
         Employee emp = new Employee();
@@ -153,7 +174,7 @@ public class EmployeeDAO {
         emp.setImagePath(rs.getString("IMAGE_PATH"));
 
         int positionId = rs.getInt("POSITION_ID");
-        String positionName = rs.getString("POSITION_NAME");  // lấy tên chức vụ
+        String positionName = rs.getString("POSITION_NAME");
         emp.setPosition(new EmployeePosition(positionId, positionName));
 
         emp.setUser(new User(rs.getString("USERNAME"), null, null, null));
@@ -165,7 +186,7 @@ public class EmployeeDAO {
         if (!isUpdate) {
             stmt.setString(1, emp.getUsername());
             stmt.setString(2, emp.getFullName());
-            stmt.setString(3, String.valueOf(emp.getGender()));
+            stmt.setString(3, String.valueOf(emp.getGenderCode()));
             stmt.setString(4, emp.getCccd());
             stmt.setDate(5, java.sql.Date.valueOf(emp.getDateOfBirth()));
             stmt.setString(6, emp.getPhone());
@@ -176,7 +197,7 @@ public class EmployeeDAO {
             stmt.setString(11, emp.getImagePath());
         } else {
             stmt.setString(1, emp.getFullName());
-            stmt.setString(2, String.valueOf(emp.getGender()));
+            stmt.setString(2, String.valueOf(emp.getGenderCode()));
             stmt.setString(3, emp.getCccd());
             stmt.setDate(4, java.sql.Date.valueOf(emp.getDateOfBirth()));
             stmt.setString(5, emp.getPhone());
@@ -188,4 +209,6 @@ public class EmployeeDAO {
             stmt.setInt(11, emp.getEmployeeId());
         }
     }
+
+
 }

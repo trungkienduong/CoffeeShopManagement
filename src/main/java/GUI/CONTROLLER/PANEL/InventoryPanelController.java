@@ -115,10 +115,6 @@ public class InventoryPanelController {
 
     @FXML
     private void handleAddInventory(ActionEvent event) {
-        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to add inventory.");
-            return;
-        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/InventoryUpdateDialog.fxml"));

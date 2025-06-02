@@ -67,7 +67,6 @@ public class Employee {
         this.positionId = positionId;
     }
 
-    // Getters and Setters
 
     public int getEmployeeId() {
         return employeeId;
@@ -213,6 +212,6 @@ public class Employee {
 
     @Override
     public String toString() {
-        return fullName + " - " + (position != null ? position.getPositionName() : "Chưa rõ");
+        return fullName + " - " + (position != null ? position.getPositionName() : "");
     }
 }

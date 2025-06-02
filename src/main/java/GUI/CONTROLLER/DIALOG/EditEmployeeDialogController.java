@@ -47,7 +47,16 @@ public class EditEmployeeDialogController {
         if (employee == null) return;
 
         fullNameField.setText(employee.getFullName());
-        genderComboBox.setValue(employee.getGender() == Employee.Gender.MALE ? "Male" : "Female");
+
+        if (employee.getGender() != null) {
+            switch (employee.getGender()) {
+                case MALE -> genderComboBox.setValue("Male");
+                case FEMALE -> genderComboBox.setValue("Female");
+            }
+        } else {
+            genderComboBox.setValue(null);
+        }
+
         cccdField.setText(employee.getCccd());
         birthDatePicker.setValue(employee.getDateOfBirth());
         phoneField.setText(employee.getPhone());
@@ -71,6 +80,7 @@ public class EditEmployeeDialogController {
         }
         emailField.setText(email);
     }
+
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -253,9 +263,9 @@ public class EditEmployeeDialogController {
     }
 
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
+    private void showAlert(Alert.AlertType type, String message, String string) {
         Alert alert = new Alert(type);
-        alert.setTitle(title);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
 

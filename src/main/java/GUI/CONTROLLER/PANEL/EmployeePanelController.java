@@ -119,17 +119,7 @@ public class EmployeePanelController {
     @FXML
     private void handleDeleteEmployee(ActionEvent event) {
         if (selectedEmployee == null) {
-            showAlert(Alert.AlertType.WARNING, "Please select an employee to delete.", null, null);
-            return;
-        }
-
-        if (!currentUser.hasRole("STAFF")) {
-            showAlert(Alert.AlertType.WARNING, "You do not have permission to delete employees.", null, null);
-            return;
-        }
-
-        if (selectedEmployee.getUsername().equals(currentUser.getUsername())) {
-            showAlert(Alert.AlertType.ERROR, "You cannot delete your own account.", null, null);
+            showAlert(Alert.AlertType.WARNING, "Selection Required", "Please select an employee to delete.", null);
             return;
         }
 
@@ -137,20 +127,36 @@ public class EmployeePanelController {
         confirmAlert.setTitle("Confirm Delete");
         confirmAlert.setHeaderText(null);
         confirmAlert.setContentText("Are you sure you want to delete the selected employee?");
+        DialogPane confirmPane = confirmAlert.getDialogPane();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
+        confirmPane.getStylesheets().add(css);
+
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            boolean deleted = EmployeeBUS.getInstance().deleteEmployee(selectedEmployee.getEmployeeId());
-            if (deleted) {
-                showAlert(Alert.AlertType.INFORMATION, "Employee deleted successfully.", null, null);
+            try {
+                EmployeeBUS.getInstance().deleteEmployee(selectedEmployee.getEmployeeId());
+
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Employee deleted successfully.", null);
                 selectedEmployee = null;
+
+                currentUserEmployee = EmployeeBUS.getInstance().getEmployeeByUsername(Session.currentUsername);
+                updateAddButtonState();
+
                 loadEmployees();
                 applyRolePermissions();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Failed to delete employee. The employee might be in use.", null, null);
+
+            } catch (IllegalStateException ex) {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Cannot delete employee because they are currently in use.", null);
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Failed to delete employee due to an unexpected error.", null);
+                ex.printStackTrace();
             }
         }
     }
+
+
+
 
     @FXML
     private void handleViewEmployee(ActionEvent event) {
@@ -243,6 +249,7 @@ public class EmployeePanelController {
 
         alert.showAndWait();
     }
+
 
     @FunctionalInterface
     private interface DialogControllerHandler {

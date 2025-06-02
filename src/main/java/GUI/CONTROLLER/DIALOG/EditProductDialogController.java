@@ -108,7 +108,7 @@ public class EditProductDialogController {
     @FXML
     private void onConfirm() {
         if (currentProduct == null) {
-            showAlert(Alert.AlertType.valueOf("Error"), "Invalid product.");
+            showAlert(Alert.AlertType.ERROR, "Invalid product.");
             return;
         }
 
@@ -118,22 +118,28 @@ public class EditProductDialogController {
         Category selectedCategory = recipeComboBox.getValue();
 
         if (selectedImageFile == null) {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Please select a product image.");
+            showAlert(Alert.AlertType.WARNING, "Please select a product image.");
             return;
         }
 
         if (selectedCategory == null) {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Please select a product category.");
+            showAlert(Alert.AlertType.WARNING, "Please select a product category.");
             return;
         }
 
         if (name.isEmpty()) {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Product name cannot be empty.");
+            showAlert(Alert.AlertType.WARNING, "Product name cannot be empty.");
             return;
         }
 
-        if (!name.equalsIgnoreCase(currentProduct.getProductName()) && ProductBUS.getInstance().isProductNameExists(name)) {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Product name already exists.");
+        if (!name.equalsIgnoreCase(currentProduct.getProductName()) &&
+                ProductBUS.getInstance().isProductNameExists(name)) {
+            showAlert(Alert.AlertType.WARNING, "Product name already exists.");
+            return;
+        }
+
+        if (priceText.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Product price cannot be empty.");
             return;
         }
 
@@ -142,7 +148,7 @@ public class EditProductDialogController {
             price = Double.parseDouble(priceText);
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Invalid product price.");
+            showAlert(Alert.AlertType.WARNING, "Invalid product price. Please enter a valid number greater than or equal to 0.");
             return;
         }
 
@@ -156,9 +162,10 @@ public class EditProductDialogController {
         if (success) {
             closeDialog();
         } else {
-            showAlert(Alert.AlertType.valueOf("Notice"), "Failed to update product.");
+            showAlert(Alert.AlertType.ERROR, "Failed to update product.");
         }
     }
+
 
     @FXML
     private void onCancel() {

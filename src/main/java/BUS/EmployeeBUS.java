@@ -51,9 +51,23 @@ public class EmployeeBUS {
         return employeeDAO.updateEmployee(emp);
     }
 
-    public boolean deleteEmployee(int id) {
-        return employeeDAO.deleteEmployee(id);
+    public void deleteEmployee(int employeeId) throws Exception {
+        if (employeeId <= 0) {
+            throw new IllegalArgumentException("Invalid employee ID.");
+        }
+
+        if (employeeDAO.isEmployeeUsedInImportLog(employeeId)) {
+            throw new IllegalStateException("Cannot delete employee because they are referenced in other records.");
+        }
+
+        boolean deleted = employeeDAO.deleteEmployee(employeeId);
+
+        if (!deleted) {
+            throw new Exception("Failed to delete employee due to unknown reasons.");
+        }
     }
+
+
 
     public List<Employee> searchEmployees(String keyword) {
         keyword = keyword.toLowerCase().trim();

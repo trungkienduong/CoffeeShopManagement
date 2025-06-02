@@ -165,10 +165,13 @@ public class ProductPanelController {
 
     @FXML
     private void handleDeleteProduct(ActionEvent event) {
-        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) return;
+        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
+            showAlert(Alert.AlertType.WARNING, "Permission Denied", "You do not have permission to delete products.");
+            return;
+        }
 
         if (selectedProduct == null) {
-            showAlert(Alert.AlertType.WARNING, "Warning", "No product selected to delete!");
+            showAlert(Alert.AlertType.WARNING, "No Selection", "No product selected to delete!");
             return;
         }
 
@@ -176,6 +179,10 @@ public class ProductPanelController {
         confirmAlert.setTitle("Confirm Delete");
         confirmAlert.setHeaderText(null);
         confirmAlert.setContentText("Are you sure you want to delete the selected product?");
+
+        DialogPane dialogPane = confirmAlert.getDialogPane();
+        String css = Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm();
+        dialogPane.getStylesheets().add(css);
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isEmpty() || result.get() != ButtonType.OK) {
@@ -188,9 +195,10 @@ public class ProductPanelController {
             selectedProduct = null;
             loadProducts();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete product. It might be in use.");
+            showAlert(Alert.AlertType.ERROR, "Delete Failed", "Failed to delete product. It might be in use.");
         }
     }
+
 
     @FXML
     private void handleViewProduct(ActionEvent event) {
