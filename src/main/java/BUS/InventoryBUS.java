@@ -57,17 +57,11 @@ public class InventoryBUS {
         }
 
         if (inventoryDAO.isInventoryItemInUse(itemName)) {
-            throw new IllegalStateException("Cannot delete: this item is currently used in a recipe.");
+            throw new IllegalStateException("This item is currently used in a recipe.");
         }
 
         return inventoryDAO.delete(itemName);
     }
-
-
-
-
-
-
 
     public List<Inventory> getAll() {
         try {

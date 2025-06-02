@@ -60,10 +60,11 @@ public class EmployeeBUS {
         String[] keywords = keyword.split("\\s+");
 
         return getAllEmployees().stream().filter(emp -> {
+            String genderText = emp.getGender() != null ? emp.getGender().toLowerString() : "";
             String fullText = (
                     emp.getFullName() + " " +
                             (emp.getPosition() != null ? emp.getPosition().getPositionName() : "") + " " +
-                            (emp.getGender() != null ? emp.getGender() : "")
+                            genderText
             ).toLowerCase();
 
             for (String kw : keywords) {
@@ -74,6 +75,7 @@ public class EmployeeBUS {
             return true;
         }).collect(Collectors.toList());
     }
+
 
 
 

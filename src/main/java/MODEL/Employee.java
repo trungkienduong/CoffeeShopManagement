@@ -18,15 +18,19 @@ public class Employee {
             return code;
         }
 
-        public static Gender fromCode(char code) {
-            return code == 'F' ? FEMALE : MALE;
+        public String toLowerString() {
+            return name().toLowerCase();
         }
 
-        @Override
-        public String toString() {
-            return this == MALE ? "M" : "F";
+        public static Gender fromCode(char code) {
+            return switch (Character.toUpperCase(code)) {
+                case 'M' -> MALE;
+                case 'F' -> FEMALE;
+                default -> null;
+            };
         }
     }
+
 
     private int employeeId;
     private String username;
@@ -44,7 +48,6 @@ public class Employee {
     private EmployeePosition position;
     private User user;
 
-    // Constructors
     public Employee() {}
 
     public Employee(int employeeId, String username, String fullName, Gender gender, String cccd,

@@ -92,22 +92,22 @@ public class AddProductDialogController {
         Category selectedCategory = recipeComboBox.getValue();
 
         if (selectedImageFile == null) {
-            showAlert("Please select a product image.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please select a product image.");
             return;
         }
 
         if (selectedCategory == null) {
-            showAlert("Please select a product category.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please select a product category.");
             return;
         }
 
         if (name.isEmpty()) {
-            showAlert("Product name cannot be empty.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Product name cannot be empty.");
             return;
         }
 
         if (ProductBUS.getInstance().isProductNameExists(name)) {
-            showAlert("Product name already exists.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Product name already exists.");
             return;
         }
 
@@ -116,7 +116,7 @@ public class AddProductDialogController {
             price = Double.parseDouble(priceText);
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert("Invalid product price.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Invalid product price.");
             return;
         }
 
@@ -131,7 +131,7 @@ public class AddProductDialogController {
         if (success) {
             closeDialog();
         } else {
-            showAlert("Failed to add product.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to add product.");
         }
     }
 
@@ -145,15 +145,6 @@ public class AddProductDialogController {
         stage.close();
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Notification");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    @FXML
     private void handleAddType(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DIALOG/AddCategoryDialog.fxml"));
@@ -171,11 +162,8 @@ public class AddProductDialogController {
             updateRecipeComboBox();
 
         } catch (IOException e) {
-            showErrorAlert("Error", "Cannot open window", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot open category dialog: " + e.getMessage());
         }
-    }
-
-    private void showErrorAlert(String error, String cannotOpenWindow, String message) {
     }
 
     private void updateRecipeComboBox() {
@@ -184,9 +172,9 @@ public class AddProductDialogController {
         recipeComboBox.setItems(observableList);
     }
 
-    private void showAlert(Alert.AlertType type, String message) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 

@@ -38,7 +38,7 @@ public class LoginDialogController {
     @FXML private Label sliderText;
     @FXML private Button sliderButton;
 
-    private UserBUS userBUS = UserBUS.getInstance();
+    private final UserBUS userBUS = UserBUS.getInstance();
     private boolean isLoginForm = true;
 
     @FXML
@@ -119,8 +119,18 @@ public class LoginDialogController {
 
     @FXML
     private void handleLogin() {
-        String username = usernameLogin.getText();
-        String password = passwordLogin.getText();
+        String username = usernameLogin.getText().trim();
+        String password = passwordLogin.getText().trim();
+
+        if (username.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Login Failed", "Please enter username.");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Login Failed", "Please enter password.");
+            return;
+        }
 
         if (userBUS.checkLogin(username, password)) {
             UTIL.Session.currentUsername = username;
@@ -133,7 +143,6 @@ public class LoginDialogController {
                 currentStage.setScene(scene);
                 currentStage.setTitle("Coffee Manager");
             } catch (IOException e) {
-                e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Error", "Cannot load main interface.");
             }
         } else {
@@ -145,30 +154,50 @@ public class LoginDialogController {
 
     @FXML
     private void handleRegister() {
-        String username = usernameRegister.getText();
-        String email = emailRegister.getText();
-        String password = passwordRegister.getText();
+        String username = usernameRegister.getText().trim();
+        String email = emailRegister.getText().trim();
+        String password = passwordRegister.getText().trim();
         String roleName = roleComboBox.getValue();
 
-        if (UserBUS.isValidEmail(email)) {
-            int roleId = RoleListBUS.getInstance().getRoleIdByName(roleName);
-            RoleList roleObj = RoleListBUS.getInstance().getRoleById(roleId);
+        if (username.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Please enter username.");
+            return;
+        }
 
-            User newUser = new User(username, password, email, roleObj);
+        if (email.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Please enter email.");
+            return;
+        }
 
-            if (userBUS.insertUser(newUser)) {
-                sliding();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists.");
-            }
+        if (!UserBUS.isValidEmail(email)) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Email format is incorrect.");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Please enter password.");
+            return;
+        }
+
+        if (roleName == null || roleName.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Please select a role.");
+            return;
+        }
+
+        int roleId = RoleListBUS.getInstance().getRoleIdByName(roleName);
+        RoleList roleObj = RoleListBUS.getInstance().getRoleById(roleId);
+        User newUser = new User(username, password, email, roleObj);
+
+        if (userBUS.insertUser(newUser)) {
+            sliding();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please provide a valid email.");
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Username or email already exists.");
         }
     }
 
-    private void showAlert(Alert.AlertType type, String message, String s) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 

@@ -85,9 +85,9 @@ public class AddSupplierDialogController {
         return valid;
     }
 
-    private void showAlert(Alert.AlertType type, String message, String s) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 

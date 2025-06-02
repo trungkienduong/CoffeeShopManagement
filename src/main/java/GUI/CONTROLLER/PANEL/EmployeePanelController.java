@@ -231,9 +231,9 @@ public class EmployeePanelController {
 
 
 
-    private void showAlert(Alert.AlertType type, String message, Object o, String s) {
+    private void showAlert(Alert.AlertType type, String title, String message, Object o) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 

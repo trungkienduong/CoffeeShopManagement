@@ -139,12 +139,7 @@ public class InventoryPanelController {
     }
 
     @FXML
-    private void handleDeleteInventory(ActionEvent event) throws Exception {
-        if (currentUser != null && currentUser.hasRole("EMPLOYEE")) {
-            showAlert(Alert.AlertType.WARNING, "Insufficient Permission", "You do not have permission to delete inventory.");
-            return;
-        }
-
+    private void handleDeleteInventory(ActionEvent event) {
         Inventory selected = inventoryTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "Warning", "Please select an inventory item to delete.");
@@ -155,24 +150,41 @@ public class InventoryPanelController {
         confirmAlert.setTitle("Confirm Delete");
         confirmAlert.setHeaderText(null);
         confirmAlert.setContentText("Are you sure you want to delete the selected inventory item?");
+        confirmAlert.getDialogPane().getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("/ASSETS/STYLES/DIALOG/alert.css")).toExternalForm()
+        );
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
 
-        boolean success = inventoryBUS.deleteItem(selected.getItemName());
-        if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Inventory item deleted successfully.");
-            loadInventoryData();
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete inventory item. It might be in use.");
+        try {
+            boolean success = inventoryBUS.deleteItem(selected.getItemName());
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Inventory item deleted successfully.");
+                loadInventoryData();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete inventory item.");
+            }
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMessage = e.getMessage();
+            if ((errorMessage == null || errorMessage.isEmpty()) && e.getCause() != null) {
+                errorMessage = e.getCause().getMessage();
+            }
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    (errorMessage != null && !errorMessage.isEmpty())
+                            ? errorMessage
+                            : "Unexpected error occurred while deleting inventory item.");
         }
     }
 
-    private void showAlert(Alert.AlertType type, String message, Object o) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle("Notification");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
 
@@ -182,4 +194,5 @@ public class InventoryPanelController {
 
         alert.showAndWait();
     }
+
 }
